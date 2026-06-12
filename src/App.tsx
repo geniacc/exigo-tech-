@@ -24,7 +24,7 @@ import {
   PhoneOutlined,
   EnvironmentOutlined,
   LinkedinOutlined,
-  ArrowRightOutlined,
+
   SafetyCertificateOutlined,
   ThunderboltOutlined,
   LaptopOutlined,
