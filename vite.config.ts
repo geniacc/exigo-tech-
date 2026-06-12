@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // IMPORTANT: Must start and end with a slash, and match your repo name
-  base: '/exigo-tech-/',
+  // Using './' forces all assets to load relative to the index.html file
+  // This solves 99% of 404s on GitHub Pages
+  base: './',
 })
