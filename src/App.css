@@ -1,0 +1,167 @@
+/* ==========================================================================
+   1. ROOT LAYOUT & FOOTER GAP FIX
+   ========================================================================== */
+html,
+body,
+#root {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background-color: #020617 !important;
+    /* Deep space void for footer area */
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+
+.ant-layout {
+    flex: 1 1 auto !important;
+    width: 100% !important;
+    background-color: #f8fafc !important;
+}
+
+/* ==========================================================================
+   2. TYPOGRAPHY & BASE STYLES
+   ========================================================================== */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   3. CREATIVE HOVER & ANIMATION SYSTEM
+   ========================================================================== */
+
+/* The "Magic" Premium Card Container */
+.premium-corporate-card {
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(226, 232, 240, 1) !important;
+    overflow: hidden;
+}
+
+/* QwikSELL Card Hover: Shifts to soft Icy Purple */
+.premium-corporate-card:hover {
+    transform: translateY(-8px) scale(1.01);
+    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%) !important;
+    border-color: rgba(107, 33, 168, 0.3) !important;
+    box-shadow: 0 30px 60px -15px rgba(107, 33, 168, 0.15), 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Urja Card Hover: Shifts to soft Icy Blue */
+.premium-corporate-card.secondary:hover {
+    background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%) !important;
+    border-color: rgba(30, 58, 138, 0.3) !important;
+    box-shadow: 0 30px 60px -15px rgba(30, 58, 138, 0.15), 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+}
+
+/* Sub-card interior color shift on parent hover */
+.tech-ecosystem-subcard,
+.val-prop-subcard {
+    transition: all 0.4s ease !important;
+    background: #f8fafc !important;
+}
+
+.premium-corporate-card:hover .tech-ecosystem-subcard {
+    background: #f3e8ff !important;
+    border-color: #d8b4fe !important;
+}
+
+.premium-corporate-card.secondary:hover .val-prop-subcard {
+    background: #dbeafe !important;
+    border-color: #93c5fd !important;
+}
+
+/* Team Card hover interaction */
+.reveal-team-card .ant-card {
+    transition: all 0.4s ease !important;
+}
+
+.reveal-team-card .ant-card:hover {
+    transform: translateY(-8px);
+    background: linear-gradient(to bottom, #ffffff 0%, #faf5ff 100%) !important;
+    border-color: #d8b4fe !important;
+    box-shadow: 0 20px 40px rgba(107, 33, 168, 0.1) !important;
+}
+
+/* Icon Feature Showcase (About Section) */
+.icon-wrapper {
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.premium-feature-showcase-card:hover .icon-wrapper {
+    transform: scale(1.15) rotate(8deg);
+    background: #6b21a8 !important;
+}
+
+.premium-feature-showcase-card:hover .icon-wrapper svg {
+    color: #ffffff !important;
+}
+
+/* ==========================================================================
+   4. UTILITIES & RESPONSIVE
+   ========================================================================== */
+.back-to-top-floating {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 99;
+    opacity: 0;
+    transform: scale(0.8) translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    pointer-events: none;
+}
+
+.back-to-top-floating.visible {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+}
+
+.bounce-slow {
+    animation: bounce-slow 3s infinite ease-in-out;
+}
+
+@keyframes bounce-slow {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.desktop-only {
+    display: flex !important;
+}
+
+.mobile-only {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .desktop-only {
+        display: none !important;
+    }
+
+    .mobile-only {
+        display: flex !important;
+    }
+}
+
+/* Fixes for Ant Design components */
+.premium-card .ant-card-body {
+    padding: 40px !important;
+}

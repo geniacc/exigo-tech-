@@ -1,0 +1,171 @@
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+  color: #1e293b;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  max-width: 100vw;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f8fafc;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Hero overlay and animations styling */
+.hero-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 800;
+  letter-spacing: 0.25em;
+  text-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.gradient-text-purple {
+  background: linear-gradient(135deg, #6b21a8 0%, #1e3a8a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Custom styles for antd cards and layout */
+.premium-card {
+  border: 1px solid rgba(107, 33, 168, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px -2px rgba(107, 33, 168, 0.04);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+.premium-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(107, 33, 168, 0.12);
+  border-color: rgba(107, 33, 168, 0.2);
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 24px;
+}
+
+/* Micro-animations */
+@keyframes bounce-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.bounce-slow {
+  animation: bounce-slow 3s infinite ease-in-out;
+}
+
+/* Responsive adjustments */
+.desktop-only {
+  display: flex !important;
+}
+.mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none !important;
+  }
+  .mobile-only {
+    display: flex !important;
+  }
+}
+
+/* Section Responsive Paddings */
+.section-container {
+  padding: 100px 40px !important;
+}
+@media (max-width: 768px) {
+  .section-container {
+    padding: 60px 20px !important;
+  }
+}
+
+/* Card Body Responsive Padding */
+.premium-card .ant-card-body {
+  padding: 40px !important;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+@media (max-width: 768px) {
+  .premium-card .ant-card-body {
+    padding: 24px 20px !important;
+  }
+}
+
+/* Hero Buttons Container Responsive Flex direction */
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+@media (max-width: 576px) {
+  .hero-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    gap: 12px;
+  }
+  .hero-buttons > .ant-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* Footer Container padding */
+.footer-container {
+  padding: 80px 40px 40px 40px !important;
+}
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 48px 20px 32px 20px !important;
+  }
+}
