@@ -165,3 +165,19 @@ body {
 .premium-card .ant-card-body {
     padding: 40px !important;
 }
+
+.hero-main-title {
+    font-size: clamp(3rem, 8vw, 6.5rem) !important;
+}
+
+.vibrant-gradient-text {
+    background: linear-gradient(135deg, #6b21a8 0%, #1e3a8a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+@media (max-width: 576px) {
+    .hero-main-title {
+        font-size: clamp(1.8rem, 7vw, 2.8rem) !important;
+    }
+}

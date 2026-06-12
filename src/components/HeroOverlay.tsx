@@ -12,19 +12,31 @@ export function HeroOverlay() {
   const subtitleRef = useRef<HTMLDivElement>(null)
   const scrollIndicatorRef = useRef<HTMLDivElement>(null)
 
-  // Split the title into individual span elements for staggered animation
+  // Split the title into individual words and letters for staggered animation without breaking words on mobile
   const titleString = "Exigo Cleantech"
-  const splitTitle = titleString.split("").map((char, index) => (
+  const splitTitle = titleString.split(" ").map((word, wordIndex) => (
     <span
-      key={index}
-      className="hero-letter"
+      key={wordIndex}
       style={{
         display: 'inline-block',
-        whiteSpace: char === " " ? "pre" : "normal",
-        willChange: 'transform, opacity'
+        whiteSpace: 'nowrap'
       }}
     >
-      {char}
+      {word.split("").map((char, charIndex) => (
+        <span
+          key={charIndex}
+          className="hero-letter vibrant-gradient-text"
+          style={{
+            display: 'inline-block',
+            willChange: 'transform, opacity'
+          }}
+        >
+          {char}
+        </span>
+      ))}
+      {wordIndex < titleString.split(" ").length - 1 && (
+        <span style={{ display: 'inline-block', width: '0.2em' }}>&nbsp;</span>
+      )}
     </span>
   ))
 
@@ -146,9 +158,8 @@ export function HeroOverlay() {
         <div ref={titleRef} style={{ pointerEvents: 'auto', textAlign: 'center' }}>
           <Typography.Title
             level={1}
-            className="vibrant-gradient-text"
+            className="hero-main-title"
             style={{
-              fontSize: 'clamp(3rem, 8vw, 6.5rem)',
               margin: 0,
               fontWeight: 900,
               textTransform: 'uppercase',
