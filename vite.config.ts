@@ -3,6 +3,6 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  // Replace 'exigo-tech-' with the exact name of your repository
+  // IMPORTANT: Must start and end with a slash, and match your repo name
   base: '/exigo-tech-/',
 })
