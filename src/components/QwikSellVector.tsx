@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Typography, Button } from 'antd';
+import { useNavigate } from 'react-router-dom'; // NEW IMPORT
 import gsap from 'gsap';
 import quikLogo from '../assets/quik-logo.png';
 
@@ -12,6 +13,7 @@ interface QwikSellVectorProps {
 export default function QwikSellVector({ animatedRef }: QwikSellVectorProps) {
     const paramRef = useRef<HTMLSpanElement>(null);
     const scanLineRef = useRef<HTMLDivElement>(null);
+    const navigate = useNavigate(); // NEW INSTANCE
 
     useEffect(() => {
         if (!animatedRef.current) return;
@@ -73,7 +75,11 @@ export default function QwikSellVector({ animatedRef }: QwikSellVectorProps) {
             <Paragraph style={styles.desc}>
                 An automated enterprise liquidation pipeline utilizing high-velocity asset diagnostic sweeps to eliminate hardware e-waste.
             </Paragraph>
-            <Button type="primary" style={styles.btn}>Access B2B Market</Button>
+
+            {/* CTA Button - UPDATED WITH CLICK ROUTING */}
+            <Button type="primary" onClick={() => navigate('/qwiksell')} style={styles.btn}>
+                Access B2B Market
+            </Button>
         </div>
     );
 }
@@ -147,5 +153,6 @@ const styles = {
         fontWeight: 600,
         border: 'none',
         boxShadow: '0 8px 20px rgba(99, 102, 241, 0.25)',
+        cursor: 'pointer',
     } as React.CSSProperties,
 };

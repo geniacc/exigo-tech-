@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Typography, Button } from 'antd';
+import { useNavigate } from 'react-router-dom'; // NEW IMPORT
 import gsap from 'gsap';
 import urjaLogo from '../assets/urja-logo.png';
 
@@ -14,6 +15,7 @@ export default function UrjaVector({ animatedRef }: UrjaVectorProps) {
   const capacityRef = useRef<HTMLSpanElement>(null);
   const warrantyRef = useRef<HTMLSpanElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
+  const navigate = useNavigate(); // NEW INSTANCE
 
   useEffect(() => {
     if (!animatedRef.current) return;
@@ -128,8 +130,8 @@ export default function UrjaVector({ animatedRef }: UrjaVectorProps) {
         </div>
       </div>
 
-      {/* CTA Button */}
-      <Button type="primary" style={styles.btn}>
+      {/* CTA Button - UPDATED WITH CLICK ROUTING */}
+      <Button type="primary" onClick={() => navigate('/urja')} style={styles.btn}>
         Explore Fleet Solutions
       </Button>
     </div>
@@ -145,7 +147,7 @@ const styles = {
     backdropFilter: 'blur(30px)',
     WebkitBackdropFilter: 'blur(30px)',
     borderRadius: '32px',
-    border: '1.5px solid rgba(14, 165, 233, 0.25)', // Blurry blue-ish glass outline
+    border: '1.5px solid rgba(14, 165, 233, 0.25)',
     boxShadow: '0 25px 55px rgba(14, 165, 233, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
     display: 'flex',
     flexDirection: 'column',
@@ -285,5 +287,6 @@ const styles = {
     borderRadius: '12px',
     boxShadow: '0 8px 24px rgba(14, 165, 233, 0.25)',
     marginTop: 'auto',
+    cursor: 'pointer',
   } as React.CSSProperties,
 };
