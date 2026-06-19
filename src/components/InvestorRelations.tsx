@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Row, Col, Card, Typography, Button, Statistic, Tag } from 'antd';
 import {
     LineChartOutlined,
