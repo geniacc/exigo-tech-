@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
-import { Layout, Row, Col, Card, Typography, Tag, Button, Input } from 'antd';
+import { Layout, Row, Col, Card, Typography, Tag, Button, Input, Modal, Form, Upload, message } from 'antd';
 import {
     TeamOutlined,
     RocketOutlined,
@@ -8,11 +8,13 @@ import {
     ArrowRightOutlined,
     SearchOutlined,
     EnvironmentOutlined,
-    ClockCircleOutlined
+    ClockCircleOutlined,
+    UploadOutlined
 } from '@ant-design/icons';
 
 const { Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
+const { TextArea } = Input;
 
 // --- Helper Hook for Scroll Reveals ---
 const useScrollReveal = () => {
@@ -36,11 +38,16 @@ const useScrollReveal = () => {
     return { ref, isVisible };
 };
 
-// NOTICE THE "export default" HERE:
 export default function CareersPage() {
     const headerReveal = useScrollReveal();
     const cultureReveal = useScrollReveal();
     const jobsReveal = useScrollReveal();
+
+    // Form and Modal State
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedRole, setSelectedRole] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [form] = Form.useForm();
 
     const openPositions = [
         { title: "Senior Full Stack Developer", department: "Engineering", location: "Remote / Hybrid", type: "Full-Time" },
@@ -49,6 +56,36 @@ export default function CareersPage() {
         { title: "Data Scientist (Battery Analytics)", department: "Data & AI", location: "Remote", type: "Full-Time" },
         { title: "B2B Sales Executive", department: "Sales", location: "Hybrid", type: "Full-Time" }
     ];
+
+    // Handlers
+    const scrollToJobs = () => {
+        const el = document.getElementById('open-positions');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    const handleApplyClick = (roleTitle: string) => {
+        setSelectedRole(roleTitle);
+        setIsModalOpen(true);
+    };
+
+    const onFinishApplication = (values: any) => {
+        setIsSubmitting(true);
+
+        // Simulate an API call delay
+        setTimeout(() => {
+            setIsSubmitting(false);
+            setIsModalOpen(false);
+            form.resetFields();
+            message.success(`Application submitted successfully for ${selectedRole}! Our team will reach out soon.`);
+            console.log("Form Submitted:", values); // You can connect your actual backend here
+        }, 1500);
+    };
+
+    // Prevent default upload action to keep it frontend-only for the demo
+    const normFile = (e: any) => {
+        if (Array.isArray(e)) return e;
+        return e?.fileList;
+    };
 
     return (
         <Content style={{ backgroundColor: '#f8fafc', overflowX: 'hidden', fontFamily: 'system-ui, -apple-system, sans-serif' }}>
@@ -112,7 +149,12 @@ export default function CareersPage() {
                         </Paragraph>
                     </div>
                     <div className="stagger-text stagger-4">
-                        <Button type="primary" size="large" style={{ backgroundColor: '#1e3a8a', height: '56px', padding: '0 40px', fontSize: '16px', fontWeight: 600, borderRadius: '28px', border: 'none', boxShadow: '0 10px 25px rgba(30, 58, 138, 0.25)' }}>
+                        <Button
+                            type="primary"
+                            size="large"
+                            onClick={scrollToJobs}
+                            style={{ backgroundColor: '#1e3a8a', height: '56px', padding: '0 40px', fontSize: '16px', fontWeight: 600, borderRadius: '28px', border: 'none', boxShadow: '0 10px 25px rgba(30, 58, 138, 0.25)' }}
+                        >
                             View Open Roles
                         </Button>
                     </div>
@@ -149,7 +191,7 @@ export default function CareersPage() {
             </div>
 
             {/* OPEN POSITIONS BOARD */}
-            <div ref={jobsReveal.ref} className={`content-section ${jobsReveal.isVisible ? 'visible' : ''}`} style={{ paddingTop: '40px' }}>
+            <div id="open-positions" ref={jobsReveal.ref} className={`content-section ${jobsReveal.isVisible ? 'visible' : ''}`} style={{ paddingTop: '40px' }}>
                 <div className="stagger-text stagger-1" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px', gap: '16px' }}>
                     <Title level={2} style={{ color: '#0f172a', fontWeight: 900, margin: 0 }}>Open Positions</Title>
                     <Input
@@ -175,7 +217,12 @@ export default function CareersPage() {
                                         </div>
                                     </Col>
                                     <Col xs={24} md={8} style={{ textAlign: 'right' }}>
-                                        <Button className="job-action-btn" type="default" style={{ height: '44px', padding: '0 24px', borderRadius: '22px', fontWeight: 600, color: '#1e3a8a', borderColor: '#1e3a8a' }}>
+                                        <Button
+                                            className="job-action-btn"
+                                            type="default"
+                                            onClick={() => handleApplyClick(job.title)}
+                                            style={{ height: '44px', padding: '0 24px', borderRadius: '22px', fontWeight: 600, color: '#1e3a8a', borderColor: '#1e3a8a' }}
+                                        >
                                             Apply Now <ArrowRightOutlined />
                                         </Button>
                                     </Col>
@@ -189,11 +236,100 @@ export default function CareersPage() {
                 <div className="stagger-text stagger-3" style={{ marginTop: '48px', textAlign: 'center', background: '#eff6ff', padding: '40px', borderRadius: '16px', border: '1px dashed #bfdbfe' }}>
                     <Title level={4} style={{ color: '#0f172a', fontWeight: 800, marginBottom: '8px' }}>Don't see a perfect fit?</Title>
                     <Text style={{ color: '#475569', display: 'block', marginBottom: '24px' }}>We are always looking for exceptional talent. Send us your resume.</Text>
-                    <Button type="primary" style={{ background: '#1e3a8a', height: '44px', borderRadius: '22px', fontWeight: 600 }}>
+                    <Button
+                        type="primary"
+                        onClick={() => handleApplyClick("General Application")}
+                        style={{ background: '#1e3a8a', height: '44px', borderRadius: '22px', fontWeight: 600, padding: '0 32px' }}
+                    >
                         Submit General Application
                     </Button>
                 </div>
             </div>
+
+            {/* APPLICATION MODAL */}
+            <Modal
+                title={
+                    <div style={{ paddingBottom: '16px', borderBottom: '1px solid #f1f5f9', marginBottom: '16px' }}>
+                        <Text style={{ color: '#64748b', fontSize: '13px', fontWeight: 700, letterSpacing: '1px' }}>APPLYING FOR</Text>
+                        <Title level={4} style={{ margin: '4px 0 0 0', color: '#0f172a', fontWeight: 800 }}>{selectedRole}</Title>
+                    </div>
+                }
+                open={isModalOpen}
+                onCancel={() => {
+                    setIsModalOpen(false);
+                    form.resetFields();
+                }}
+                footer={null}
+                destroyOnClose
+                centered
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={onFinishApplication}
+                    requiredMark="optional"
+                >
+                    <Row gutter={16}>
+                        <Col xs={24} sm={12}>
+                            <Form.Item label="First Name" name="firstName" rules={[{ required: true, message: 'Please enter your first name' }]}>
+                                <Input size="large" placeholder="Jane" style={{ borderRadius: '8px' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} sm={12}>
+                            <Form.Item label="Last Name" name="lastName" rules={[{ required: true, message: 'Please enter your last name' }]}>
+                                <Input size="large" placeholder="Doe" style={{ borderRadius: '8px' }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Row gutter={16}>
+                        <Col xs={24} sm={12}>
+                            <Form.Item label="Email Address" name="email" rules={[{ required: true, type: 'email', message: 'Please enter a valid email' }]}>
+                                <Input size="large" placeholder="jane@example.com" style={{ borderRadius: '8px' }} />
+                            </Form.Item>
+                        </Col>
+                        <Col xs={24} sm={12}>
+                            <Form.Item label="Phone Number" name="phone" rules={[{ required: true, message: 'Please enter your phone number' }]}>
+                                <Input size="large" placeholder="+1 (555) 000-0000" style={{ borderRadius: '8px' }} />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+
+                    <Form.Item label="LinkedIn Profile (Optional)" name="linkedin">
+                        <Input size="large" placeholder="https://linkedin.com/in/..." style={{ borderRadius: '8px' }} />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Resume / CV"
+                        name="resume"
+                        valuePropName="fileList"
+                        getValueFromEvent={normFile}
+                        rules={[{ required: true, message: 'Please upload your resume' }]}
+                    >
+                        <Upload name="resumeFile" action="/mock-upload" maxCount={1} beforeUpload={() => false}>
+                            <Button icon={<UploadOutlined />} size="large" style={{ borderRadius: '8px', width: '100%' }}>
+                                Click to Upload PDF or Word Doc
+                            </Button>
+                        </Upload>
+                    </Form.Item>
+
+                    <Form.Item label="Cover Letter (Optional)" name="coverLetter">
+                        <TextArea rows={4} placeholder="Tell us why you'd be a great fit for this role..." style={{ borderRadius: '8px' }} />
+                    </Form.Item>
+
+                    <Form.Item style={{ marginTop: '32px', marginBottom: 0 }}>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            size="large"
+                            loading={isSubmitting}
+                            style={{ width: '100%', height: '48px', borderRadius: '24px', backgroundColor: '#1e3a8a', fontWeight: 600 }}
+                        >
+                            {isSubmitting ? 'Submitting...' : 'Submit Application'}
+                        </Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </Content>
     );
 }

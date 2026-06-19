@@ -48,12 +48,23 @@ const { Title, Text, Paragraph } = Typography
 
 function ScrollToTop() {
   const { pathname } = useLocation()
+
   useEffect(() => {
-    window.scrollTo(0, 0)
+    // 1. Force the scroll to top instantly on the window
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+    // 2. Fallback for some browsers / smooth scrolling wrappers
+    document.documentElement.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.body.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+
+    // 3. Fire it once more after a tiny delay to catch any GSAP layout shifts
     setTimeout(() => {
-      ScrollTrigger.refresh()
-    }, 100)
+      window.scrollTo(0, 0);
+      ScrollTrigger.refresh();
+    }, 50);
+
   }, [pathname])
+
   return null
 }
 
