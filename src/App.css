@@ -181,3 +181,49 @@ body {
         font-size: clamp(1.8rem, 7vw, 2.8rem) !important;
     }
 }
+
+/* ==========================================================================
+   SMART DIRECTIONAL SCROLL NAVBAR STYLES
+   ========================================================================== */
+.smart-animated-navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 80px;
+    z-index: 1000;
+
+    /* Frosted glass space aesthetic */
+    background: rgba(15, 23, 42, 0.75) !important;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+
+    /* Extreme high performance ease transitions */
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease !important;
+    will-change: transform;
+}
+
+/* Slide into view completely */
+.nav-visible {
+    transform: translateY(0);
+}
+
+/* Hide cleanly off viewport when scrolling down */
+.nav-hidden {
+    transform: translateY(-100%);
+}
+
+/* Text coloring overrides for dark layout context visibility */
+.smart-animated-navbar .ant-btn-text {
+    color: #f8fafc !important;
+    transition: all 0.25s ease;
+}
+
+.smart-animated-navbar .ant-btn-text:hover {
+    color: #38bdf8 !important;
+    background-color: rgba(255, 255, 255, 0.06) !important;
+}
