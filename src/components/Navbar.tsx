@@ -46,7 +46,7 @@ export default function Navbar() {
             setTimeout(() => {
                 const el = document.getElementById(elementId)
                 if (el) el.scrollIntoView({ behavior: 'smooth' })
-            }, 150) // Slightly increased delay to guarantee page layout compilation completes
+            }, 150)
         }
     }
 
@@ -54,15 +54,38 @@ export default function Navbar() {
         <>
             <Header
                 className={`smart-animated-navbar ${visible ? 'nav-visible' : 'nav-hidden'}`}
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0 24px',
+                    width: '100%',
+                    zIndex: 1000
+                }}
             >
+                {/* LOGO CONTAINER */}
                 <div
-                    style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', height: '100%' }}
+                    style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                        height: '100%',
+                        flexShrink: 0,
+                        zIndex: 10
+                    }}
                     onClick={() => handleNavClick('/')}
                 >
                     <img
                         src={exigoLogo}
                         alt="Exigo Cleantech"
-                        style={{ height: '54px', width: 'auto', objectFit: 'contain' }}
+                        style={{
+                            maxHeight: '44px',
+                            width: 'auto',
+                            objectFit: 'contain',
+                            backgroundColor: '#ffffff', // Forces a white background
+                            padding: '4px 12px',        // Gives the logo breathing room inside the white box
+                            borderRadius: '8px'         // Smooth, rounded corners
+                        }}
                     />
                 </div>
 
@@ -73,7 +96,6 @@ export default function Navbar() {
                     <Button type="text" onClick={() => handleNavClick('/qwiksell')} style={{ fontWeight: 600 }}>QwikSELL</Button>
                     <Button type="text" onClick={() => handleNavClick('/urja')} style={{ fontWeight: 600 }}>Urja Mobility</Button>
                     <Button type="text" onClick={() => handleNavClick('/', 'team')} style={{ fontWeight: 600 }}>Our Team</Button>
-                    {/* NEW LINKS ADDED BELOW */}
                     <Button type="text" onClick={() => handleNavClick('/careers')} style={{ fontWeight: 600 }}>Careers</Button>
                     <Button type="text" onClick={() => handleNavClick('/', 'investors')} style={{ fontWeight: 600 }}>Investors</Button>
 
@@ -94,11 +116,13 @@ export default function Navbar() {
                     </Button>
                 </Space>
 
+                {/* Mobile Menu Button */}
                 <Button
                     type="text"
-                    icon={<MenuOutlined style={{ fontSize: '20px' }} />}
+                    icon={<MenuOutlined style={{ fontSize: '24px', color: '#0f172a' }} />}
                     className="mobile-only"
                     onClick={() => setDrawerVisible(true)}
+                    style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                 />
             </Header>
 
@@ -106,7 +130,18 @@ export default function Navbar() {
             <Drawer
                 title={
                     <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <img src={exigoLogo} alt="Exigo Logo" style={{ height: '40px', width: 'auto', objectFit: 'contain' }} />
+                        <img
+                            src={exigoLogo}
+                            alt="Exigo Logo"
+                            style={{
+                                height: '36px',
+                                width: 'auto',
+                                objectFit: 'contain',
+                                backgroundColor: '#ffffff', // Forces a white background in drawer too
+                                padding: '4px 8px',
+                                borderRadius: '6px'
+                            }}
+                        />
                     </div>
                 }
                 placement="right"
@@ -120,7 +155,6 @@ export default function Navbar() {
                     <Button type="text" onClick={() => handleNavClick('/qwiksell')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>QwikSELL</Button>
                     <Button type="text" onClick={() => handleNavClick('/urja')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>URJA Mobility</Button>
                     <Button type="text" onClick={() => handleNavClick('/', 'team')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Our Team</Button>
-                    {/* NEW LINKS ADDED BELOW */}
                     <Button type="text" onClick={() => handleNavClick('/careers')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Careers</Button>
                     <Button type="text" onClick={() => handleNavClick('/', 'investors')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Investors</Button>
 

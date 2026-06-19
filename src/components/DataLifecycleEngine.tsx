@@ -222,25 +222,25 @@ export default function DataLifecycleEngine() {
                 <div style={styles.mobileCarouselViewport}>
                     <div ref={mobileTrackRef} style={styles.mobileCarouselTrack}>
 
-                        {/* Slide 1: ExigoCore */}
+                        {/* Slide 1: ExigoCore (SCALED FOR MOBILE) */}
                         <div style={styles.mobileSlideCard}>
-                            <div style={styles.cardInteractiveWrapper}>
+                            <div style={{ ...styles.cardInteractiveWrapper, transform: 'scale(0.75)', transformOrigin: 'center center' }}>
                                 <ExigoCore animatedRef={coreRef} />
                                 <div ref={coreShineRef} style={styles.shineBeam} />
                             </div>
                         </div>
 
-                        {/* Slide 2: UrjaVector */}
+                        {/* Slide 2: UrjaVector (SCALED FOR MOBILE) */}
                         <div style={styles.mobileSlideCard}>
-                            <div style={styles.cardInteractiveWrapper}>
+                            <div style={{ ...styles.cardInteractiveWrapper, transform: 'scale(0.75)', transformOrigin: 'center center' }}>
                                 <UrjaVector animatedRef={urjaRef} />
                                 <div ref={urjaShineRef} style={styles.shineBeam} />
                             </div>
                         </div>
 
-                        {/* Slide 3: QwikSellVector */}
+                        {/* Slide 3: QwikSellVector (SCALED FOR MOBILE) */}
                         <div style={styles.mobileSlideCard}>
-                            <div style={styles.cardInteractiveWrapper}>
+                            <div style={{ ...styles.cardInteractiveWrapper, transform: 'scale(0.75)', transformOrigin: 'center center' }}>
                                 <QwikSellVector animatedRef={qwikRef} />
                                 <div ref={qwikShineRef} style={styles.shineBeam} />
                             </div>
@@ -335,11 +335,10 @@ const styles = {
         zIndex: 5,
     } as React.CSSProperties,
 
-    // --- New Shiny Overlay Containers ---
     cardInteractiveWrapper: {
         position: 'relative',
-        overflow: 'hidden', // Crops the shine so it doesn't bleed out of your vector box frame bounds
-        borderRadius: '16px', // Matches your premium corporate card styles perfectly
+        overflow: 'hidden',
+        borderRadius: '16px',
         transformStyle: 'preserve-3d',
     } as React.CSSProperties,
     shineBeam: {
@@ -349,28 +348,26 @@ const styles = {
         width: '50%',
         height: '100%',
         background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.35), transparent)',
-        transform: 'skewX(-25deg)', // Elegant slanted corporate glass beam angle
-        pointerEvents: 'none', // Lets user actions bypass cleanly to underlying items
+        transform: 'skewX(-25deg)',
+        pointerEvents: 'none',
         zIndex: 10,
     } as React.CSSProperties,
 
-    // --- Carousel Slider Styles ---
     mobileCarouselViewport: {
         width: '100%',
         height: '80vh',
-        overflowX: 'auto',
+        overflowX: 'hidden', // Changed from auto to hidden to prevent side scrolling
         overflowY: 'hidden',
         position: 'relative',
         zIndex: 5,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        WebkitOverflowScrolling: 'touch',
     } as React.CSSProperties,
     mobileCarouselTrack: {
         display: 'flex',
         width: '100%',
-        height: '90%',
+        height: '100%', // Fixed to take full height
     } as React.CSSProperties,
     mobileSlideCard: {
         minWidth: '100%',
@@ -379,7 +376,7 @@ const styles = {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '0 24px',
+        padding: '0', // Removed padding to let scale handle the spacing
         boxSizing: 'border-box',
     } as React.CSSProperties,
     mobileDotContainer: {
@@ -388,7 +385,7 @@ const styles = {
         gap: '12px',
         width: '100%',
         position: 'absolute',
-        bottom: '10px',
+        bottom: '20px',
     } as React.CSSProperties,
     dot: {
         width: '10px',
