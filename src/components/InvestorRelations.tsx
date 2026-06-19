@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Row, Col, Card, Typography, Button, Statistic, Tag } from 'antd';
 import {
     LineChartOutlined,
@@ -11,7 +11,8 @@ import {
 
 const { Title, Text, Paragraph } = Typography;
 
-// --- Helper Hook for Scroll Reveals ---
+// --- Simplified Scroll Reveal ---
+// Lowered the threshold so elements at the very bottom of the page trigger reliably
 const useScrollReveal = () => {
     const [isVisible, setIsVisible] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
@@ -24,7 +25,7 @@ const useScrollReveal = () => {
                     observer.disconnect();
                 }
             },
-            { threshold: 0.15 }
+            { threshold: 0.05 }
         );
         if (ref.current) observer.observe(ref.current);
         return () => observer.disconnect();
@@ -34,9 +35,8 @@ const useScrollReveal = () => {
 };
 
 export default function InvestorRelations() {
+    // Using a single reveal trigger for the whole section to prevent missing elements
     const sectionReveal = useScrollReveal();
-    const statsReveal = useScrollReveal();
-    const cardsReveal = useScrollReveal();
 
     return (
         <section style={{ backgroundColor: '#ffffff', borderTop: '1px solid #e2e8f0', overflow: 'hidden' }}>
@@ -48,51 +48,45 @@ export default function InvestorRelations() {
                     to { opacity: 1; transform: translateY(0); }
                 }
                 
-                .ir-container { padding: 100px 24px; max-width: 1200px; margin: 0 auto; position: relative; }
+                /* TIGHTENED PADDING: 80px top, 24px sides, 60px bottom */
+                .ir-container { padding: 80px 24px 60px; max-width: 1200px; margin: 0 auto; position: relative; }
                 
-                /* Staggered Animations */
-                .stagger-text { opacity: 0; transform: translateY(20px); }
-                .visible .stagger-text { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-                .visible .stagger-1 { animation-delay: 0.1s; }
-                .visible .stagger-2 { animation-delay: 0.2s; }
-                .visible .stagger-3 { animation-delay: 0.3s; }
+                /* Animation Classes */
+                .reveal-item { opacity: 0; transform: translateY(20px); }
+                .visible .reveal-item { animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+                
+                .visible .delay-1 { animation-delay: 0.1s; }
+                .visible .delay-2 { animation-delay: 0.2s; }
+                .visible .delay-3 { animation-delay: 0.3s; }
 
-                .reveal-item { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; transform: translateY(30px); }
-                .reveal-item.visible { opacity: 1; transform: translateY(0); }
-                
                 .ir-card { transition: all 0.3s ease; border: 1px solid #e2e8f0; border-radius: 20px; height: 100%; background: #f8fafc; }
                 .ir-card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08); border-color: #cbd5e1; background: #ffffff; }
 
                 @media (max-width: 768px) {
-                    .ir-container { padding: 60px 16px; }
+                    .ir-container { padding: 60px 16px 40px; }
                     .ir-title { font-size: 2rem !important; }
                     .ir-btn-full { width: 100%; display: flex; justify-content: center; }
                 }
                 `}
             </style>
 
-            <div className="ir-container">
+            <div ref={sectionReveal.ref} className={`ir-container ${sectionReveal.isVisible ? 'visible' : ''}`}>
+
                 {/* Section Header */}
-                <div ref={sectionReveal.ref} className={`${sectionReveal.isVisible ? 'visible' : ''}`} style={{ textAlign: 'center', marginBottom: '64px' }}>
-                    <div className="stagger-text stagger-1">
-                        <Tag color="cyan" style={{ padding: '6px 16px', borderRadius: '20px', fontWeight: 700, letterSpacing: '1px', backgroundColor: '#e0f2fe', color: '#0284c7', border: 'none', marginBottom: '24px' }}>
-                            INVESTOR RELATIONS
-                        </Tag>
-                    </div>
-                    <div className="stagger-text stagger-2">
-                        <Title level={2} className="ir-title" style={{ fontSize: '2.5rem', fontWeight: 900, color: '#0f172a', margin: '0 0 16px 0' }}>
-                            Driving Sustainable Growth
-                        </Title>
-                    </div>
-                    <div className="stagger-text stagger-3">
-                        <Paragraph style={{ fontSize: '1.15rem', color: '#475569', maxWidth: '700px', margin: '0 auto', lineHeight: '1.7' }}>
-                            Exigo is building the infrastructure for a circular economy. We partner with forward-thinking investors to scale our impact, expand our technological reach, and deliver consistent, responsible returns.
-                        </Paragraph>
-                    </div>
+                <div className="reveal-item delay-1" style={{ textAlign: 'center', marginBottom: '48px' }}>
+                    <Tag color="cyan" style={{ padding: '6px 16px', borderRadius: '20px', fontWeight: 700, letterSpacing: '1px', backgroundColor: '#e0f2fe', color: '#0284c7', border: 'none', marginBottom: '24px' }}>
+                        INVESTOR RELATIONS
+                    </Tag>
+                    <Title level={2} className="ir-title" style={{ fontSize: '2.5rem', fontWeight: 900, color: '#0f172a', margin: '0 0 16px 0' }}>
+                        Driving Sustainable Growth
+                    </Title>
+                    <Paragraph style={{ fontSize: '1.15rem', color: '#475569', maxWidth: '700px', margin: '0 auto', lineHeight: '1.7' }}>
+                        Exigo is building the infrastructure for a circular economy. We partner with forward-thinking investors to scale our impact, expand our technological reach, and deliver consistent, responsible returns.
+                    </Paragraph>
                 </div>
 
-                {/* Quick Highlights / Stats */}
-                <div ref={statsReveal.ref} className={`reveal-item ${statsReveal.isVisible ? 'visible' : ''}`} style={{ background: '#0f172a', borderRadius: '24px', padding: '48px 24px', marginBottom: '64px', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)' }}>
+                {/* Quick Highlights / Stats - TIGHTENED MARGIN */}
+                <div className="reveal-item delay-2" style={{ background: '#0f172a', borderRadius: '24px', padding: '40px 24px', marginBottom: '40px', boxShadow: '0 20px 40px rgba(15, 23, 42, 0.15)' }}>
                     <Row gutter={[32, 48]} justify="center" style={{ textAlign: 'center' }}>
                         <Col xs={24} sm={8}>
                             <Statistic
@@ -120,10 +114,10 @@ export default function InvestorRelations() {
                     </Row>
                 </div>
 
-                {/* Resource Cards */}
-                <div ref={cardsReveal.ref} className={`${cardsReveal.isVisible ? 'visible' : ''}`}>
+                {/* Resource Cards - Will now animate in reliably */}
+                <div className="reveal-item delay-3">
                     <Row gutter={[24, 24]}>
-                        <Col xs={24} md={8} className="reveal-item" style={{ transitionDelay: '0.1s' }}>
+                        <Col xs={24} md={8}>
                             <Card className="ir-card" bordered={false} styles={{ body: { padding: '32px' } }}>
                                 <div style={{ fontSize: '32px', color: '#1e3a8a', marginBottom: '24px' }}>
                                     <LineChartOutlined />
@@ -138,7 +132,7 @@ export default function InvestorRelations() {
                             </Card>
                         </Col>
 
-                        <Col xs={24} md={8} className="reveal-item" style={{ transitionDelay: '0.2s' }}>
+                        <Col xs={24} md={8}>
                             <Card className="ir-card" bordered={false} styles={{ body: { padding: '32px' } }}>
                                 <div style={{ fontSize: '32px', color: '#8b5cf6', marginBottom: '24px' }}>
                                     <SafetyCertificateOutlined />
@@ -153,7 +147,7 @@ export default function InvestorRelations() {
                             </Card>
                         </Col>
 
-                        <Col xs={24} md={8} className="reveal-item" style={{ transitionDelay: '0.3s' }}>
+                        <Col xs={24} md={8}>
                             <Card className="ir-card" bordered={false} styles={{ body: { padding: '32px' } }}>
                                 <div style={{ fontSize: '32px', color: '#10b981', marginBottom: '24px' }}>
                                     <MailOutlined />
