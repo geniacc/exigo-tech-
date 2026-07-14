@@ -12,7 +12,6 @@ import {
     HistoryOutlined,
     AuditOutlined,
     CheckCircleOutlined,
-    MailOutlined,
     SearchOutlined
 } from '@ant-design/icons';
 import { gsap } from 'gsap';
