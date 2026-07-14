@@ -3364,7 +3364,8 @@ const CameraController: React.FC<CameraControllerProps> = ({ currentView }) => {
         if (isPortrait) {
             return {
                 outside: { pos: new THREE.Vector3(0, 6.2, 23.5), look: new THREE.Vector3(0, 1.5, 4.5) },
-                lobby: { pos: new THREE.Vector3(0, 1.6, 4.2), look: new THREE.Vector3(0, 1.4, -3.5) },
+                // Mobile lobby: camera moved back (z=7.5) so Urja & QwikSell gates are visible
+                lobby: { pos: new THREE.Vector3(0, 1.6, 7.5), look: new THREE.Vector3(0, 1.4, -3.5) },
                 urja: { pos: new THREE.Vector3(-1.8, 1.4, -0.6), look: new THREE.Vector3(-4.8, 1.15, -1.0) },
                 qwik: { pos: new THREE.Vector3(1.8, 1.4, -0.6), look: new THREE.Vector3(4.8, 1.45, -1.0) }
             };
@@ -3689,6 +3690,77 @@ export default function DataLifecycleEngine() {
                 <div style={{ ...styles.scrollDot, ...(currentView === 'urja' ? styles.scrollDotActive : {}) }} />
                 <div style={{ ...styles.scrollDot, ...(currentView === 'qwik' ? styles.scrollDotActive : {}) }} />
             </div>
+
+            {/* 🔀 MOBILE NAVIGATION OVERLAY ARROWS */}
+            {currentView === 'lobby' && (
+                <>
+                    {/* Left Arrow (Urja Room) */}
+                    <button
+                        onClick={() => {
+                            setCurrentView('urja');
+                            setScrollProgress(68);
+                        }}
+                        style={{
+                            position: 'absolute',
+                            left: '20px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            zIndex: 12,
+                            background: 'rgba(15, 23, 42, 0.65)',
+                            backdropFilter: 'blur(8px)',
+                            WebkitBackdropFilter: 'blur(8px)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            color: '#10b981',
+                            width: '44px',
+                            height: '44px',
+                            borderRadius: '50%',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                        }}
+                        title="Go to Urja Chamber"
+                    >
+                        ←
+                    </button>
+
+                    {/* Right Arrow (QwikSell Room) */}
+                    <button
+                        onClick={() => {
+                            setCurrentView('qwik');
+                            setScrollProgress(90);
+                        }}
+                        style={{
+                            position: 'absolute',
+                            right: '20px',
+                            top: '50%',
+                            transform: 'translateY(-50%)',
+                            zIndex: 12,
+                            background: 'rgba(15, 23, 42, 0.65)',
+                            backdropFilter: 'blur(8px)',
+                            WebkitBackdropFilter: 'blur(8px)',
+                            border: '1px solid rgba(255, 255, 255, 0.1)',
+                            color: '#00f5ff',
+                            width: '44px',
+                            height: '44px',
+                            borderRadius: '50%',
+                            cursor: 'pointer',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontSize: '20px',
+                            fontWeight: 'bold',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
+                        }}
+                        title="Go to QwikSell Chamber"
+                    >
+                        →
+                    </button>
+                </>
+            )}
 
             <div style={styles.webglCanvasWrapper}>
                 <Canvas
