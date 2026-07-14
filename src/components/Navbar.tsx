@@ -92,10 +92,10 @@ export default function Navbar() {
                 {/* Desktop Links */}
                 <Space size="large" className="desktop-only">
                     <Button type="text" onClick={() => handleNavClick('/')} style={{ fontWeight: 600 }}>Home</Button>
-                    <Button type="text" onClick={() => handleNavClick('/', 'about')} style={{ fontWeight: 600 }}>About</Button>
+                    <Button type="text" onClick={() => handleNavClick('/about')} style={{ fontWeight: 600 }}>About Us</Button>
                     <Button type="text" onClick={() => handleNavClick('/qwiksell')} style={{ fontWeight: 600 }}>QwikSELL</Button>
                     <Button type="text" onClick={() => handleNavClick('/urja')} style={{ fontWeight: 600 }}>Urja Mobility</Button>
-                    <Button type="text" onClick={() => handleNavClick('/', 'team')} style={{ fontWeight: 600 }}>Our Team</Button>
+                    <Button type="text" onClick={() => handleNavClick('/about', 'team')} style={{ fontWeight: 600 }}>Our Team</Button>
                     <Button type="text" onClick={() => handleNavClick('/careers')} style={{ fontWeight: 600 }}>Careers</Button>
                     <Button type="text" onClick={() => handleNavClick('/', 'investors')} style={{ fontWeight: 600 }}>Investors</Button>
 
@@ -151,10 +151,10 @@ export default function Navbar() {
             >
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <Button type="text" onClick={() => handleNavClick('/')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Home</Button>
-                    <Button type="text" onClick={() => handleNavClick('/', 'about')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>About</Button>
+                    <Button type="text" onClick={() => handleNavClick('/about')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>About Us</Button>
                     <Button type="text" onClick={() => handleNavClick('/qwiksell')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>QwikSELL</Button>
                     <Button type="text" onClick={() => handleNavClick('/urja')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>URJA Mobility</Button>
-                    <Button type="text" onClick={() => handleNavClick('/', 'team')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Our Team</Button>
+                    <Button type="text" onClick={() => handleNavClick('/about', 'team')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Our Team</Button>
                     <Button type="text" onClick={() => handleNavClick('/careers')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Careers</Button>
                     <Button type="text" onClick={() => handleNavClick('/', 'investors')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Investors</Button>
 

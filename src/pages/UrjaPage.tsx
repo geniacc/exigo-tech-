@@ -181,18 +181,18 @@ export default function UrjaPageFriendly() {
                 </div>
 
                 {/* LIVE TICKER MARQUEE */}
-                <div style={{ background: '#0f172a', padding: '16px 0', overflow: 'hidden', whiteSpace: 'nowrap', display: 'flex', borderTop: '4px solid #10b981' }}>
+                <div style={{ background: '#eff6ff', padding: '16px 0', overflow: 'hidden', whiteSpace: 'nowrap', display: 'flex', borderTop: '4px solid #10b981', borderBottom: '1px solid #bfdbfe' }}>
                     <div style={{ display: 'flex', width: '200%', animation: 'marquee 30s linear infinite' }}>
                         <div style={{ display: 'flex', flexShrink: 0, width: '50%', justifyContent: 'space-around', alignItems: 'center' }}>
                             {['ALWAYS ONLINE: 99.9%', '450+ SWAP STATIONS', 'BATTERY SWAP IN 90 SECONDS', 'LIVE VEHICLE TRACKING', '100% SAFETY RECORD'].map((txt, i) => (
-                                <span key={i} style={{ fontSize: '14px', fontWeight: 700, color: '#94a3b8', letterSpacing: '2px' }}>
+                                <span key={i} style={{ fontSize: '14px', fontWeight: 800, color: '#1e3a8a', letterSpacing: '2px' }}>
                                     <span style={{ color: '#10b981', marginRight: '8px' }}>●</span> {txt}
                                 </span>
                             ))}
                         </div>
                         <div style={{ display: 'flex', flexShrink: 0, width: '50%', justifyContent: 'space-around', alignItems: 'center' }}>
                             {['ALWAYS ONLINE: 99.9%', '450+ SWAP STATIONS', 'BATTERY SWAP IN 90 SECONDS', 'LIVE VEHICLE TRACKING', '100% SAFETY RECORD'].map((txt, i) => (
-                                <span key={`dup-${i}`} style={{ fontSize: '14px', fontWeight: 700, color: '#94a3b8', letterSpacing: '2px' }}>
+                                <span key={`dup-${i}`} style={{ fontSize: '14px', fontWeight: 800, color: '#1e3a8a', letterSpacing: '2px' }}>
                                     <span style={{ color: '#10b981', marginRight: '8px' }}>●</span> {txt}
                                 </span>
                             ))}
@@ -207,11 +207,11 @@ export default function UrjaPageFriendly() {
                         <Text style={{ fontSize: '1.2rem', color: '#64748b' }}>See exactly what happens when a driver arrives to swap an empty battery for a full one.</Text>
                     </div>
 
-                    <div style={{ background: '#ffffff', borderRadius: '32px', padding: '8px', boxShadow: '0 30px 60px -15px rgba(30, 58, 138, 0.15)', border: '1px solid #e2e8f0' }}>
-                        <Row style={{ background: '#f8fafc', borderRadius: '24px', overflow: 'hidden' }}>
+                    <div style={{ background: 'linear-gradient(135deg, #eff6ff 0%, #ecfdf5 100%)', borderRadius: '32px', padding: '8px', boxShadow: '0 30px 60px -15px rgba(30, 58, 138, 0.12)', border: '1.5px solid #bfdbfe' }}>
+                        <Row style={{ background: 'rgba(255, 255, 255, 0.75)', borderRadius: '24px', overflow: 'hidden', backdropFilter: 'blur(10px)' }}>
 
                             {/* Terminal Left */}
-                            <Col xs={24} lg={14} style={{ padding: '40px', borderRight: '1px solid #e2e8f0' }}>
+                            <Col xs={24} lg={14} style={{ padding: '40px', borderRight: '1px solid #bfdbfe' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px' }}>
                                     <Title level={4} style={{ margin: 0, color: '#0f172a', fontWeight: 800 }}><WifiOutlined style={{ color: '#3b82f6', marginRight: '12px' }} />Station 4 - City Center</Title>
                                     <Tag color={isSwapping ? "orange" : "green"} style={{ padding: '6px 16px', borderRadius: '20px', fontWeight: 700 }}>
@@ -222,7 +222,7 @@ export default function UrjaPageFriendly() {
                                 <Row gutter={[24, 24]} style={{ marginBottom: '32px' }}>
                                     <Col span={8}>
                                         <Text style={{ color: '#64748b', fontSize: '12px', fontWeight: 700, letterSpacing: '1px' }}>BATTERY TEMP</Text>
-                                        <div style={{ fontSize: '24px', fontWeight: 800, color: isSwapping ? '#f59e0b' : '#0f172a' }}>
+                                        <div style={{ fontSize: '24px', fontWeight: 800, color: isSwapping ? '#d97706' : '#0f172a' }}>
                                             {isSwapping ? 'Warm (Safe)' : 'Cool (Safe)'}
                                         </div>
                                     </Col>
@@ -236,18 +236,18 @@ export default function UrjaPageFriendly() {
                                     </Col>
                                 </Row>
 
-                                <div style={{ background: '#0f172a', borderRadius: '16px', padding: '24px', fontFamily: 'monospace', color: '#3b82f6', height: '200px', overflowY: 'auto' }}>
+                                <div style={{ background: '#f0fdf4', borderRadius: '16px', padding: '24px', fontFamily: 'monospace', color: '#065f46', height: '200px', overflowY: 'auto', border: '1.5px solid #a7f3d0' }}>
                                     {swapLogs.map((log, i) => (
-                                        <div key={i} style={{ marginBottom: '8px', opacity: i === swapLogs.length - 1 ? 1 : 0.5 }}>
-                                            <span style={{ color: '#64748b' }}>[{new Date().toLocaleTimeString()}]</span> {log}
+                                        <div key={i} style={{ marginBottom: '8px', opacity: i === swapLogs.length - 1 ? 1 : 0.6 }}>
+                                            <span style={{ color: '#059669' }}>[{new Date().toLocaleTimeString()}]</span> {log}
                                         </div>
                                     ))}
-                                    {isSwapping && <div style={{ width: '10px', height: '16px', background: '#3b82f6', display: 'inline-block', animation: 'fadeUp 0.5s infinite alternate' }} />}
+                                    {isSwapping && <div style={{ width: '10px', height: '16px', background: '#059669', display: 'inline-block', animation: 'fadeUp 0.5s infinite alternate' }} />}
                                 </div>
                             </Col>
 
                             {/* Terminal Right (Visualizer) */}
-                            <Col xs={24} lg={10} style={{ padding: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#ffffff' }}>
+                            <Col xs={24} lg={10} style={{ padding: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'transparent' }}>
                                 <div style={{ position: 'relative', width: '120px', height: '200px', border: '6px solid #cbd5e1', borderRadius: '16px', padding: '4px', marginBottom: '32px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
                                     <div style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', width: '40px', height: '8px', background: '#cbd5e1', borderRadius: '4px 4px 0 0' }} />
 
@@ -258,7 +258,7 @@ export default function UrjaPageFriendly() {
                                         borderRadius: '8px',
                                         transition: 'height 1s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s'
                                     }} />
-                                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontWeight: 900, fontSize: '24px', color: batteryLevel > 50 ? '#ffffff' : '#0f172a', textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+                                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontWeight: 950, fontSize: '24px', color: batteryLevel > 50 ? '#ffffff' : '#0f172a', textShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
                                         {batteryLevel}%
                                     </div>
                                 </div>
@@ -283,13 +283,13 @@ export default function UrjaPageFriendly() {
                 </div>
 
                 {/* CALCULATOR WIDGET */}
-                <div ref={calcReveal.ref} className={`reveal-section ${calcReveal.isVisible ? 'visible' : ''}`} style={{ padding: '80px 24px', background: '#1e3a8a', color: '#ffffff' }}>
+                <div ref={calcReveal.ref} className={`reveal-section ${calcReveal.isVisible ? 'visible' : ''}`} style={{ padding: '80px 24px', background: '#f0f9ff', color: '#0f172a', borderTop: '1px solid #bfdbfe', borderBottom: '1px solid #bfdbfe' }}>
                     <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
-                        <Tag color="cyan" style={{ marginBottom: '24px', background: 'rgba(56, 189, 248, 0.2)', border: 'none', color: '#7dd3fc', padding: '6px 16px', borderRadius: '20px', fontWeight: 800 }}>SAVINGS CALCULATOR</Tag>
-                        <Title level={2} style={{ color: '#f8fafc', fontWeight: 900, fontSize: '2.5rem', marginBottom: '16px' }}>See How Much You Save</Title>
-                        <Paragraph style={{ color: '#bfdbfe', fontSize: '1.2rem', marginBottom: '64px' }}>Move the slider below to see how much money you keep in your pocket by not buying batteries.</Paragraph>
+                        <Tag color="blue" style={{ marginBottom: '24px', background: '#e0f2fe', color: '#0369a1', padding: '6px 16px', borderRadius: '20px', fontWeight: 800 }}>SAVINGS CALCULATOR</Tag>
+                        <Title level={2} style={{ color: '#0f172a', fontWeight: 900, fontSize: '2.5rem', marginBottom: '16px' }}>See How Much You Save</Title>
+                        <Paragraph style={{ color: '#475569', fontSize: '1.2rem', marginBottom: '64px' }}>Move the slider below to see how much money you keep in your pocket by not buying batteries.</Paragraph>
 
-                        <Card style={{ background: '#ffffff', borderRadius: '32px', padding: '40px', boxShadow: '0 20px 40px rgba(0,0,0,0.2)', border: 'none' }}>
+                        <Card style={{ background: '#ffffff', borderRadius: '32px', padding: '40px', boxShadow: '0 20px 40px rgba(30, 58, 138, 0.05)', border: '1.5px solid #bfdbfe' }}>
                             <Title level={5} style={{ color: '#64748b', marginBottom: '40px', fontWeight: 800 }}>NUMBER OF VEHICLES IN YOUR FLEET</Title>
                             <Slider
                                 min={10} max={500} step={10}
@@ -331,13 +331,13 @@ export default function UrjaPageFriendly() {
                     <Title level={2} style={{ textAlign: 'center', fontWeight: 900, fontSize: '2.5rem', marginBottom: '64px', color: '#0f172a' }}>Grow Faster, Worry Less</Title>
                     <Row gutter={[32, 32]}>
                         {[
-                            { title: 'No Huge Upfront Costs', icon: <CarOutlined />, color: '#3b82f6', desc: 'Starting an electric fleet shouldn’t break the bank. You don\'t buy our batteries—you just rent access to them. This saves you thousands per vehicle on day one.' },
-                            { title: 'No More Waiting to Charge', icon: <SyncOutlined />, color: '#10b981', desc: 'When you plug an EV into a wall, it sits there for hours doing nothing. With Urja, drivers just pull in, swap a battery in 90 seconds, and get back to making money.' },
-                            { title: 'Easy to Budget & Grow', icon: <CheckCircleOutlined />, color: '#8b5cf6', desc: 'You pay one flat subscription fee. No surprise repair bills, no paying to replace dead batteries. It makes running your business simple and stress-free.' }
+                            { title: 'No Huge Upfront Costs', icon: <CarOutlined />, color: '#3b82f6', bg: '#eff6ff', border: '#bfdbfe', desc: 'Starting an electric fleet shouldn’t break the bank. You don\'t buy our batteries—you just rent access to them. This saves you thousands per vehicle on day one.' },
+                            { title: 'No More Waiting to Charge', icon: <SyncOutlined />, color: '#10b981', bg: '#ecfdf5', border: '#a7f3d0', desc: 'When you plug an EV into a wall, it sits there for hours doing nothing. With Urja, drivers just pull in, swap a battery in 90 seconds, and get back to making money.' },
+                            { title: 'Easy to Budget & Grow', icon: <CheckCircleOutlined />, color: '#8b5cf6', bg: '#f5f3ff', border: '#d8b4fe', desc: 'You pay one flat subscription fee. No surprise repair bills, no paying to replace dead batteries. It makes running your business simple and stress-free.' }
                         ].map((item, idx) => (
                             <Col xs={24} md={8} key={idx}>
-                                <Card className="hover-lift" style={{ height: '100%', borderRadius: '24px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.03)', background: '#ffffff' }} styles={{ body: { padding: '40px 32px' } }}>
-                                    <div style={{ width: '72px', height: '72px', backgroundColor: `${item.color}15`, borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '32px', fontSize: '32px', color: item.color }}>
+                                <Card className="hover-lift" style={{ height: '100%', borderRadius: '24px', border: `1.5px solid ${item.border}`, boxShadow: '0 4px 20px rgba(0,0,0,0.03)', background: item.bg }} styles={{ body: { padding: '40px 32px' } }}>
+                                    <div style={{ width: '72px', height: '72px', backgroundColor: '#ffffff', border: `1.5px solid ${item.border}`, borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '32px', fontSize: '32px', color: item.color }}>
                                         {item.icon}
                                     </div>
                                     <Title level={4} style={{ fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>{item.title}</Title>
@@ -365,37 +365,49 @@ export default function UrjaPageFriendly() {
                             { title: 'Easy Manager App', icon: <DashboardOutlined />, desc: 'A simple, clean dashboard on your computer to manage all your drivers, batteries, and payments in one place.' },
                             { title: 'Eco-Friendly Recycling', icon: <InfoCircleOutlined />, desc: 'When our batteries get old, we safely recycle and reuse the materials so nothing goes to a landfill.' },
                             { title: 'Fast & Smart Stations', icon: <SyncOutlined />, desc: 'Our swap stations manage electricity smartly so there are always fully charged batteries waiting for you.' }
-                        ].map((item, idx) => (
-                            <Col xs={24} sm={12} lg={8} key={idx}>
-                                <Card className="hover-lift" style={{ height: '100%', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0' }} styles={{ body: { padding: '32px' } }}>
-                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-                                        <div style={{ fontSize: '28px', color: '#1e3a8a', backgroundColor: '#eff6ff', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                            {item.icon}
+                        ].map((item, idx) => {
+                            const bgs = ['#eff6ff', '#ecfdf5', '#faf5ff'];
+                            const borders = ['#bfdbfe', '#a7f3d0', '#e9d5ff'];
+                            const bg = bgs[idx % 3];
+                            const border = borders[idx % 3];
+                            return (
+                                <Col xs={24} sm={12} lg={8} key={idx}>
+                                    <Card className="hover-lift" style={{ height: '100%', borderRadius: '20px', background: bg, border: `1.5px solid ${border}` }} styles={{ body: { padding: '32px' } }}>
+                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                                            <div style={{ fontSize: '28px', color: '#1e3a8a', backgroundColor: '#ffffff', border: `1px solid ${border}`, width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                {item.icon}
+                                            </div>
+                                            <div>
+                                                <Title level={5} style={{ fontWeight: 800, margin: '0 0 12px 0', color: '#0f172a', fontSize: '1.1rem' }}>{item.title}</Title>
+                                                <Text style={{ fontSize: '15px', lineHeight: '1.6', color: '#475569', display: 'block' }}>{item.desc}</Text>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <Title level={5} style={{ fontWeight: 800, margin: '0 0 12px 0', color: '#0f172a', fontSize: '1.1rem' }}>{item.title}</Title>
-                                            <Text style={{ fontSize: '15px', lineHeight: '1.6', color: '#475569', display: 'block' }}>{item.desc}</Text>
-                                        </div>
-                                    </div>
-                                </Card>
-                            </Col>
-                        ))}
+                                    </Card>
+                                </Col>
+                            );
+                        })}
                     </Row>
                 </div>
 
                 {/* IMPACT SCROLL REVEAL COUNTERS */}
-                <div ref={impactReveal.ref} style={{ padding: '100px 24px', background: '#ffffff', borderTop: '1px solid #e2e8f0' }}>
+                <div ref={impactReveal.ref} style={{ padding: '100px 24px', background: 'linear-gradient(180deg, #ffffff 0%, #eff6ff 100%)', borderTop: '1px solid #bfdbfe' }}>
                     <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
                         <Title level={3} style={{ fontWeight: 900, color: '#0f172a', marginBottom: '64px', textTransform: 'uppercase', letterSpacing: '3px' }}>Our Impact So Far</Title>
                         <Row gutter={[48, 48]}>
                             <Col xs={24} md={8}>
-                                <Statistic title={<span style={{ color: '#64748b', fontWeight: 800, letterSpacing: '1px' }}>BATTERIES SWAPPED</span>} value={activeNodes} valueStyle={{ fontSize: '4.5rem', fontWeight: 900, color: '#1e3a8a' }} formatter={(val) => Number(val).toLocaleString()} />
+                                <div style={{ background: '#eff6ff', border: '1.5px solid #bfdbfe', borderRadius: '24px', padding: '32px 24px' }}>
+                                    <Statistic title={<span style={{ color: '#0369a1', fontWeight: 800, letterSpacing: '1px' }}>BATTERIES SWAPPED</span>} value={activeNodes} valueStyle={{ fontSize: '3.5rem', fontWeight: 900, color: '#1e3a8a' }} formatter={(val) => Number(val).toLocaleString()} />
+                                </div>
                             </Col>
                             <Col xs={24} md={8}>
-                                <Statistic title={<span style={{ color: '#64748b', fontWeight: 800, letterSpacing: '1px' }}>TREES SAVED (CO2 OFFSET)</span>} value={carbonOffset} valueStyle={{ fontSize: '4.5rem', fontWeight: 900, color: '#10b981' }} formatter={(val) => Number(val).toLocaleString()} />
+                                <div style={{ background: '#ecfdf5', border: '1.5px solid #a7f3d0', borderRadius: '24px', padding: '32px 24px' }}>
+                                    <Statistic title={<span style={{ color: '#047857', fontWeight: 800, letterSpacing: '1px' }}>TREES SAVED (CO2 OFFSET)</span>} value={carbonOffset} valueStyle={{ fontSize: '3.5rem', fontWeight: 900, color: '#10b981' }} formatter={(val) => Number(val).toLocaleString()} />
+                                </div>
                             </Col>
                             <Col xs={24} md={8}>
-                                <Statistic title={<span style={{ color: '#64748b', fontWeight: 800, letterSpacing: '1px' }}>RELIABILITY SCORE (%)</span>} value={uptimeMetrics} valueStyle={{ fontSize: '4.5rem', fontWeight: 900, color: '#3b82f6' }} precision={2} suffix=".99" />
+                                <div style={{ background: '#fffbeb', border: '1.5px solid #fef3c7', borderRadius: '24px', padding: '32px 24px' }}>
+                                    <Statistic title={<span style={{ color: '#b45309', fontWeight: 800, letterSpacing: '1px' }}>RELIABILITY SCORE (%)</span>} value={uptimeMetrics} valueStyle={{ fontSize: '3.5rem', fontWeight: 900, color: '#3b82f6' }} precision={2} suffix=".99" />
+                                </div>
                             </Col>
                         </Row>
                     </div>

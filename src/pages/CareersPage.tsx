@@ -117,8 +117,8 @@ export default function CareersPage() {
                 .reveal-card { transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1); opacity: 0; transform: translateY(30px); }
                 .reveal-card.visible { opacity: 1; transform: translateY(0); }
                 
-                .job-card { transition: all 0.3s ease; border: 1px solid #e2e8f0; border-left: 4px solid #1e3a8a; }
-                .job-card:hover { transform: translateX(8px); box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1); border-color: #bfdbfe; }
+                .job-card { transition: all 0.3s ease; border: 1.5px solid #bfdbfe !important; border-left: 5px solid #2563eb !important; background: linear-gradient(135deg, #eff6ff 0%, #ffffff 100%) !important; }
+                .job-card:hover { transform: translateX(8px); box-shadow: 0 10px 25px rgba(30, 58, 138, 0.12) !important; border-color: #93c5fd !important; }
 
                 @media (max-width: 768px) {
                     .hero-section { padding: 100px 16px 60px 16px !important; }
@@ -172,14 +172,14 @@ export default function CareersPage() {
 
                 <Row gutter={[24, 24]}>
                     {[
-                        { title: 'Mission-Driven Work', icon: <GlobalOutlined />, desc: 'Every line of code and every hardware adjustment directly contributes to reducing global carbon emissions and e-waste.' },
-                        { title: 'Accelerated Growth', icon: <RocketOutlined />, desc: 'We promote a culture of continuous learning. You will tackle complex, enterprise-scale problems from day one.' },
-                        { title: 'Inclusive Environment', icon: <TeamOutlined />, desc: 'We believe diverse teams build better products. We foster an open, collaborative workspace where every voice is heard.' },
-                        { title: 'Comprehensive Benefits', icon: <SafetyCertificateOutlined />, desc: 'Competitive compensation, premium health coverage, flexible remote options, and continuous education stipends.' }
+                        { title: 'Mission-Driven Work', icon: <GlobalOutlined />, desc: 'Every line of code and every hardware adjustment directly contributes to reducing global carbon emissions and e-waste.', bg: '#ecfdf5', border: '#a7f3d0', iconColor: '#059669', iconBg: '#d1fae5' },
+                        { title: 'Accelerated Growth', icon: <RocketOutlined />, desc: 'We promote a culture of continuous learning. You will tackle complex, enterprise-scale problems from day one.', bg: '#eff6ff', border: '#bfdbfe', iconColor: '#2563eb', iconBg: '#dbeafe' },
+                        { title: 'Inclusive Environment', icon: <TeamOutlined />, desc: 'We believe diverse teams build better products. We foster an open, collaborative workspace where every voice is heard.', bg: '#fffbeb', border: '#fef3c7', iconColor: '#d97706', iconBg: '#fef3c7' },
+                        { title: 'Comprehensive Benefits', icon: <SafetyCertificateOutlined />, desc: 'Competitive compensation, premium health coverage, flexible remote options, and continuous education stipends.', bg: '#faf5ff', border: '#e9d5ff', iconColor: '#7c3aed', iconBg: '#f3e8ff' }
                     ].map((item, idx) => (
                         <Col xs={24} md={12} lg={6} key={idx} className={`reveal-card ${cultureReveal.isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${(idx * 0.1)}s` }}>
-                            <Card style={{ height: '100%', borderRadius: '16px', border: '1px solid #e2e8f0', background: '#ffffff', textAlign: 'center' }} styles={{ body: { padding: '32px 24px' } }}>
-                                <div style={{ fontSize: '32px', color: '#1e3a8a', backgroundColor: '#eff6ff', width: '64px', height: '64px', margin: '0 auto 24px auto', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <Card style={{ height: '100%', borderRadius: '16px', border: `1.5px solid ${item.border}`, background: item.bg, textAlign: 'center' }} styles={{ body: { padding: '32px 24px' } }}>
+                                <div style={{ fontSize: '32px', color: item.iconColor, backgroundColor: item.iconBg, width: '64px', height: '64px', margin: '0 auto 24px auto', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                     {item.icon}
                                 </div>
                                 <Title level={5} style={{ fontWeight: 800, color: '#0f172a', marginBottom: '12px' }}>{item.title}</Title>

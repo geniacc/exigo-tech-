@@ -8,20 +8,17 @@ import {
   Button,
   Steps,
   Typography,
-  Space,
   Modal,
   ConfigProvider,
   Divider,
   Tag
 } from 'antd'
 import {
-  LinkedinOutlined,
   SafetyCertificateOutlined,
   ThunderboltOutlined,
   LaptopOutlined,
   VerticalAlignTopOutlined,
-  RiseOutlined,
-  MailOutlined
+  RiseOutlined
 } from '@ant-design/icons'
 
 // Layout Modules
@@ -31,6 +28,7 @@ import UrjaPage from './pages/UrjaPage'
 import QwikPage from './pages/QwikPage'
 import ContactPage from './pages/ContactPage'
 import CareersPage from './pages/CareersPage' // NEW IMPORT
+import AboutPage from './pages/AboutPage' // NEW IMPORT
 
 import DataLifecycleEngine from './components/DataLifecycleEngine'
 import SmoothScroll from './components/SmoothScroll'
@@ -72,7 +70,6 @@ function HomePageContent({ setQwiksellModalVisible, activeStep, setActiveStep }:
   const aboutSectionRef = useRef<HTMLDivElement>(null)
   const circularSectionRef = useRef<HTMLDivElement>(null)
   const analyticsRef = useRef<HTMLDivElement>(null)
-  const teamSectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const animationCtx = gsap.context(() => {
@@ -97,13 +94,6 @@ function HomePageContent({ setQwiksellModalVisible, activeStep, setActiveStep }:
           scrollTrigger: { trigger: analyticsRef.current, start: "top 80%" }
         }
       )
-      gsap.fromTo(".reveal-team-card",
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1, y: 0, duration: 1, stagger: 0.2, ease: "power3.out",
-          scrollTrigger: { trigger: teamSectionRef.current, start: "top 80%" }
-        }
-      )
     })
     return () => animationCtx.revert()
   }, [])
@@ -113,33 +103,6 @@ function HomePageContent({ setQwiksellModalVisible, activeStep, setActiveStep }:
     { title: 'Price', description: 'Dynamic algorithmic matrix calculations powered by real-time market demand.' },
     { title: 'Buyback', description: 'Instant, highly transparent corporate device collection pipeline.' },
     { title: 'Liquidation', description: 'Immediate processing into secondary enterprise channels.' }
-  ]
-
-  const teamMembers = [
-    {
-      name: 'Anand Kumar',
-      role: 'Founder & CEO, Exigo Cleantech',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=300&h=300',
-      bio: "Leading Exigo's vision to power the circular economy through technology-driven life cycle management."
-    },
-    {
-      name: 'Dr. Priya Sharma',
-      role: 'CTO, Exigo Cleantech',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=300&h=300',
-      bio: 'Pioneering AI pricing algorithms and diagnostic systems for circular recommerce ecosystems.'
-    },
-    {
-      name: 'Siddharth Mehta',
-      role: 'Head of Operations, Urja Mobility',
-      image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=300&h=300',
-      bio: 'Scaling the Battery-as-a-Service model to deliver clean, zero-upfront energy solutions.'
-    },
-    {
-      name: 'Neha Kapoor',
-      role: 'Lead Strategist, QwikSELL',
-      image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=300&h=300',
-      bio: 'Fostering B2B liquidation channels and optimizing device recovery cycles globally.'
-    }
   ]
 
   return (
@@ -273,30 +236,7 @@ function HomePageContent({ setQwiksellModalVisible, activeStep, setActiveStep }:
         </div>
       </section>
 
-      <section id="team" ref={teamSectionRef} style={{ padding: '140px 24px', backgroundColor: '#f8fafc' }}>
-        <div style={{ maxWidth: '1280px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '80px' }}>
-            <Tag color="purple" style={{ marginBottom: '16px', fontWeight: 700 }}>EXECUTIVE MANAGEMENT</Tag>
-            <Title level={2} style={{ fontSize: '2.6rem', fontWeight: 900 }}>The Corporate Leadership</Title>
-          </div>
-          <Row gutter={[24, 24]}>
-            {teamMembers.map((member, index) => (
-              <Col xs={24} sm={12} lg={6} key={index} className="reveal-team-card">
-                <Card hoverable style={{ borderRadius: '20px', overflow: 'hidden', border: '1px solid #e2e8f0' }} cover={<div style={{ height: '300px', overflow: 'hidden' }}><img alt={member.name} src={member.image} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /></div>} styles={{ body: { padding: '28px', textAlign: 'center' } }}>
-                  <Title level={4} style={{ margin: '0 0 4px 0', fontWeight: 700 }}>{member.name}</Title>
-                  <Text style={{ display: 'block', color: '#6b21a8', fontWeight: 700, marginBottom: '14px' }}>{member.role}</Text>
-                  <Paragraph type="secondary" style={{ fontSize: '13px', height: '60px', overflow: 'hidden' }}>{member.bio}</Paragraph>
-                  <Divider style={{ margin: '20px 0 16px 0' }} />
-                  <Space size="middle">
-                    <Button type="text" shape="circle" icon={<LinkedinOutlined style={{ color: '#0077b5', fontSize: '18px' }} />} href="https://linkedin.com" target="_blank" />
-                    <Button type="text" shape="circle" icon={<MailOutlined style={{ color: '#64748b', fontSize: '18px' }} />} href="mailto:info@exigocleantech.com" />
-                  </Space>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </div>
-      </section>
+
 
       {/* NEW: Investor Relations Section */}
       <div id="investors">
@@ -338,9 +278,9 @@ export function App() {
           <Layout style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', backgroundColor: '#f8fafc', overflowX: 'hidden' }}>
             <Navbar />
 
-            {/* Application Routing Layer */}
             <Routes>
               <Route path="/" element={<HomePageContent setQwiksellModalVisible={setQwiksellModalVisible} activeStep={activeStep} setActiveStep={setActiveStep} />} />
+              <Route path="/about" element={<AboutPage />} />
               <Route path="/urja" element={<UrjaPage />} />
               <Route path="/qwiksell" element={<QwikPage />} />
               <Route path="/careers" element={<CareersPage />} /> {/* NEW ROUTE */}

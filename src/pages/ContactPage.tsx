@@ -78,22 +78,22 @@ export default function ContactPage() {
                             </div>
 
                             {[
-                                { title: 'General Inquiries', detail: 'info@exigocleantech.com', note: 'Corporate response loop desk', icon: <MailOutlined />, color: '#1e3a8a', bg: '#eff6ff' },
-                                { title: 'BaaS Fleet Infrastructure', detail: '+91 (022) 555-0192', note: 'Urja operational dispatch center', icon: <PhoneOutlined />, color: '#10b981', bg: '#ecfdf5' },
-                                { title: 'Enterprise Headquarters', detail: 'Exigo Cleantech Tower, Tech Park District, Sector V', note: 'Primary physical operations base', icon: <EnvironmentOutlined />, color: '#6b21a8', bg: '#faf5ff' }
+                                { title: 'General Inquiries', detail: 'info@exigocleantech.com', note: 'Corporate response loop desk', icon: <MailOutlined />, color: '#1e3a8a', bg: '#eff6ff', borderColor: '#bfdbfe' },
+                                { title: 'BaaS Fleet Infrastructure', detail: '+91 (022) 555-0192', note: 'Urja operational dispatch center', icon: <PhoneOutlined />, color: '#10b981', bg: '#ecfdf5', borderColor: '#a7f3d0' },
+                                { title: 'Enterprise Headquarters', detail: 'Exigo Cleantech Tower, Tech Park District, Sector V', note: 'Primary physical operations base', icon: <EnvironmentOutlined />, color: '#6b21a8', bg: '#faf5ff', borderColor: '#e9d5ff' }
                             ].map((channel, i) => (
                                 <Card
                                     key={i}
                                     hoverable
-                                    style={{ borderRadius: '20px', border: '1px solid #e2e8f0', background: '#ffffff' }}
+                                    style={{ borderRadius: '20px', border: `1.5px solid ${channel.borderColor}`, background: channel.bg }}
                                     styles={{ body: { padding: '24px' } }}
                                 >
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                                        <div style={{ fontSize: '22px', color: channel.color, backgroundColor: channel.bg, width: '54px', height: '54px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                        <div style={{ fontSize: '22px', color: channel.color, backgroundColor: '#ffffff', border: `1px solid ${channel.borderColor}`, width: '54px', height: '54px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                             {channel.icon}
                                         </div>
                                         <div>
-                                            <Text strong style={{ color: '#94a3b8', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '2px' }}>{channel.title}</Text>
+                                            <Text strong style={{ color: '#64748b', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '2px' }}>{channel.title}</Text>
                                             <Text style={{ color: '#0f172a', fontSize: '16px', fontWeight: 700, display: 'block' }}>{channel.detail}</Text>
                                             <Text style={{ color: '#64748b', fontSize: '13px', display: 'block', marginTop: '2px' }}>{channel.note}</Text>
                                         </div>
@@ -102,12 +102,12 @@ export default function ContactPage() {
                             ))}
 
                             {/* Internal Operational SLAs Console Tag */}
-                            <div style={{ background: '#0f172a', borderRadius: '20px', padding: '24px', marginTop: '12px', border: '1px solid #1e293b', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
-                                <FieldTimeOutlined style={{ color: '#a855f7', fontSize: '22px', marginTop: '2px' }} />
+                            <div style={{ background: '#f5f3ff', borderRadius: '20px', padding: '24px', marginTop: '12px', border: '1.5px solid #d8b4fe', display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                                <FieldTimeOutlined style={{ color: '#7c3aed', fontSize: '22px', marginTop: '2px' }} />
                                 <div>
-                                    <Text strong style={{ color: '#ffffff', fontSize: '14px', display: 'block' }}>Programmatic Routing Commitments</Text>
-                                    <Text style={{ color: '#94a3b8', fontSize: '13px', lineHeight: '1.5', display: 'block', marginTop: '4px' }}>
-                                        All telemetry, asset liquidation lists, and platform support tickets are securely ingested instantly. Average validation response cycle matches are held under a strict <span style={{ color: '#a855f7', fontWeight: 600 }}>12-hour SLA matrix</span>.
+                                    <Text strong style={{ color: '#4c1d95', fontSize: '14px', display: 'block' }}>Programmatic Routing Commitments</Text>
+                                    <Text style={{ color: '#5b21b6', fontSize: '13px', lineHeight: '1.5', display: 'block', marginTop: '4px' }}>
+                                        All telemetry, asset liquidation lists, and platform support tickets are securely ingested instantly. Average validation response cycle matches are held under a strict <span style={{ color: '#7c3aed', fontWeight: 700 }}>12-hour SLA matrix</span>.
                                     </Text>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@ export default function ContactPage() {
                         {/* Right Column: Encrypted Form Messaging Console */}
                         <Col xs={24} lg={14}>
                             <Card
-                                style={{ background: '#ffffff', borderRadius: '32px', border: 'none', boxShadow: '0 20px 50px -15px rgba(0,0,0,0.04)', padding: '16px' }}
+                                style={{ background: 'linear-gradient(135deg, #f0f9ff 0%, #faf5ff 100%)', borderRadius: '32px', border: '1.5px solid #bfdbfe', boxShadow: '0 20px 50px -15px rgba(0,0,0,0.04)', padding: '16px' }}
                                 styles={{ body: { padding: '32px' } }}
                             >
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', borderBottom: '1px solid #f1f5f9', paddingBottom: '20px' }}>
