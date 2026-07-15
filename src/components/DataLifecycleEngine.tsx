@@ -86,6 +86,97 @@ const PicketFence = () => {
     );
 };
 
+export const EXIGO_STEPS = [
+    { title: 'Eco Foundations', desc: 'Sustainable asset lifecycle management.' },
+    { title: 'Green Technology', desc: 'Optimizing material recovery with low carbon footprint.' },
+    { title: 'Circular Economy', desc: 'Closing the loop for commercial energy systems.' },
+    { title: 'Compliance & Safety', desc: 'Meeting global environmental tier-1 standards.' },
+    { title: 'Future Scale', desc: 'Expanding clean-tech infrastructure globally.' }
+];
+
+interface PavementPathProps {
+    activeCard: number;
+    onSlabClick: (idx: number) => void;
+}
+
+export const ExigoPavementPath: React.FC<PavementPathProps> = ({ activeCard, onSlabClick }) => {
+    const totalSteps = EXIGO_STEPS.length;
+    const startZ = 13.2;
+    const endZ = 7.6;
+
+    return (
+        <group position={[0, 0.016, 0]}>
+            {EXIGO_STEPS.map((_, index) => {
+                const zPos = startZ - (index * (startZ - endZ) / (totalSteps - 1));
+                const isActive = index === activeCard;
+
+                return (
+                    <IndividualPavementSlab
+                        key={index}
+                        index={index}
+                        isActive={isActive}
+                        position={[0, 0, zPos]}
+                        onClick={() => onSlabClick(index)}
+                    />
+                );
+            })}
+        </group>
+    );
+};
+
+interface SlabProps {
+    index: number;
+    isActive: boolean;
+    position: [number, number, number];
+    onClick: () => void;
+}
+
+const IndividualPavementSlab: React.FC<SlabProps> = ({ index, isActive, position, onClick }) => {
+    const slabRef = useRef<THREE.Group>(null);
+
+    useFrame((state, delta) => {
+        if (!slabRef.current) return;
+
+        const targetY = isActive ? 0.08 : 0.0;
+        const targetScale = isActive ? 1.04 : 1.0;
+
+        slabRef.current.position.y = THREE.MathUtils.lerp(slabRef.current.position.y, targetY, delta * 6);
+        slabRef.current.scale.setScalar(
+            THREE.MathUtils.lerp(slabRef.current.scale.x, targetScale, delta * 6)
+        );
+    });
+
+    return (
+        <group ref={slabRef} position={position}>
+            <mesh
+                rotation={[-Math.PI / 2, 0, 0]}
+                receiveShadow
+                castShadow
+                onClick={(e) => {
+                    e.stopPropagation();
+                    onClick();
+                }}
+                onPointerOver={(e) => {
+                    e.stopPropagation();
+                    document.body.style.cursor = 'pointer';
+                }}
+                onPointerOut={() => {
+                    document.body.style.cursor = 'default';
+                }}
+            >
+                <planeGeometry args={[2.5, 0.75]} />
+                <meshStandardMaterial
+                    color={isActive ? '#4b5563' : '#9ca3af'}
+                    roughness={0.8}
+                    metalness={isActive ? 0.3 : 0.0}
+                    emissive={isActive ? '#374151' : '#000000'}
+                    emissiveIntensity={isActive ? 0.5 : 0}
+                />
+            </mesh>
+        </group>
+    );
+};
+
 interface MainGateProps {
     isOpen: boolean;
     onClick: () => void;
@@ -3549,6 +3640,18 @@ export default function DataLifecycleEngine() {
     const [urjaAspect, setUrjaAspect] = useState(1.0);
     const [qwikAspect, setQwikAspect] = useState(1.0);
     const [exigoAspect, setExigoAspect] = useState(1.0);
+    const [activePavementIdx, setActivePavementIdx] = useState<number | null>(null);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    const handleCardScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const scrollLeft = e.currentTarget.scrollLeft;
+        const cardWidth = window.innerWidth * 0.85 + 20;
+        const currentIdx = Math.round(scrollLeft / cardWidth);
+
+        if (currentIdx !== activePavementIdx && currentIdx >= 0 && currentIdx <= 4) {
+            setActivePavementIdx(currentIdx);
+        }
+    };
 
     useEffect(() => {
         const loader = new THREE.TextureLoader();
@@ -3591,6 +3694,8 @@ export default function DataLifecycleEngine() {
             setScrollProgress(35);
         }, 550);
     };
+
+    const displayPavementIndex = activePavementIdx !== null ? activePavementIdx : 0;
 
     useEffect(() => {
         const container = containerRef.current;
@@ -3644,6 +3749,19 @@ export default function DataLifecycleEngine() {
                     .exigo-scroll-dots {
                         right: 16px !important;
                     }
+                }
+
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+                @keyframes spin-reverse {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(-360deg); }
+                }
+                @keyframes pulse-height {
+                    from { transform: scaleY(0.88); }
+                    to { transform: scaleY(1.12); }
                 }
                 `}
             </style>
@@ -3886,6 +4004,11 @@ export default function DataLifecycleEngine() {
                         <FuturisticDrone />
                         <QwikSELLDropBox />
 
+                        <ExigoPavementPath
+                            activeCard={activePavementIdx !== null ? activePavementIdx : -1}
+                            onSlabClick={(index) => setActivePavementIdx(index)}
+                        />
+
                         <Tree position={[-14.5, 0, -2.5]} />
                         <Tree position={[-14.8, 0, 3.5]} />
                         <Tree position={[8.5, 0, -2.5]} />
@@ -3952,6 +4075,88 @@ export default function DataLifecycleEngine() {
                     </Suspense>
                 </Canvas>
             </div>
+
+            {isMobileDevice && (
+                <div ref={scrollContainerRef} onScroll={handleCardScroll} style={styles.mobileGestureOverlay}>
+                    {[...Array(5)].map((_, i) => (
+                        <div key={i} style={styles.mobileGestureSpacer} />
+                    ))}
+                </div>
+            )}
+
+            {isMobileDevice && (
+                <div style={styles.mobileHudOverlay}>
+                    <span style={styles.mobileHudBadge}>Exigo Cleantech — Step {displayPavementIndex + 1} of 5</span>
+                    <h2 style={styles.mobileHudTitle}>{EXIGO_STEPS[displayPavementIndex].title}</h2>
+                    <p style={styles.mobileHudDesc}>{EXIGO_STEPS[displayPavementIndex].desc}</p>
+                </div>
+            )}
+
+            {activePavementIdx !== null && (
+                <div style={popupStyles.overlayBackdrop} onClick={() => setActivePavementIdx(null)}>
+                    <div style={popupStyles.squareCard} onClick={(e) => e.stopPropagation()}>
+                        <button style={popupStyles.closeBtn} onClick={() => setActivePavementIdx(null)}>✕</button>
+
+                        <div style={popupStyles.cardGrid}>
+                            <div style={popupStyles.diagramPane}>
+                                {activePavementIdx === 0 && (
+                                    <div style={popupStyles.canvasAsset}>
+                                        <div style={{ ...popupStyles.orbitRing, width: '120px', height: '120px', animation: 'spin 12s linear infinite' }} />
+                                        <div style={{ ...popupStyles.orbitRing, width: '70px', height: '70px', borderColor: '#06b6d4', animation: 'spin-reverse 8s linear infinite' }} />
+                                        <div style={popupStyles.pulseCore} />
+                                    </div>
+                                )}
+
+                                {activePavementIdx === 1 && (
+                                    <div style={popupStyles.canvasAsset}>
+                                        <div style={popupStyles.matrixContainer}>
+                                            {[1, 2, 3, 4].map(i => (
+                                                <div key={i} style={{ ...popupStyles.matrixColumn, height: `${20 + i * 18}px`, animation: `pulse-height ${1 + i * 0.2}s ease-in-out infinite alternate` }} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {activePavementIdx === 2 && (
+                                    <div style={popupStyles.canvasAsset}>
+                                        <div style={{ ...popupStyles.loopArrow, transform: 'rotate(45deg)' }} />
+                                        <div style={{ ...popupStyles.loopArrow, transform: 'rotate(225deg)', borderColor: '#06b6d4' }} />
+                                    </div>
+                                )}
+
+                                {activePavementIdx === 3 && (
+                                    <div style={popupStyles.canvasAsset}>
+                                        <div style={popupStyles.radarScope}>
+                                            <div style={popupStyles.radarSweep} />
+                                            <div style={popupStyles.shieldCheck}>✓</div>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {activePavementIdx === 4 && (
+                                    <div style={popupStyles.canvasAsset}>
+                                        <div style={popupStyles.networkNode} />
+                                        <div style={{ ...popupStyles.networkLine, transform: 'rotate(30deg)' }} />
+                                        <div style={{ ...popupStyles.networkLine, transform: 'rotate(-45deg)' }} />
+                                        <div style={{ ...popupStyles.networkLine, transform: 'rotate(90deg)' }} />
+                                    </div>
+                                )}
+                            </div>
+
+                            <div style={popupStyles.textPane}>
+                                <span style={popupStyles.stepTag}>EXIGO MANAGEMENT DIRECTIVE — STEP {activePavementIdx + 1} OF 5</span>
+                                <h2 style={popupStyles.stepTitle}>{EXIGO_STEPS[activePavementIdx].title}</h2>
+                                <p style={popupStyles.stepDesc}>{EXIGO_STEPS[activePavementIdx].desc}</p>
+
+                                <div style={popupStyles.metaParameterBox}>
+                                    <span>INFRASTRUCTURE NODE // SECURE</span>
+                                    <span style={popupStyles.greenCheck}>COMPLIANT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </section>
     );
 }
@@ -3975,6 +4180,62 @@ const styles = {
         bottom: 0,
         zIndex: 1,
         pointerEvents: 'auto'
+    } as React.CSSProperties,
+    mobileGestureOverlay: {
+        position: 'absolute',
+        inset: 0,
+        zIndex: 20,
+        display: 'flex',
+        overflowX: 'auto',
+        scrollSnapType: 'x mandatory',
+        WebkitOverflowScrolling: 'touch',
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'none'
+    } as React.CSSProperties,
+    mobileGestureSpacer: {
+        minWidth: '85vw',
+        height: '100vh',
+        marginLeft: '7.5vw',
+        marginRight: '7.5vw',
+        flexShrink: 0,
+        scrollSnapAlign: 'center'
+    } as React.CSSProperties,
+    mobileHudOverlay: {
+        position: 'absolute',
+        left: '50%',
+        bottom: '3.5rem',
+        transform: 'translateX(-50%)',
+        zIndex: 30,
+        background: 'rgba(255,255,255,0.92)',
+        padding: '16px 20px',
+        borderRadius: '24px',
+        boxShadow: '0 18px 40px rgba(15, 23, 42, 0.25)',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        maxWidth: '88vw',
+        textAlign: 'center'
+    } as React.CSSProperties,
+    mobileHudBadge: {
+        fontSize: '10px',
+        fontWeight: 800,
+        letterSpacing: '0.18em',
+        textTransform: 'uppercase',
+        color: '#0f766e',
+        marginBottom: '8px'
+    } as React.CSSProperties,
+    mobileHudTitle: {
+        fontSize: '18px',
+        fontWeight: 900,
+        color: '#0f172a',
+        margin: 0,
+        lineHeight: 1.15
+    } as React.CSSProperties,
+    mobileHudDesc: {
+        fontSize: '12px',
+        color: '#334155',
+        marginTop: '8px',
+        lineHeight: 1.5
     } as React.CSSProperties,
     headerBrand: {
         position: 'absolute',
@@ -4053,4 +4314,163 @@ const styles = {
         transform: 'scale(1.4)',
         boxShadow: '0 0 10px rgba(6, 182, 212, 0.8)'
     } as React.CSSProperties
+};
+
+// 1. Update the responsive constant to catch phone widths accurately
+const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
+
+const popupStyles = {
+    overlayBackdrop: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(5, 8, 16, 0.45)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        zIndex: 100,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '12px',
+        boxSizing: 'border-box'
+    } as React.CSSProperties,
+    
+    squareCard: {
+        width: isMobileScreen ? '92%' : '600px',
+        height: isMobileScreen ? 'auto' : '340px', 
+        maxHeight: '90vh',
+        background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        borderRadius: '20px',
+        padding: isMobileScreen ? '18px' : '32px', // Tightened inner spacing on mobile
+        boxSizing: 'border-box',
+        position: 'relative',
+        boxShadow: '0 25px 60px rgba(0, 0, 0, 0.55)',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        overflow: 'hidden' // ✕ Completely disables scrollbar instantiation
+    } as React.CSSProperties,
+
+    closeBtn: {
+        position: 'absolute',
+        top: isMobileScreen ? '12px' : '18px',
+        right: isMobileScreen ? '12px' : '18px',
+        background: 'rgba(255, 255, 255, 0.03)',
+        border: '1px solid rgba(255, 255, 255, 0.05)',
+        color: '#94a3b8',
+        width: '24px',
+        height: '24px',
+        borderRadius: '50%',
+        cursor: 'pointer',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '10px',
+        zIndex: 10
+    } as React.CSSProperties,
+
+    cardGrid: {
+        display: 'flex',
+        flexDirection: 'column', 
+        width: '100%',
+        gap: isMobileScreen ? '12px' : '32px', // Tightened gap to save vertical area
+        alignItems: 'center'
+    } as React.CSSProperties,
+
+    diagramPane: {
+        width: isMobileScreen ? '80px' : '180px', 
+        height: isMobileScreen ? '80px' : '180px',
+        background: '#04070d',
+        borderRadius: '16px',
+        border: '1px solid rgba(255, 255, 255, 0.03)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'relative',
+        overflow: 'hidden',
+        flexShrink: 0
+    } as React.CSSProperties,
+
+    canvasAsset: {
+        position: 'relative',
+        width: '100%',
+        height: '100%',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transform: isMobileScreen ? 'scale(0.55)' : 'scale(1)' 
+    } as React.CSSProperties,
+
+    textPane: {
+        flex: 1,
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        justifyContent: 'center',
+        textAlign: isMobileScreen ? 'center' : 'left' 
+    } as React.CSSProperties,
+
+    stepTag: {
+        fontSize: '7.5px', // Micro-scaled tag sizing
+        fontWeight: 800,
+        color: '#94a3b8',
+        backgroundColor: 'rgba(148, 163, 184, 0.08)',
+        padding: '3px 8px',
+        borderRadius: '4px',
+        letterSpacing: '0.06em',
+        alignSelf: isMobileScreen ? 'center' : 'flex-start', 
+        marginBottom: '4px', // Reduced margin
+        textTransform: 'uppercase'
+    } as React.CSSProperties,
+
+    stepTitle: {
+        fontSize: isMobileScreen ? '15px' : '24px', // Downscaled to fit perfectly on single line
+        fontWeight: 900,
+        color: '#ffffff',
+        margin: '0 0 4px 0', // Compact separation margin
+        letterSpacing: '-0.02em'
+    } as React.CSSProperties,
+
+    stepDesc: {
+        fontSize: isMobileScreen ? '10px' : '13.5px', // Highly compact layout text profile
+        color: '#94a3b8',
+        lineHeight: 1.4,
+        margin: isMobileScreen ? '0 0 10px 0' : '0 0 20px 0',
+        fontWeight: 400
+    } as React.CSSProperties,
+
+    metaParameterBox: {
+        background: '#04070d',
+        border: '1px solid rgba(255, 255, 255, 0.03)',
+        padding: isMobileScreen ? '6px 10px' : '12px 16px',
+        borderRadius: '10px',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        fontSize: '8px', // Micro-scale parameter data print
+        fontWeight: 800,
+        color: '#64748b',
+        letterSpacing: '0.04em'
+    } as React.CSSProperties,
+
+    greenCheck: {
+        color: '#4b5563',
+        backgroundColor: 'rgba(75, 85, 99, 0.15)',
+        padding: '2px 6px',
+        borderRadius: '4px'
+    } as React.CSSProperties,
+    
+    orbitRing: { position: 'absolute', border: '1px dashed rgba(255, 255, 255, 0.15)', borderRadius: '50%' } as React.CSSProperties,
+    pulseCore: { width: '12px', height: '12px', background: '#6b7280', borderRadius: '50%', boxShadow: '0 0 15px #6b7280' } as React.CSSProperties,
+    matrixContainer: { display: 'flex', alignItems: 'flex-end', gap: '8px' } as React.CSSProperties,
+    matrixColumn: { width: '6px', background: '#4b5563', borderRadius: '99px' } as React.CSSProperties,
+    loopArrow: { position: 'absolute', width: '70px', height: '70px', border: '2px solid rgba(255,255,255,0.1)', borderTopColor: 'transparent', borderRadius: '50%' } as React.CSSProperties,
+    radarScope: { width: '80px', height: '80px', border: '1px solid rgba(156, 163, 175, 0.3)', borderRadius: '50%', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' } as React.CSSProperties,
+    radarSweep: { position: 'absolute', width: '100%', height: '100%', background: 'linear-gradient(45deg, rgba(156, 163, 175, 0.15) 0%, transparent 50%)', borderRadius: '50%' } as React.CSSProperties,
+    shieldCheck: { fontSize: '22px', color: '#6b7280', fontWeight: 900 } as React.CSSProperties,
+    networkNode: { width: '14px', height: '14px', background: '#9ca3af', borderRadius: '50%', zIndex: 5 } as React.CSSProperties,
+    networkLine: { position: 'absolute', width: '90px', height: '1px', background: 'linear-gradient(90deg, rgba(255,255,255,0.2) 0%, transparent 100%)' } as React.CSSProperties
 };

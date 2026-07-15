@@ -986,6 +986,52 @@ export default function AboutPage() {
                     margin-left: 10px;
                     vertical-align: middle;
                 }
+                /* ====== COMPACT MOBILE DIRECTORY OVERRIDES ====== */
+                @media (max-width: 576px) {
+                    .dir-card {
+                        padding: 12px 6px 10px 6px !important;
+                        border-radius: 14px !important;
+                    }
+                    .dir-avatar {
+                        width: 56px !important;
+                        height: 56px !important;
+                        border-width: 1.5px !important;
+                        margin-bottom: 8px !important;
+                    }
+                    .dir-name-text {
+                        font-size: 11px !important;
+                        letter-spacing: -0.01em !important;
+                        line-height: 1.2 !important;
+                    }
+                    .dir-role-text {
+                        font-size: 9px !important;
+                        margin-bottom: 6px !important;
+                        line-height: 1.2 !important;
+                    }
+                    .dir-dept-badge {
+                        font-size: 7.5px !important;
+                        padding: 1px 5px !important;
+                    }
+                    .dir-filter-row {
+                        display: flex !important;
+                        overflow-x: auto !important;
+                        justify-content: flex-start !important;
+                        padding: 4px 16px !important;
+                        width: 100vw !important;
+                        margin-left: -24px !important;
+                        -webkit-overflow-scrolling: touch;
+                        scrollbar-width: none;
+                    }
+                    .dir-filter-row::-webkit-scrollbar {
+                        display: none;
+                    }
+                    .dir-filter-chip {
+                        padding: 4px 10px !important;
+                        font-size: 11px !important;
+                        flex-shrink: 0 !important;
+                        border-radius: 12px !important;
+                    }
+                }
                 `}
 
 
