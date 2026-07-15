@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState, useMemo, Suspense } from 'react';
+import React, { useRef, useEffect, useState, useMemo, useCallback, Suspense } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { RoundedBox, Environment, ContactShadows, Text, Sky } from '@react-three/drei';
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
@@ -3626,8 +3626,33 @@ const FarRightQwikSellKiosk = () => {
 // CORE EXIGO HEADQUARTERS HOUSING ENGINE
 // ========================================================
 
+function useIsMobileScreen() {
+    const [isMobileScreen, setIsMobileScreen] = useState(
+        () => typeof window !== 'undefined' && window.innerWidth < 768
+    );
+
+    useEffect(() => {
+        const onResize = () => setIsMobileScreen(window.innerWidth < 768);
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
+    }, []);
+
+    return isMobileScreen;
+}
+
+interface ActiveObjectInfo {
+    title: string;
+    description: string;
+    stepIndex?: number;
+}
+
 export default function DataLifecycleEngine() {
     const containerRef = useRef<HTMLDivElement>(null);
+    const isMobileScreen = useIsMobileScreen();
+    const popupStyles = useMemo(() => getPopupStyles(isMobileScreen), [isMobileScreen]);
+
+    const [activeObject, setActiveObject] = useState<ActiveObjectInfo | null>(null);
+
     const [currentView, setCurrentView] = useState('outside');
     const [gateOpen, setGateOpen] = useState(false);
     const [knockText, setKnockText] = useState(false);
@@ -3640,18 +3665,38 @@ export default function DataLifecycleEngine() {
     const [urjaAspect, setUrjaAspect] = useState(1.0);
     const [qwikAspect, setQwikAspect] = useState(1.0);
     const [exigoAspect, setExigoAspect] = useState(1.0);
-    const [activePavementIdx, setActivePavementIdx] = useState<number | null>(null);
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [activePavementIdx, setActivePavementIdx] = useState(0);
 
-    const handleCardScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        const scrollLeft = e.currentTarget.scrollLeft;
-        const cardWidth = window.innerWidth * 0.85 + 20;
-        const currentIdx = Math.round(scrollLeft / cardWidth);
+    const handleObjectClick = useCallback((title: string, description: string, stepIndex?: number) => {
+        setActiveObject({ title, description, stepIndex });
+    }, []);
 
-        if (currentIdx !== activePavementIdx && currentIdx >= 0 && currentIdx <= 4) {
-            setActivePavementIdx(currentIdx);
+    const handleClosePopup = useCallback(() => {
+        setActiveObject(null);
+    }, []);
+
+    const syncTourFromPavementIndex = useCallback((index: number) => {
+        const clampedIndex = Math.max(0, Math.min(4, index));
+        setActivePavementIdx(clampedIndex);
+
+        if (clampedIndex === 0) {
+            setCurrentView('outside');
+            setGateOpen(false);
+            setScrollProgress(0);
+        } else if (clampedIndex <= 2) {
+            setCurrentView('lobby');
+            setGateOpen(true);
+            setScrollProgress(clampedIndex === 1 ? 25 : 45);
+        } else if (clampedIndex === 3) {
+            setCurrentView('urja');
+            setGateOpen(true);
+            setScrollProgress(68);
+        } else {
+            setCurrentView('qwik');
+            setGateOpen(true);
+            setScrollProgress(90);
         }
-    };
+    }, []);
 
     useEffect(() => {
         const loader = new THREE.TextureLoader();
@@ -3695,39 +3740,87 @@ export default function DataLifecycleEngine() {
         }, 550);
     };
 
-    const displayPavementIndex = activePavementIdx !== null ? activePavementIdx : 0;
+
+    useEffect(() => {
+        if (!isMobileScreen) return;
+
+        const container = containerRef.current;
+        if (!container) return;
+
+        let startX = 0;
+        let startY = 0;
+        let tracking = false;
+
+        const onTouchStart = (e: TouchEvent) => {
+            if (e.touches.length !== 1) return;
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            tracking = true;
+        };
+
+        const onTouchEnd = (e: TouchEvent) => {
+            if (!tracking) return;
+            tracking = false;
+
+            const touch = e.changedTouches[0];
+            const dx = touch.clientX - startX;
+            const dy = touch.clientY - startY;
+            const swipeThreshold = 40;
+
+            if (Math.abs(dx) < swipeThreshold || Math.abs(dx) < Math.abs(dy)) return;
+
+            const direction = dx < 0 ? 1 : -1;
+            const nextIndex = Math.max(0, Math.min(4, activePavementIdx + direction));
+            if (nextIndex !== activePavementIdx) {
+                setActiveObject(null);
+                syncTourFromPavementIndex(nextIndex);
+            }
+        };
+
+        container.addEventListener('touchstart', onTouchStart, { passive: true });
+        container.addEventListener('touchend', onTouchEnd, { passive: true });
+        return () => {
+            container.removeEventListener('touchstart', onTouchStart);
+            container.removeEventListener('touchend', onTouchEnd);
+        };
+    }, [isMobileScreen, activePavementIdx, syncTourFromPavementIndex]);
 
     useEffect(() => {
         const container = containerRef.current;
         if (!container) return;
 
         const handleWheel = (e: WheelEvent) => {
+            if (currentView !== 'outside' && currentView !== 'lobby') {
+                return;
+            }
+
             e.preventDefault();
 
-            setScrollProgress(prev => {
-                const next = Math.max(0, Math.min(100, prev + e.deltaY * 0.04));
+            const direction = e.deltaY > 0 ? 1 : -1;
+            const nextIndex = Math.max(0, Math.min(4, activePavementIdx + direction));
+            setActivePavementIdx(nextIndex);
 
-                if (next < 25) {
-                    setCurrentView('outside');
-                    setGateOpen(false);
-                } else if (next >= 25 && next < 55) {
-                    setCurrentView('lobby');
-                    setGateOpen(true);
-                } else if (next >= 55 && next < 80) {
-                    setCurrentView('urja');
-                    setGateOpen(true);
-                } else {
-                    setCurrentView('qwik');
-                    setGateOpen(true);
-                }
+            const nextProgress = Math.max(0, Math.min(100, scrollProgress + e.deltaY * 0.04));
+            setScrollProgress(nextProgress);
 
-                return next;
-            });
+            if (nextProgress < 25) {
+                setCurrentView('outside');
+                setGateOpen(false);
+            } else if (nextProgress >= 25 && nextProgress < 55) {
+                setCurrentView('lobby');
+                setGateOpen(true);
+            } else if (nextProgress >= 55 && nextProgress < 80) {
+                setCurrentView('urja');
+                setGateOpen(true);
+            } else {
+                setCurrentView('qwik');
+                setGateOpen(true);
+            }
         };
 
         container.addEventListener('wheel', handleWheel, { passive: false });
         return () => container.removeEventListener('wheel', handleWheel);
-    }, []);
+    }, [activePavementIdx, currentView, scrollProgress]);
 
     return (
         <section ref={containerRef} style={styles.stage}>
@@ -4005,8 +4098,11 @@ export default function DataLifecycleEngine() {
                         <QwikSELLDropBox />
 
                         <ExigoPavementPath
-                            activeCard={activePavementIdx !== null ? activePavementIdx : -1}
-                            onSlabClick={(index) => setActivePavementIdx(index)}
+                            activeCard={activePavementIdx}
+                            onSlabClick={(index) => {
+                                const step = EXIGO_STEPS[index];
+                                handleObjectClick(step.title, step.desc, index);
+                            }}
                         />
 
                         <Tree position={[-14.5, 0, -2.5]} />
@@ -4076,84 +4172,85 @@ export default function DataLifecycleEngine() {
                 </Canvas>
             </div>
 
-            {isMobileDevice && (
-                <div ref={scrollContainerRef} onScroll={handleCardScroll} style={styles.mobileGestureOverlay}>
-                    {[...Array(5)].map((_, i) => (
-                        <div key={i} style={styles.mobileGestureSpacer} />
-                    ))}
+            {isMobileScreen && !activeObject && (
+                <div style={styles.mobileStepHint}>
+                    Active Step: {activePavementIdx + 1} / 5 (Swipe left/right to change)
                 </div>
             )}
 
-            {isMobileDevice && (
-                <div style={styles.mobileHudOverlay}>
-                    <span style={styles.mobileHudBadge}>Exigo Cleantech — Step {displayPavementIndex + 1} of 5</span>
-                    <h2 style={styles.mobileHudTitle}>{EXIGO_STEPS[displayPavementIndex].title}</h2>
-                    <p style={styles.mobileHudDesc}>{EXIGO_STEPS[displayPavementIndex].desc}</p>
-                </div>
-            )}
-
-            {activePavementIdx !== null && (
-                <div style={popupStyles.overlayBackdrop} onClick={() => setActivePavementIdx(null)}>
+            {activeObject && (
+                <div style={popupStyles.overlayBackdrop} onClick={handleClosePopup}>
                     <div style={popupStyles.squareCard} onClick={(e) => e.stopPropagation()}>
-                        <button style={popupStyles.closeBtn} onClick={() => setActivePavementIdx(null)}>✕</button>
+                        <button style={popupStyles.closeBtn} onClick={handleClosePopup}>✕</button>
 
-                        <div style={popupStyles.cardGrid}>
-                            <div style={popupStyles.diagramPane}>
-                                {activePavementIdx === 0 && (
-                                    <div style={popupStyles.canvasAsset}>
-                                        <div style={{ ...popupStyles.orbitRing, width: '120px', height: '120px', animation: 'spin 12s linear infinite' }} />
-                                        <div style={{ ...popupStyles.orbitRing, width: '70px', height: '70px', borderColor: '#06b6d4', animation: 'spin-reverse 8s linear infinite' }} />
-                                        <div style={popupStyles.pulseCore} />
-                                    </div>
-                                )}
-
-                                {activePavementIdx === 1 && (
-                                    <div style={popupStyles.canvasAsset}>
-                                        <div style={popupStyles.matrixContainer}>
-                                            {[1, 2, 3, 4].map(i => (
-                                                <div key={i} style={{ ...popupStyles.matrixColumn, height: `${20 + i * 18}px`, animation: `pulse-height ${1 + i * 0.2}s ease-in-out infinite alternate` }} />
-                                            ))}
+                        {activeObject.stepIndex !== undefined ? (
+                            <div style={popupStyles.cardGrid}>
+                                <div style={popupStyles.diagramPane}>
+                                    {activeObject.stepIndex === 0 && (
+                                        <div style={popupStyles.canvasAsset}>
+                                            <div style={{ ...popupStyles.orbitRing, width: '120px', height: '120px', animation: 'spin 12s linear infinite' }} />
+                                            <div style={{ ...popupStyles.orbitRing, width: '70px', height: '70px', borderColor: '#06b6d4', animation: 'spin-reverse 8s linear infinite' }} />
+                                            <div style={popupStyles.pulseCore} />
                                         </div>
-                                    </div>
-                                )}
+                                    )}
 
-                                {activePavementIdx === 2 && (
-                                    <div style={popupStyles.canvasAsset}>
-                                        <div style={{ ...popupStyles.loopArrow, transform: 'rotate(45deg)' }} />
-                                        <div style={{ ...popupStyles.loopArrow, transform: 'rotate(225deg)', borderColor: '#06b6d4' }} />
-                                    </div>
-                                )}
-
-                                {activePavementIdx === 3 && (
-                                    <div style={popupStyles.canvasAsset}>
-                                        <div style={popupStyles.radarScope}>
-                                            <div style={popupStyles.radarSweep} />
-                                            <div style={popupStyles.shieldCheck}>✓</div>
+                                    {activeObject.stepIndex === 1 && (
+                                        <div style={popupStyles.canvasAsset}>
+                                            <div style={popupStyles.matrixContainer}>
+                                                {[1, 2, 3, 4].map(i => (
+                                                    <div key={i} style={{ ...popupStyles.matrixColumn, height: `${20 + i * 18}px`, animation: `pulse-height ${1 + i * 0.2}s ease-in-out infinite alternate` }} />
+                                                ))}
+                                            </div>
                                         </div>
+                                    )}
+
+                                    {activeObject.stepIndex === 2 && (
+                                        <div style={popupStyles.canvasAsset}>
+                                            <div style={{ ...popupStyles.loopArrow, transform: 'rotate(45deg)' }} />
+                                            <div style={{ ...popupStyles.loopArrow, transform: 'rotate(225deg)', borderColor: '#06b6d4' }} />
+                                        </div>
+                                    )}
+
+                                    {activeObject.stepIndex === 3 && (
+                                        <div style={popupStyles.canvasAsset}>
+                                            <div style={popupStyles.radarScope}>
+                                                <div style={popupStyles.radarSweep} />
+                                                <div style={popupStyles.shieldCheck}>✓</div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {activeObject.stepIndex === 4 && (
+                                        <div style={popupStyles.canvasAsset}>
+                                            <div style={popupStyles.networkNode} />
+                                            <div style={{ ...popupStyles.networkLine, transform: 'rotate(30deg)' }} />
+                                            <div style={{ ...popupStyles.networkLine, transform: 'rotate(-45deg)' }} />
+                                            <div style={{ ...popupStyles.networkLine, transform: 'rotate(90deg)' }} />
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div style={popupStyles.textPane}>
+                                    <span style={popupStyles.stepTag}>EXIGO MANAGEMENT DIRECTIVE — STEP {activeObject.stepIndex + 1} OF 5</span>
+                                    <h2 style={popupStyles.stepTitle}>{activeObject.title}</h2>
+                                    <p style={popupStyles.stepDesc}>{activeObject.description}</p>
+
+                                    <div style={popupStyles.metaParameterBox}>
+                                        <span>INFRASTRUCTURE NODE // SECURE</span>
+                                        <span style={popupStyles.greenCheck}>COMPLIANT</span>
                                     </div>
-                                )}
-
-                                {activePavementIdx === 4 && (
-                                    <div style={popupStyles.canvasAsset}>
-                                        <div style={popupStyles.networkNode} />
-                                        <div style={{ ...popupStyles.networkLine, transform: 'rotate(30deg)' }} />
-                                        <div style={{ ...popupStyles.networkLine, transform: 'rotate(-45deg)' }} />
-                                        <div style={{ ...popupStyles.networkLine, transform: 'rotate(90deg)' }} />
-                                    </div>
-                                )}
-                            </div>
-
-                            <div style={popupStyles.textPane}>
-                                <span style={popupStyles.stepTag}>EXIGO MANAGEMENT DIRECTIVE — STEP {activePavementIdx + 1} OF 5</span>
-                                <h2 style={popupStyles.stepTitle}>{EXIGO_STEPS[activePavementIdx].title}</h2>
-                                <p style={popupStyles.stepDesc}>{EXIGO_STEPS[activePavementIdx].desc}</p>
-
-                                <div style={popupStyles.metaParameterBox}>
-                                    <span>INFRASTRUCTURE NODE // SECURE</span>
-                                    <span style={popupStyles.greenCheck}>COMPLIANT</span>
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            <div style={popupStyles.textPane}>
+                                <h2 style={popupStyles.stepTitle}>{activeObject.title}</h2>
+                                <p style={popupStyles.stepDesc}>{activeObject.description}</p>
+                            </div>
+                        )}
+
+                        <button style={popupStyles.closeActionBtn} onClick={handleClosePopup}>
+                            Close Overlay
+                        </button>
                     </div>
                 </div>
             )}
@@ -4181,61 +4278,19 @@ const styles = {
         zIndex: 1,
         pointerEvents: 'auto'
     } as React.CSSProperties,
-    mobileGestureOverlay: {
+    mobileStepHint: {
         position: 'absolute',
-        inset: 0,
-        zIndex: 20,
-        display: 'flex',
-        overflowX: 'auto',
-        scrollSnapType: 'x mandatory',
-        WebkitOverflowScrolling: 'touch',
-        msOverflowStyle: 'none',
-        scrollbarWidth: 'none'
-    } as React.CSSProperties,
-    mobileGestureSpacer: {
-        minWidth: '85vw',
-        height: '100vh',
-        marginLeft: '7.5vw',
-        marginRight: '7.5vw',
-        flexShrink: 0,
-        scrollSnapAlign: 'center'
-    } as React.CSSProperties,
-    mobileHudOverlay: {
-        position: 'absolute',
-        left: '50%',
-        bottom: '3.5rem',
-        transform: 'translateX(-50%)',
-        zIndex: 30,
-        background: 'rgba(255,255,255,0.92)',
-        padding: '16px 20px',
-        borderRadius: '24px',
-        boxShadow: '0 18px 40px rgba(15, 23, 42, 0.25)',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        maxWidth: '88vw',
-        textAlign: 'center'
-    } as React.CSSProperties,
-    mobileHudBadge: {
-        fontSize: '10px',
-        fontWeight: 800,
-        letterSpacing: '0.18em',
-        textTransform: 'uppercase',
-        color: '#0f766e',
-        marginBottom: '8px'
-    } as React.CSSProperties,
-    mobileHudTitle: {
-        fontSize: '18px',
-        fontWeight: 900,
-        color: '#0f172a',
-        margin: 0,
-        lineHeight: 1.15
-    } as React.CSSProperties,
-    mobileHudDesc: {
+        left: '16px',
+        right: '16px',
+        bottom: '16px',
+        zIndex: 10,
+        background: 'rgba(30, 41, 59, 0.9)',
+        color: '#94a3b8',
         fontSize: '12px',
-        color: '#334155',
-        marginTop: '8px',
-        lineHeight: 1.5
+        padding: '8px 12px',
+        borderRadius: '8px',
+        textAlign: 'center',
+        pointerEvents: 'none'
     } as React.CSSProperties,
     headerBrand: {
         position: 'absolute',
@@ -4316,10 +4371,7 @@ const styles = {
     } as React.CSSProperties
 };
 
-// 1. Update the responsive constant to catch phone widths accurately
-const isMobileScreen = typeof window !== 'undefined' && window.innerWidth < 768;
-
-const popupStyles = {
+const getPopupStyles = (isMobileScreen: boolean) => ({
     overlayBackdrop: {
         position: 'absolute',
         top: 0,
@@ -4370,6 +4422,21 @@ const popupStyles = {
         justifyContent: 'center',
         fontSize: '10px',
         zIndex: 10
+    } as React.CSSProperties,
+
+    closeActionBtn: {
+        marginTop: '16px',
+        width: '100%',
+        background: '#334155',
+        border: 'none',
+        color: '#f8fafc',
+        fontWeight: 600,
+        fontSize: '11px',
+        letterSpacing: '0.08em',
+        textTransform: 'uppercase',
+        padding: '10px 16px',
+        borderRadius: '10px',
+        cursor: 'pointer'
     } as React.CSSProperties,
 
     cardGrid: {
@@ -4473,4 +4540,4 @@ const popupStyles = {
     shieldCheck: { fontSize: '22px', color: '#6b7280', fontWeight: 900 } as React.CSSProperties,
     networkNode: { width: '14px', height: '14px', background: '#9ca3af', borderRadius: '50%', zIndex: 5 } as React.CSSProperties,
     networkLine: { position: 'absolute', width: '90px', height: '1px', background: 'linear-gradient(90deg, rgba(255,255,255,0.2) 0%, transparent 100%)' } as React.CSSProperties
-};
+});
