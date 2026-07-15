@@ -131,10 +131,10 @@ interface SlabProps {
     onClick: () => void;
 }
 
-const IndividualPavementSlab: React.FC<SlabProps> = ({ index, isActive, position, onClick }) => {
+const IndividualPavementSlab: React.FC<SlabProps> = ({ isActive, position, onClick }) => {
     const slabRef = useRef<THREE.Group>(null);
 
-    useFrame((state, delta) => {
+    useFrame((_, delta) => {
         if (!slabRef.current) return;
 
         const targetY = isActive ? 0.08 : 0.0;
