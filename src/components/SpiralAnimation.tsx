@@ -63,7 +63,7 @@ class AnimationController {
   private createStars() { 
     this.stars = [];
     for (let i = 0; i < this.numberOfStars; i++) { 
-      this.stars.push(new Star(this.cameraZ, this.cameraTravelDistance));
+      this.stars.push(new Star(this.cameraTravelDistance));
     } 
   }
 
@@ -209,7 +209,7 @@ class Star {
   private expansionRate: number; 
   private finalScale: number;
 
-  constructor(cameraZ: number, cameraTravelDistance: number) {
+  constructor(cameraTravelDistance: number) {
     this.angle = Math.random() * Math.PI * 2; 
     this.distance = 4 * Math.random() + 2; 
     this.rotationDirection = Math.random() > 0.5 ? 1 : -1;
