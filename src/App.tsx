@@ -18,24 +18,34 @@ import {
   ThunderboltOutlined,
   LaptopOutlined,
   VerticalAlignTopOutlined,
-  RiseOutlined
+  RiseOutlined,
+  PlayCircleOutlined,
+  CloseOutlined
 } from '@ant-design/icons'
 
 // Layout Modules
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import { AIChatbot } from './components/AIChatbot'
+import { HeroOverlay } from './components/HeroOverlay'
+import { SpiralAnimation } from './components/SpiralAnimation'
 import UrjaPage from './pages/UrjaPage'
 import QwikPage from './pages/QwikPage'
 import ContactPage from './pages/ContactPage'
 import CareersPage from './pages/CareersPage' // NEW IMPORT
 import AboutPage from './pages/AboutPage' // NEW IMPORT
 
-import DataLifecycleEngine from './components/DataLifecycleEngine'
+
 import SmoothScroll from './components/SmoothScroll'
 import InvestorRelations from './components/InvestorRelations' // NEW IMPORT
 
 import urjaLogo from './assets/urja-logo.png'
 import quikLogo from './assets/quik-logo.png'
+import driverVideo1 from './assets/driver response 1 .mp4'
+import driverVideo2 from './assets/driver response 2 .mp4'
+import driverVideo3 from './assets/driver response 3 .mp4'
+import driverVideo4 from './assets/driver response 4 .mp4'
+import driverVideo5 from './assets/driver response 5 .mp4'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import './App.css'
@@ -70,6 +80,8 @@ function HomePageContent({ setQwiksellModalVisible, activeStep, setActiveStep }:
   const aboutSectionRef = useRef<HTMLDivElement>(null)
   const circularSectionRef = useRef<HTMLDivElement>(null)
   const analyticsRef = useRef<HTMLDivElement>(null)
+  const [activeVideo, setActiveVideo] = useState<string | null>(null)
+  const [activeName, setActiveName] = useState('')
 
   useEffect(() => {
     const animationCtx = gsap.context(() => {
@@ -105,11 +117,79 @@ function HomePageContent({ setQwiksellModalVisible, activeStep, setActiveStep }:
     { title: 'Liquidation', description: 'Immediate processing into secondary enterprise channels.' }
   ]
 
+  const homeTestimonials = [
+    {
+      quote: "Urja’s battery-swap network cut our EV downtime dramatically. Drivers stay on route instead of waiting on charge cycles.",
+      name: "Arjun Patel",
+      role: "Fleet Operations Head",
+      company: "CityRide Logistics",
+      img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&h=150&q=80",
+      video: driverVideo1
+    },
+    {
+      quote: "Swap reliability on Urja is outstanding. We scaled from a pilot corridor to multi-city deployment without operational chaos.",
+      name: "Sana Qureshi",
+      role: "COO",
+      company: "GreenMiles Mobility",
+      img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&h=150&q=80",
+      video: driverVideo2
+    },
+    {
+      quote: "Driver retention improved after we partnered with Urja — predictable energy cost and almost zero stranded vehicles mid-shift.",
+      name: "Deepa Nair",
+      role: "Partner Success",
+      company: "MetroGo Fleets",
+      video: driverVideo3
+    },
+    {
+      quote: "Diagnostics that used to take days now finish in minutes. Our buyback approvals are consistent and audit-ready.",
+      name: "Neha Kapoor",
+      role: "Procurement Lead",
+      company: "Vertex Retail Pvt Ltd",
+      img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=150&h=150&q=80",
+      video: driverVideo4
+    },
+    {
+      quote: "QwikSELL gave us transparent grading and faster liquidation for retired laptops. Recovered value jumped within the first quarter.",
+      name: "Riya Mehta",
+      role: "IT Asset Manager",
+      company: "Nimbus Softwares",
+      img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=150&h=150&q=80",
+      video: driverVideo5
+    },
+    {
+      quote: "Exigo helped us close the loop on end-of-life devices with measurable circular KPIs board members actually understand.",
+      name: "Vikram Singh",
+      role: "Sustainability Director",
+      company: "Aarohan Group",
+      img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&h=150&q=80"
+    },
+    {
+      quote: "Secondary channel pricing from QwikSELL is far clearer than our previous ad-hoc resellers. Finance finally trusts the pipeline.",
+      name: "Rohit Malhotra",
+      role: "CFO",
+      company: "ByteForge India",
+      img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&h=150&q=80"
+    },
+    {
+      quote: "From intake to certified remarketing, Exigo’s PLM workflow removed the guesswork we had across three vendors.",
+      name: "Kabir Anand",
+      role: "Head of Infrastructure",
+      company: "Orbit Enterprises",
+      img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&h=150&q=80"
+    }
+  ];
   return (
     <>
       <div style={{ position: 'relative', width: '100vw', height: '100vh', minHeight: '600px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Layer 1: Canvas Background Animation */}
+        <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+          <SpiralAnimation />
+        </div>
+
+        {/* Layer 2: Typography, GSAP Animation & CTA Buttons */}
         <div style={{ position: 'relative', zIndex: 2, width: '100%', height: '100%' }}>
-          <DataLifecycleEngine />
+          <HeroOverlay />
         </div>
       </div>
 
@@ -238,6 +318,192 @@ function HomePageContent({ setQwiksellModalVisible, activeStep, setActiveStep }:
 
 
 
+      <section id="testimonials" style={{ padding: '140px 0', backgroundColor: '#070913', position: 'relative', overflow: 'hidden' }}>
+        <style>
+          {`
+            @keyframes hardwareTicker {
+              0% { transform: translate3d(0, 0, 0); }
+              100% { transform: translate3d(calc(-340px * 8 - 24px * 8), 0, 0); }
+            }
+
+            .ticker-viewport-container {
+              overflow: hidden;
+              width: 100%;
+              padding: 40px 0;
+              position: relative;
+            }
+
+            .ticker-viewport-container::before,
+            .ticker-viewport-container::after {
+              content: '';
+              position: absolute;
+              top: 0;
+              bottom: 0;
+              width: 150px;
+              z-index: 10;
+              pointer-events: none;
+            }
+            .ticker-viewport-container::before {
+              left: 0;
+              background: linear-gradient(90deg, #070913 20%, transparent 100%);
+            }
+            .ticker-viewport-container::after {
+              right: 0;
+              background: linear-gradient(-90deg, #070913 20%, transparent 100%);
+            }
+
+            .ticker-scrolling-track {
+              display: flex;
+              gap: 24px;
+              width: max-content;
+              animation: hardwareTicker 38s linear infinite;
+            }
+
+            .ticker-viewport-container:hover .ticker-scrolling-track {
+              animation-play-state: paused;
+            }
+
+            .premium-cyber-card {
+              width: 340px;
+              height: 380px;
+              border-radius: 24px !important;
+              background: rgba(15, 22, 42, 0.45) !important;
+              backdrop-filter: blur(16px) !important;
+              border: 1px solid rgba(255, 255, 255, 0.04) !important;
+              transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+              display: flex;
+              flex-direction: column;
+            }
+
+            .premium-cyber-card:hover {
+              transform: translateY(-10px) scale(1.02) !important;
+              background: rgba(20, 30, 58, 0.75) !important;
+            }
+
+            .video-card-glow {
+              border: 1px solid rgba(168, 85, 247, 0.25) !important;
+              box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+            }
+
+            .video-card-glow:hover {
+              border-color: rgba(168, 85, 247, 0.65) !important;
+              box-shadow: 0 0 30px rgba(168, 85, 247, 0.25), 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+            }
+
+            .standard-card-glow:hover {
+              border-color: rgba(59, 130, 246, 0.4) !important;
+              box-shadow: 0 0 30px rgba(59, 130, 246, 0.15), 0 20px 40px rgba(0, 0, 0, 0.5) !important;
+            }
+          `}
+        </style>
+
+        <div style={{ position: 'absolute', top: '10%', left: '50%', transform: 'translate(-50%, -50%)', width: '700px', height: '350px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(107, 33, 168, 0.08) 0%, transparent 75%)', filter: 'blur(50px)', pointerEvents: 'none' }} />
+
+        <div style={{ maxWidth: '1240px', margin: '0 auto', padding: '0 24px' }}>
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+            <Tag style={{ padding: '6px 18px', borderRadius: '24px', fontWeight: 800, fontSize: '10px', letterSpacing: '0.12em', background: 'rgba(107, 33, 168, 0.15)', color: '#c084fc', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+              PARTNER SYSTEM VALIDATION // FEEDBACK PLATFORM
+            </Tag>
+            <Title level={2} style={{ marginTop: '20px', fontWeight: 900, color: '#f8fafc', fontSize: 'clamp(2.2rem, 5vw, 3rem)', letterSpacing: '-0.02em' }}>
+              What Our Partners Say
+            </Title>
+            <Paragraph style={{ color: '#94a3b8', fontSize: '16px', maxWidth: '600px', margin: '12px auto 0 auto', lineHeight: '1.6' }}>
+              Real validation from enterprise partners deploying circular logistics configurations across QwikSELL and Urja Mobility networks.
+            </Paragraph>
+          </div>
+        </div>
+
+        <div className="ticker-viewport-container">
+          <div className="ticker-scrolling-track">
+            {[...homeTestimonials, ...homeTestimonials].map((item, idx) => (
+              <Card
+                key={idx}
+                hoverable
+                className={`premium-cyber-card ${item.video ? 'video-card-glow' : 'standard-card-glow'}`}
+                styles={{ body: { padding: '36px', display: 'flex', flexDirection: 'column', height: '100%', justifyContent: 'space-between' } }}
+              >
+                <Paragraph style={{ color: '#cbd5e1', fontSize: '14px', lineHeight: '1.65', fontStyle: 'italic', margin: 0 }}>
+                  "{item.quote}"
+                </Paragraph>
+
+                <div style={{ marginTop: '24px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: item.video ? '18px' : '0' }}>
+                    {item.img ? (
+                      <img src={item.img} alt={item.name} style={{ width: '46px', height: '46px', borderRadius: '50%', objectFit: 'cover', border: '1.5px solid rgba(255,255,255,0.1)' }} />
+                    ) : (
+                      <div style={{ width: '46px', height: '46px', borderRadius: '50%', backgroundColor: '#6b21a8', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 800, fontSize: '13px', border: '1.5px solid rgba(168, 85, 247, 0.4)' }}>
+                        {item.name.split(' ').filter(Boolean).slice(0, 2).map(n => n[0]).join('').toUpperCase()}
+                      </div>
+                    )}
+                    <div>
+                      <Text strong style={{ color: '#f8fafc', display: 'block', fontSize: '14px' }}>{item.name}</Text>
+                      <Text style={{ color: '#64748b', fontSize: '12px', display: 'block', fontWeight: 500 }}>{item.role}, {item.company}</Text>
+                    </div>
+                  </div>
+
+                  {item.video && (
+                    <Button
+                      type="primary"
+                      icon={<PlayCircleOutlined />}
+                      onClick={() => {
+                        setActiveVideo(item.video!)
+                        setActiveName(item.name)
+                      }}
+                      style={{
+                        width: '100%',
+                        borderRadius: '12px',
+                        backgroundColor: '#6b21a8',
+                        borderColor: '#6b21a8',
+                        fontWeight: 700,
+                        height: '40px',
+                        boxShadow: '0 4px 14px rgba(107, 33, 168, 0.4)'
+                      }}
+                    >
+                      Watch Response Video
+                    </Button>
+                  )}
+                </div>
+              </Card>
+            ))}
+          </div>
+        </div>
+
+        <Modal
+          title={
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fff' }}>
+              <span style={{ fontWeight: 800, fontSize: '16px', letterSpacing: '-0.01em' }}>Field Video Feedback // {activeName}</span>
+            </div>
+          }
+          open={!!activeVideo}
+          onCancel={() => {
+            setActiveVideo(null)
+            setActiveName('')
+          }}
+          footer={null}
+          centered
+          destroyOnHidden
+          closeIcon={<CloseOutlined style={{ color: '#94a3b8' }} />}
+          styles={{
+            mask: { backdropFilter: 'blur(12px)', backgroundColor: 'rgba(2, 4, 12, 0.8)' },
+            container: { backgroundColor: '#0b0f19', padding: '24px', borderRadius: '24px', border: '1px solid rgba(255, 255, 255, 0.08)' },
+            header: { backgroundColor: '#0b0f19', borderBottom: 'none' },
+            title: { color: '#fff' }
+          }}
+          width={760}
+        >
+          {activeVideo && (
+            <div style={{ width: '100%', borderRadius: '16px', overflow: 'hidden', backgroundColor: '#000', border: '1px solid rgba(255,255,255,0.06)', display: 'flex', boxShadow: '0 24px 50px -12px rgba(0,0,0,0.7)' }}>
+              <video
+                src={activeVideo}
+                controls
+                autoPlay
+                style={{ width: '100%', maxHeight: '500px', objectFit: 'contain' }}
+              />
+            </div>
+          )}
+        </Modal>
+      </section>
+
       {/* NEW: Investor Relations Section */}
       <div id="investors">
         <InvestorRelations />
@@ -288,6 +554,8 @@ export function App() {
             </Routes>
 
             <Footer />
+
+            <AIChatbot /> {/* 2. GLOBAL CHAT INTERFACE INSTANTIATED HERE */}
 
             <Modal
               title={<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}><LaptopOutlined style={{ color: '#6b21a8', fontSize: '20px' }} /><span style={{ fontSize: '1.25rem', fontWeight: 800 }}>QwikSELL: Powering Device Circularity</span></div>}

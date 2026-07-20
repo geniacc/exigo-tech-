@@ -61,8 +61,6 @@ const useScrollReveal = () => {
   return { ref, isVisible };
 };
 
-
-
 // --- 3D Mobile Smartphone Component ---
 const Smartphone3D = ({
   stage,
@@ -224,7 +222,7 @@ export default function QwikPage() {
   const phoneRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const pipelineRef = useRef<HTMLDivElement>(null);
-  const terminalEndRef = useRef<HTMLDivElement>(null);
+  const terminalScrollRef = useRef<HTMLDivElement>(null);
 
   // GSAP Timeline Ref
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -301,9 +299,11 @@ export default function QwikPage() {
     }
   }, [isMobile, pipelineState]);
 
-  // Auto-scroll log console
+  // Keep terminal logs scrolled inside the console only
   useEffect(() => {
-    terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const terminal = terminalScrollRef.current;
+    if (!terminal) return;
+    terminal.scrollTop = terminal.scrollHeight;
   }, [terminalLogs]);
 
   // Trigger automated scanning and cinematic transformation pipeline
@@ -593,6 +593,17 @@ export default function QwikPage() {
           :root {
             --device-height: 440px;
           }
+          .blueprint-board-3d {
+            min-height: clamp(380px, 60vh, 480px) !important;
+            padding: 16px !important;
+          }
+          .frosted-panel-mobile-padding {
+            padding: 20px 16px !important;
+          }
+          .btn-mobile-full {
+            width: 100% !important;
+            margin-bottom: 8px;
+          }
         }
 
         /* Elastic Stamp Bounce Effect */
@@ -673,7 +684,7 @@ export default function QwikPage() {
       </style>
 
       {/* HERO SECTION */}
-      <div style={{ padding: '140px 24px 80px 24px', position: 'relative', overflow: 'hidden' }} className="blueprint-bg">
+      <div style={{ padding: 'clamp(90px, 12vw, 140px) 16px clamp(50px, 8vw, 80px) 16px', position: 'relative', overflow: 'hidden' }} className="blueprint-bg">
         <svg style={{ position: 'absolute', top: '10%', left: '5%', opacity: 0.15, zIndex: 0, animation: 'float 10s ease-in-out infinite', pointerEvents: 'none' }} width="350" height="350" viewBox="0 0 200 200">
           <circle cx="100" cy="100" r="80" fill="none" stroke="#0ea5e9" strokeWidth="1.5" strokeDasharray="8 8" />
           <circle cx="100" cy="100" r="50" fill="rgba(14, 165, 233, 0.06)" />
@@ -681,28 +692,28 @@ export default function QwikPage() {
 
         <div style={{ maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 10, textAlign: 'center' }}>
           <div className="hero-text delay-1">
-            <Tag style={{ padding: '8px 24px', borderRadius: '24px', fontWeight: 800, border: '1px solid #cbd5e1', backgroundColor: '#ffffff', color: '#0f172a', fontSize: '13px', letterSpacing: '1px', boxShadow: '0 4px 12px rgba(15, 23, 42, 0.02)' }}>
+            <Tag style={{ padding: '6px 18px', borderRadius: '24px', fontWeight: 800, border: '1px solid #cbd5e1', backgroundColor: '#ffffff', color: '#0f172a', fontSize: '11.5px', letterSpacing: '0.5px', boxShadow: '0 4px 12px rgba(15, 23, 42, 0.02)' }}>
               <ThunderboltOutlined style={{ marginRight: '6px', color: '#0284c7' }} /> QWIKSELL DIAGNOSTIC PORTAL
             </Tag>
           </div>
-          <Title level={1} className="hero-text delay-2" style={{ fontSize: 'clamp(2.8rem, 5.5vw, 4.5rem)', fontWeight: 900, color: '#0f172a', margin: '28px 0 20px 0', lineHeight: '1.15', letterSpacing: '-0.03em' }}>
+          <Title level={1} className="hero-text delay-2" style={{ fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', fontWeight: 900, color: '#0f172a', margin: '20px 0 16px 0', lineHeight: '1.15', letterSpacing: '-0.02em' }}>
             Enterprise Asset Decommissioning, <br />
             <span style={{ background: 'linear-gradient(90deg, #0284c7, #2563eb)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
               Fast, Sanitized, and Compliant.
             </span>
           </Title>
-          <Paragraph className="hero-text delay-3" style={{ fontSize: '1.2rem', color: '#475569', maxWidth: '800px', margin: '0 auto 36px auto', lineHeight: '1.75' }}>
+          <Paragraph className="hero-text delay-3" style={{ fontSize: 'clamp(0.95rem, 2.5vw, 1.2rem)', color: '#475569', maxWidth: '800px', margin: '0 auto 28px auto', lineHeight: '1.65' }}>
             Transform aging corporate inventory into liquid capital. Our automated diagnostics system validates hardware, sanitizes internal drives to secure standards, and delivers instant, competitive market buyback returns.
           </Paragraph>
-          <div className="hero-text delay-4" style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
-            <Button type="primary" size="large" style={{ background: '#0f172a', border: 'none', height: '56px', padding: '0 36px', fontSize: '16px', fontWeight: 700, borderRadius: '28px', boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.2)' }} onClick={() => {
+          <div className="hero-text delay-4" style={{ display: 'flex', justifyContent: 'center', gap: '12px', flexWrap: 'wrap' }}>
+            <Button type="primary" size="large" className="btn-mobile-full" style={{ background: '#0f172a', border: 'none', height: '52px', padding: '0 32px', fontSize: '15px', fontWeight: 700, borderRadius: '28px', boxShadow: '0 10px 25px -5px rgba(15, 23, 42, 0.2)' }} onClick={() => {
               if (pipelineRef.current) {
                 pipelineRef.current.scrollIntoView({ behavior: 'smooth' });
               }
             }}>
               Decommission Now
             </Button>
-            <Button size="large" style={{ height: '56px', padding: '0 36px', fontSize: '16px', fontWeight: 700, borderRadius: '28px', border: '1.5px solid #cbd5e1', color: '#0f172a', background: 'transparent' }}>
+            <Button size="large" className="btn-mobile-full" style={{ height: '52px', padding: '0 32px', fontSize: '15px', fontWeight: 700, borderRadius: '28px', border: '1.5px solid #cbd5e1', color: '#0f172a', background: 'transparent' }}>
               Audit Compliance Flow
             </Button>
           </div>
@@ -710,19 +721,19 @@ export default function QwikPage() {
       </div>
 
       {/* CSS-DRIVEN MARQUEE */}
-      <div style={{ borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0', background: '#ffffff', padding: '16px 0', overflow: 'hidden', whiteSpace: 'nowrap', display: 'flex' }}>
+      <div style={{ borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0', background: '#ffffff', padding: '14px 0', overflow: 'hidden', whiteSpace: 'nowrap', display: 'flex' }}>
         <div style={{ display: 'flex', width: '200%', animation: 'marquee 30s linear infinite' }}>
           <div style={{ display: 'flex', flexShrink: 0, width: '50%', justifyContent: 'space-around', alignItems: 'center' }}>
             {['NIST SP 800-88 COMPLIANT WIPING', 'THINKPAD MARKET LIQUIDITY +4.2%', 'GRADE A APPROVAL RATES INCREASED', 'REAL-TIME DATA AUDITING ACTIVE', 'ISO 14001 ECO-RECOVERY VERIFIED'].map((txt, i) => (
-              <span key={i} style={{ fontSize: '12.5px', fontWeight: 800, color: '#64748b', letterSpacing: '2px', textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
-                <GlobalOutlined style={{ marginRight: '8px', color: '#0284c7' }} /> {txt}
+              <span key={i} style={{ fontSize: '11.5px', fontWeight: 800, color: '#64748b', letterSpacing: '1.5px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', padding: '0 12px' }}>
+                <GlobalOutlined style={{ marginRight: '6px', color: '#0284c7' }} /> {txt}
               </span>
             ))}
           </div>
           <div style={{ display: 'flex', flexShrink: 0, width: '50%', justifyContent: 'space-around', alignItems: 'center' }}>
             {['NIST SP 800-88 COMPLIANT WIPING', 'THINKPAD MARKET LIQUIDITY +4.2%', 'GRADE A APPROVAL RATES INCREASED', 'REAL-TIME DATA AUDITING ACTIVE', 'ISO 14001 ECO-RECOVERY VERIFIED'].map((txt, i) => (
-              <span key={`dup-${i}`} style={{ fontSize: '12.5px', fontWeight: 800, color: '#64748b', letterSpacing: '2px', textTransform: 'uppercase', display: 'flex', alignItems: 'center' }}>
-                <GlobalOutlined style={{ marginRight: '8px', color: '#0284c7' }} /> {txt}
+              <span key={`dup-${i}`} style={{ fontSize: '11.5px', fontWeight: 800, color: '#64748b', letterSpacing: '1.5px', textTransform: 'uppercase', display: 'flex', alignItems: 'center', padding: '0 12px' }}>
+                <GlobalOutlined style={{ marginRight: '6px', color: '#0284c7' }} /> {txt}
               </span>
             ))}
           </div>
@@ -730,50 +741,50 @@ export default function QwikPage() {
       </div>
 
       {/* CORE INTERACTIVE PIPELINE */}
-      <div ref={pipelineRef} style={{ padding: '100px 24px', maxWidth: '1360px', margin: '0 auto', position: 'relative' }}>
-        <Row gutter={[48, 48]} align="middle">
+      <div ref={pipelineRef} style={{ padding: 'clamp(50px, 8vw, 100px) 16px', maxWidth: '1360px', margin: '0 auto', position: 'relative' }}>
+        <Row gutter={[24, 32]} align="middle">
           
           {/* Left Column: Diagnostics Control Panel */}
           <Col xs={24} lg={11}>
-            <div className="frosted-panel" style={{ padding: '36px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px', borderBottom: '1px solid #e2e8f0', paddingBottom: '16px' }}>
+            <div className="frosted-panel frosted-panel-mobile-padding" style={{ padding: '36px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', borderBottom: '1px solid #e2e8f0', paddingBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
                 <div>
-                  <Title level={3} style={{ margin: 0, color: '#0f172a', fontWeight: 900, fontSize: '22px' }}>Diagnostic Pipeline</Title>
-                  <Text style={{ color: '#64748b', fontSize: '12.5px', fontFamily: 'monospace', fontWeight: 600 }}>LIQUIDATION CONSOLE v4.2</Text>
+                  <Title level={3} style={{ margin: 0, color: '#0f172a', fontWeight: 900, fontSize: '1.25rem' }}>Diagnostic Pipeline</Title>
+                  <Text style={{ color: '#64748b', fontSize: '11.5px', fontFamily: 'monospace', fontWeight: 600 }}>LIQUIDATION CONSOLE v4.2</Text>
                 </div>
                 
                 {pipelineState === 'intake' && (
-                  <Tag color="warning" icon={<SyncOutlined spin />} style={{ padding: '6px 12px', borderRadius: '12px', fontSize: '12px', fontWeight: 700 }}>
+                  <Tag color="warning" icon={<SyncOutlined spin />} style={{ padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 700 }}>
                     AWAITING INPUT
                   </Tag>
                 )}
                 {pipelineState === 'scanning' && (
-                  <Tag color="processing" icon={<SyncOutlined spin />} style={{ padding: '6px 12px', borderRadius: '12px', fontSize: '12px', fontWeight: 700 }}>
+                  <Tag color="processing" icon={<SyncOutlined spin />} style={{ padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 700 }}>
                     SCANNING...
                   </Tag>
                 )}
                 {pipelineState === 'refurbished' && (
-                  <Tag color="success" icon={<CheckCircleOutlined />} style={{ padding: '6px 12px', borderRadius: '12px', fontSize: '12px', fontWeight: 700 }}>
+                  <Tag color="success" icon={<CheckCircleOutlined />} style={{ padding: '4px 10px', borderRadius: '12px', fontSize: '11px', fontWeight: 700 }}>
                     PIPELINE PASS
                   </Tag>
                 )}
               </div>
 
               {/* Warning Ticker Header */}
-              <div className="w-full flex items-center justify-between bg-amber-50/60 border border-amber-100 rounded-lg p-3 mb-6 animate-pulse">
-                <div className="flex items-center gap-2 text-amber-800 text-xs font-mono">
-                  <AlertOutlined /> <span>BATCH LOCK: INCOMING LIQUIDATION BATCH</span>
+              <div className="w-full flex items-center justify-between bg-amber-50/60 border border-amber-100 rounded-lg p-2.5 mb-5 animate-pulse">
+                <div className="flex items-center gap-2 text-amber-800 text-[11px] font-mono">
+                  <AlertOutlined /> <span>BATCH LOCK: INCOMING BATCH</span>
                 </div>
-                <Tag color="amber" className="font-mono text-[10px] m-0">ACTIVE</Tag>
+                <Tag color="amber" className="font-mono text-[9px] m-0">ACTIVE</Tag>
               </div>
 
               {/* Step Selection Grid Controllers */}
-              <h3 className="text-xs font-bold font-mono tracking-wider text-slate-400 uppercase mb-3">Pipeline Stage Selectors</h3>
-              <div className="grid grid-cols-3 gap-2 mb-6">
+              <h3 className="text-[11px] font-bold font-mono tracking-wider text-slate-400 uppercase mb-2">Pipeline Stage Selectors</h3>
+              <div className="grid grid-cols-3 gap-2 mb-5">
                 <Button 
                   type={pipelineState === 'intake' ? 'primary' : 'default'}
                   onClick={resetSequence}
-                  className={`font-mono text-xs rounded-xl h-10 flex items-center justify-center ${pipelineState === 'intake' ? 'bg-slate-900 border-slate-900 text-white hover:bg-slate-800' : ''}`}
+                  className={`font-mono text-xs rounded-xl h-9 flex items-center justify-center ${pipelineState === 'intake' ? 'bg-slate-900 border-slate-900 text-white' : ''}`}
                 >
                   1. Intake
                 </Button>
@@ -781,22 +792,22 @@ export default function QwikPage() {
                   type={pipelineState === 'scanning' ? 'primary' : 'default'}
                   onClick={startScanSequence}
                   disabled={pipelineState === 'scanning'}
-                  className={`font-mono text-xs rounded-xl h-10 flex items-center justify-center ${pipelineState === 'scanning' ? 'bg-sky-600 border-sky-600 text-white' : ''}`}
+                  className={`font-mono text-xs rounded-xl h-9 flex items-center justify-center ${pipelineState === 'scanning' ? 'bg-sky-600 border-sky-600 text-white' : ''}`}
                 >
                   2. Scan
                 </Button>
                 <Button 
                   type={pipelineState === 'refurbished' ? 'primary' : 'default'}
                   onClick={forceClearSequence}
-                  className={`font-mono text-xs rounded-xl h-10 flex items-center justify-center ${pipelineState === 'refurbished' ? 'bg-emerald-600 border-emerald-600 text-white' : ''}`}
+                  className={`font-mono text-xs rounded-xl h-9 flex items-center justify-center ${pipelineState === 'refurbished' ? 'bg-emerald-600 border-emerald-600 text-white' : ''}`}
                 >
                   3. Clear
                 </Button>
               </div>
 
               {/* Matrix Block Real-Time Eraser Simulator */}
-              <h3 className="text-xs font-bold font-mono tracking-wider text-slate-400 uppercase mb-2">Memory Block Invalidation Matrix</h3>
-              <div className="grid grid-cols-10 gap-1.5 mb-6 p-3 bg-indigo-50/70 rounded-xl border border-indigo-100">
+              <h3 className="text-[11px] font-bold font-mono tracking-wider text-slate-400 uppercase mb-2">Memory Block Invalidation Matrix</h3>
+              <div className="grid grid-cols-10 gap-1 mb-5 p-2.5 bg-indigo-50/70 rounded-xl border border-indigo-100">
                 {Array.from({ length: 40 }).map((_, idx) => {
                   const triggerThreshold = (idx / 40) * 100;
                   const isCleared = scanProgress > triggerThreshold || pipelineState === 'refurbished';
@@ -816,10 +827,10 @@ export default function QwikPage() {
               </div>
 
               {/* Condition Yield Slider */}
-              <div className="mb-6">
-                <div className="flex justify-between items-center mb-2">
-                  <span className="text-xs font-mono text-slate-500">Target Re-Commerce Grading Max Allocation</span>
-                  <span className="text-xs font-bold font-mono text-slate-800">Grade {activeGrade} APPROVED</span>
+              <div className="mb-5">
+                <div className="flex justify-between items-center mb-1.5">
+                  <span className="text-[11px] font-mono text-slate-500">Grading Target Allocation</span>
+                  <span className="text-[11px] font-bold font-mono text-slate-800">Grade {activeGrade} APPROVED</span>
                 </div>
                 <Slider 
                   min={1} 
@@ -836,7 +847,7 @@ export default function QwikPage() {
               </div>
 
               {/* Control Action Buttons */}
-              <div style={{ display: 'flex', gap: '12px' }}>
+              <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                 {pipelineState !== 'scanning' ? (
                   <Button
                     type="primary"
@@ -845,12 +856,14 @@ export default function QwikPage() {
                     onClick={startScanSequence}
                     style={{
                       flex: 1,
-                      height: '52px',
-                      borderRadius: '26px',
+                      minWidth: '160px',
+                      height: '48px',
+                      borderRadius: '24px',
                       background: 'linear-gradient(90deg, #0284c7, #2563eb)',
                       border: 'none',
                       fontWeight: 800,
-                      boxShadow: '0 8px 20px -4px rgba(2, 132, 199, 0.3)'
+                      boxShadow: '0 8px 20px -4px rgba(2, 132, 199, 0.3)',
+                      fontSize: '13px'
                     }}
                   >
                     {pipelineState === 'refurbished' ? 'RE-SCAN DEVICE' : 'INITIATE LASER SCAN'}
@@ -862,9 +875,11 @@ export default function QwikPage() {
                     onClick={resetSequence}
                     style={{
                       flex: 1,
-                      height: '52px',
-                      borderRadius: '26px',
-                      fontWeight: 800
+                      minWidth: '160px',
+                      height: '48px',
+                      borderRadius: '24px',
+                      fontWeight: 800,
+                      fontSize: '13px'
                     }}
                   >
                     ABORT SEQUENCE
@@ -877,12 +892,14 @@ export default function QwikPage() {
                     onClick={resetSequence}
                     style={{
                       flex: 1,
-                      height: '52px',
-                      borderRadius: '26px',
+                      minWidth: '140px',
+                      height: '48px',
+                      borderRadius: '24px',
                       fontWeight: 800,
                       border: '1.5px solid #cbd5e1',
                       color: '#0f172a',
-                      background: '#ffffff'
+                      background: '#ffffff',
+                      fontSize: '13px'
                     }}
                   >
                     INTAKE NEXT
@@ -922,13 +939,13 @@ export default function QwikPage() {
                 </div>
               )}
 
-              {/* "GRADE PASSED" Ink Condition Stamp (Placed outside the 3D transforms to stay absolute front) */}
+              {/* "GRADE PASSED" Ink Condition Stamp */}
               {pipelineState === 'refurbished' && (
                 <div 
-                  className="absolute z-40 bg-white/95 border-4 border-emerald-500 text-emerald-500 font-black px-6 py-3 rounded-xl text-xl uppercase tracking-widest pointer-events-none stamp-bounce"
+                  className="absolute z-40 bg-white/95 border-4 border-emerald-500 text-emerald-500 font-black px-5 py-2.5 rounded-xl text-lg uppercase tracking-widest pointer-events-none stamp-bounce"
                   style={{
                     top: isMobile ? '40%' : '35%',
-                    left: isMobile ? '25%' : '38%',
+                    left: isMobile ? '20%' : '38%',
                     boxShadow: '0 12px 28px rgba(16, 185, 129, 0.45)',
                     fontFamily: 'monospace'
                   }}
@@ -942,14 +959,14 @@ export default function QwikPage() {
         </Row>
 
         {/* Linux Style Real-time Status Log Stream Terminal */}
-        <div className="w-full mt-6">
+        <div className="w-full mt-5">
           <Card 
-            className="rounded-2xl bg-slate-950 border border-slate-900 p-4 shadow-inner relative"
+            className="rounded-2xl bg-slate-950 border border-slate-900 p-3.5 shadow-inner relative"
             styles={{ body: { padding: 0 } }}
           >
-            <div className="flex items-center justify-between border-b border-slate-900 pb-2 mb-3">
-              <span className="text-[11px] font-mono text-slate-500 flex items-center gap-2">
-                <FileTextOutlined /> CORE SYSTEM DIAGNOSTIC OUTPUT
+            <div className="flex items-center justify-between border-b border-slate-900 pb-2 mb-2.5">
+              <span className="text-[10px] font-mono text-slate-500 flex items-center gap-1.5">
+                <FileTextOutlined /> CORE DIAGNOSTIC OUTPUT
               </span>
               <div className="flex gap-1.5">
                 <span className="w-2 h-2 rounded-full bg-red-500/80" />
@@ -957,42 +974,41 @@ export default function QwikPage() {
                 <span className="w-2 h-2 rounded-full bg-emerald-500/80" />
               </div>
             </div>
-            <div className="h-40 overflow-y-auto font-mono text-[11px] leading-relaxed text-slate-300 scrollbar-thin custom-scrollbar">
+            <div ref={terminalScrollRef} className="h-32 overflow-y-auto font-mono text-[10.5px] leading-relaxed text-slate-300 scrollbar-thin custom-scrollbar">
               {terminalLogs.map((log, i) => (
                 <div key={i} className={`mb-1 ${log.includes('✅') ? 'text-emerald-400' : log.includes('⏳') ? 'text-sky-400' : 'text-slate-300'}`}>
                   {log}
                 </div>
               ))}
-              <div ref={terminalEndRef} />
             </div>
           </Card>
         </div>
       </div>
 
       {/* PROCESS PROGRESSION / STEPS DETAILED */}
-      <div ref={stepsReveal.ref} className={stepsReveal.isVisible ? 'visible' : ''} style={{ padding: '80px 24px', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <Tag color="blue" style={{ marginBottom: '16px', fontWeight: 800 }}>COMPLIANCE ARCHITECTURE</Tag>
-          <Title level={2} style={{ fontWeight: 800, color: '#0f172a', margin: 0, fontSize: '32px' }}>Operational Security Standards</Title>
-          <Paragraph style={{ color: '#475569', fontSize: '15px', marginTop: '12px' }}>
+      <div ref={stepsReveal.ref} className={stepsReveal.isVisible ? 'visible' : ''} style={{ padding: 'clamp(50px, 8vw, 80px) 16px', maxWidth: '1200px', margin: '0 auto' }}>
+        <div style={{ textAlign: 'center', marginBottom: 'clamp(36px, 6vw, 56px)' }}>
+          <Tag color="blue" style={{ marginBottom: '12px', fontWeight: 800, fontSize: '11px' }}>COMPLIANCE ARCHITECTURE</Tag>
+          <Title level={2} style={{ fontWeight: 800, color: '#0f172a', margin: 0, fontSize: 'clamp(1.75rem, 4vw, 2.2rem)' }}>Operational Security Standards</Title>
+          <Paragraph style={{ color: '#475569', fontSize: '14px', marginTop: '10px' }}>
             How we process and assure physical validation, data eradication, and remarketing pathways.
           </Paragraph>
         </div>
 
-        <Row gutter={[32, 32]}>
+        <Row gutter={[20, 20]}>
           {[
             { title: 'Intake Inspection', icon: <BarcodeOutlined />, desc: 'Lot validation, barcoding, and logging physical anomalies on secondary frames.' },
             { title: 'NIST Sanitization', icon: <LockOutlined />, desc: 'Certified logical wipe conforming strictly to NIST SP 800-88 storage clearing rules.' },
             { title: 'Market Diagnostics', icon: <SettingOutlined />, desc: 'Over 50 components checked via logic ports to determine structural and parts valuation.' },
             { title: 'Recommerce Pipeline', icon: <ShopOutlined />, desc: 'Distribution to verified recycling and business recovery partners for eco-friendly return.' }
           ].map((step, idx) => (
-            <Col xs={24} md={12} lg={6} key={idx} className={`reveal-card ${stepsReveal.isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${idx * 0.1}s` }}>
-              <div className="frosted-panel" style={{ padding: '28px', height: '100%', border: '1px solid #e2e8f0' }}>
-                <div style={{ fontSize: '24px', color: '#0284c7', marginBottom: '20px', width: '56px', height: '56px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px', background: '#f0f9ff', border: '1px solid #e0f2fe' }}>
+            <Col xs={24} sm={12} lg={6} key={idx} className={`reveal-card ${stepsReveal.isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${idx * 0.1}s` }}>
+              <div className="frosted-panel" style={{ padding: '24px', height: '100%', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '22px', color: '#0284c7', marginBottom: '16px', width: '48px', height: '48px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '14px', background: '#f0f9ff', border: '1px solid #e0f2fe' }}>
                   {step.icon}
                 </div>
-                <h5 style={{ fontWeight: 800, color: '#0f172a', fontSize: '17px', marginBottom: '8px' }}>{step.title}</h5>
-                <span style={{ fontSize: '13.5px', color: '#475569', lineHeight: '1.6', display: 'block' }}>{step.desc}</span>
+                <h5 style={{ fontWeight: 800, color: '#0f172a', fontSize: '16px', marginBottom: '6px' }}>{step.title}</h5>
+                <span style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6', display: 'block' }}>{step.desc}</span>
               </div>
             </Col>
           ))}
@@ -1000,50 +1016,50 @@ export default function QwikPage() {
       </div>
 
       {/* ROI SLIDER WIDGET */}
-      <div ref={calcReveal.ref} className={calcReveal.isVisible ? 'visible' : ''} style={{ background: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0', padding: '100px 24px' }}>
+      <div ref={calcReveal.ref} className={calcReveal.isVisible ? 'visible' : ''} style={{ background: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0', padding: 'clamp(60px, 10vw, 100px) 16px' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto', textAlign: 'center' }}>
           <div className="stagger-text stagger-1">
-            <Tag style={{ marginBottom: '16px', background: '#f0f9ff', border: '1px solid #e0f2fe', color: '#0284c7', padding: '4px 16px', borderRadius: '20px', fontWeight: 800 }}>ESTIMATOR WIDGET</Tag>
+            <Tag style={{ marginBottom: '12px', background: '#f0f9ff', border: '1px solid #e0f2fe', color: '#0284c7', padding: '4px 14px', borderRadius: '20px', fontWeight: 800, fontSize: '11px' }}>ESTIMATOR WIDGET</Tag>
           </div>
           <div className="stagger-text stagger-2">
-            <Title level={2} style={{ color: '#0f172a', fontWeight: 800, fontSize: '32px', marginBottom: '12px' }}>Estimate Your Buyback Value</Title>
+            <Title level={2} style={{ color: '#0f172a', fontWeight: 800, fontSize: 'clamp(1.75rem, 4vw, 2.2rem)', marginBottom: '8px' }}>Estimate Your Buyback Value</Title>
           </div>
           <div className="stagger-text stagger-3">
-            <Paragraph style={{ color: '#475569', fontSize: '15px', marginBottom: '48px' }}>Determine the financial returns for recycling your aging device lots.</Paragraph>
+            <Paragraph style={{ color: '#475569', fontSize: '14px', marginBottom: '36px' }}>Determine the financial returns for recycling your aging device lots.</Paragraph>
           </div>
 
-          <div className="frosted-panel stagger-text stagger-4" style={{ padding: '36px' }}>
-            <Title level={5} style={{ color: '#0f172a', marginBottom: '32px', fontWeight: 800, letterSpacing: '0.5px' }}>NUMBER OF DEVICES TO RECYCLE</Title>
+          <div className="frosted-panel frosted-panel-mobile-padding stagger-text stagger-4" style={{ padding: '36px' }}>
+            <Title level={5} style={{ color: '#0f172a', marginBottom: '24px', fontWeight: 800, letterSpacing: '0.5px', fontSize: '12px' }}>NUMBER OF DEVICES TO RECYCLE</Title>
 
             <Slider
               min={100} max={10000} step={50}
               value={deviceCount} onChange={setDeviceCount}
               tooltip={{ formatter: val => `${val} Devices` }}
               trackStyle={{ background: '#0284c7', height: '6px' }}
-              handleStyle={{ borderColor: '#0284c7', width: '22px', height: '22px', marginTop: '-8px', backgroundColor: '#fff' }}
+              handleStyle={{ borderColor: '#0284c7', width: '20px', height: '20px', marginTop: '-7px', backgroundColor: '#fff' }}
               railStyle={{ background: '#cbd5e1', height: '6px' }}
             />
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontWeight: 700, marginTop: '16px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#64748b', fontWeight: 700, marginTop: '14px', fontSize: '13px' }}>
               <span>100 Units</span>
-              <span style={{ color: '#0284c7', fontSize: '20px', fontWeight: 800 }}>{deviceCount.toLocaleString()} Selected</span>
+              <span style={{ color: '#0284c7', fontSize: '18px', fontWeight: 800 }}>{deviceCount.toLocaleString()} Selected</span>
               <span>10k+ Units</span>
             </div>
 
-            <Divider style={{ borderColor: '#e2e8f0', margin: '36px 0' }} />
+            <Divider style={{ borderColor: '#e2e8f0', margin: '28px 0' }} />
 
-            <Row gutter={[24, 24]} justify="center">
+            <Row gutter={[20, 20]} justify="center">
               <Col xs={24} md={12}>
-                <Text style={{ color: '#64748b', fontWeight: 700, letterSpacing: '1px', fontSize: '12px' }}>ESTIMATED RETURN (USD)</Text>
-                <div style={{ fontSize: 'clamp(2.5rem, 4vw, 3.8rem)', fontWeight: 900, color: '#10b981', lineHeight: 1.1, marginTop: '8px' }}>
+                <Text style={{ color: '#64748b', fontWeight: 700, letterSpacing: '0.5px', fontSize: '11px', display: 'block' }}>ESTIMATED RETURN (USD)</Text>
+                <div style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, color: '#10b981', lineHeight: 1.1, marginTop: '6px' }}>
                   ${((deviceCount * 245) / 1000).toFixed(1)}k
                 </div>
               </Col>
               <Col xs={24} md={12}>
-                <Text style={{ color: '#64748b', fontWeight: 700, letterSpacing: '1px', fontSize: '12px' }}>AUDIT COMPLETION DURATION</Text>
-                <div style={{ fontSize: 'clamp(2.5rem, 4vw, 3.8rem)', fontWeight: 900, color: '#0f172a', lineHeight: 1.1, marginTop: '8px' }}>
-                  {Math.max(2, Math.ceil(deviceCount / 1000))} Days
-                </div>
+                <Text style={{ color: '#64748b', fontWeight: 700, letterSpacing: '0.5px', fontSize: '11px', display: 'block' }}>AUDIT COMPLETION DURATION</Text>
+                <div style={{ fontSize: 'clamp(2rem, 5vw, 3.8rem)', fontWeight: 900, color: '#0f172a', lineHeight: 1.1, marginTop: '6px' }}>
+  {Math.max(2, Math.ceil(deviceCount / 1000))} Days
+</div>
               </Col>
             </Row>
           </div>
@@ -1051,13 +1067,13 @@ export default function QwikPage() {
       </div>
 
       {/* FEATURE GRID */}
-      <div ref={techReveal.ref} className={techReveal.isVisible ? 'visible' : ''} style={{ padding: '100px 24px', maxWidth: '1360px', margin: '0 auto' }}>
-        <div className="stagger-text stagger-1" style={{ textAlign: 'center', marginBottom: '56px' }}>
-          <Title level={2} style={{ fontWeight: 900, fontSize: '32px', color: '#0f172a' }}>Engineered for Enterprise Scale</Title>
-          <Paragraph style={{ fontSize: '15px', color: '#475569', marginTop: '10px' }}>Comprehensive systems covering operations, security, and sustainability.</Paragraph>
+      <div ref={techReveal.ref} className={techReveal.isVisible ? 'visible' : ''} style={{ padding: 'clamp(60px, 10vw, 100px) 16px', maxWidth: '1360px', margin: '0 auto' }}>
+        <div className="stagger-text stagger-1" style={{ textAlign: 'center', marginBottom: 'clamp(36px, 6vw, 56px)' }}>
+          <Title level={2} style={{ fontWeight: 900, fontSize: 'clamp(1.75rem, 4vw, 2.2rem)', color: '#0f172a' }}>Engineered for Enterprise Scale</Title>
+          <Paragraph style={{ fontSize: '14px', color: '#475569', marginTop: '8px' }}>Comprehensive systems covering operations, security, and sustainability.</Paragraph>
         </div>
 
-        <Row gutter={[32, 32]}>
+        <Row gutter={[20, 20]}>
           {[
             { title: 'Precision Component Check', icon: <FileSearchOutlined />, desc: 'Systematically assesses structural integrity and tests all vital device processors.' },
             { title: 'High-Demand Reselling', icon: <RobotOutlined />, desc: 'Locks in competitive asset returns utilizing real-time secondary market index feeds.' },
@@ -1067,12 +1083,12 @@ export default function QwikPage() {
             { title: 'Centralized Fleet Scanner', icon: <SettingOutlined />, desc: 'Inspects and calculates values of thousands of client workstations on a single portal.' }
           ].map((item, idx) => (
             <Col xs={24} md={12} lg={8} key={idx} className={`reveal-card ${techReveal.isVisible ? 'visible' : ''}`} style={{ transitionDelay: `${(idx * 0.08) + 0.2}s` }}>
-              <div className="frosted-panel" style={{ height: '100%', padding: '32px', border: '1px solid #e2e8f0' }}>
-                <div style={{ fontSize: '28px', color: '#0284c7', marginBottom: '20px', background: '#f0f9ff', width: '64px', height: '64px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '16px', border: '1px solid #e0f2fe' }}>
+              <div className="frosted-panel" style={{ height: '100%', padding: '24px', border: '1px solid #e2e8f0' }}>
+                <div style={{ fontSize: '24px', color: '#0284c7', marginBottom: '16px', background: '#f0f9ff', width: '52px', height: '52px', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '14px', border: '1px solid #e0f2fe' }}>
                   {item.icon}
                 </div>
-                <h5 style={{ fontWeight: 800, color: '#0f172a', fontSize: '18px', marginBottom: '10px' }}>{item.title}</h5>
-                <span style={{ fontSize: '13.5px', color: '#475569', lineHeight: '1.65', display: 'block' }}>{item.desc}</span>
+                <h5 style={{ fontWeight: 800, color: '#0f172a', fontSize: '17px', marginBottom: '8px' }}>{item.title}</h5>
+                <span style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6', display: 'block' }}>{item.desc}</span>
               </div>
             </Col>
           ))}
@@ -1080,42 +1096,42 @@ export default function QwikPage() {
       </div>
 
       {/* IMPACT STATISTICS */}
-      <div ref={impactReveal.ref} className={impactReveal.isVisible ? 'visible' : ''} style={{ padding: '80px 24px', background: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
+      <div ref={impactReveal.ref} className={impactReveal.isVisible ? 'visible' : ''} style={{ padding: 'clamp(50px, 8vw, 80px) 16px', background: '#f8fafc', borderTop: '1px solid #e2e8f0', borderBottom: '1px solid #e2e8f0' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
           <div className="stagger-text stagger-1">
-            <Title level={4} style={{ fontWeight: 800, color: '#64748b', marginBottom: '48px', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '14px' }}>Audited Global Sustainability Metrics</Title>
+            <Title level={4} style={{ fontWeight: 800, color: '#64748b', marginBottom: '36px', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '12px' }}>Audited Global Sustainability Metrics</Title>
           </div>
-          <Row gutter={[32, 32]} className="stagger-text stagger-2">
+          <Row gutter={[24, 24]} className="stagger-text stagger-2">
             <Col xs={24} md={8}>
-              <Statistic title={<span style={{ color: '#475569', fontWeight: 700, letterSpacing: '0.5px', fontSize: '13px' }}>POUNDS OF E-WASTE RETRIEVED</span>} value={ewasteCount} valueStyle={{ fontSize: '3.6rem', fontWeight: 900, color: '#10b981', fontFamily: 'monospace' }} formatter={(val) => Number(val).toLocaleString()} />
+              <Statistic title={<span style={{ color: '#475569', fontWeight: 700, letterSpacing: '0.5px', fontSize: '12px' }}>POUNDS OF E-WASTE RETRIEVED</span>} value={ewasteCount} valueStyle={{ fontSize: 'clamp(2.5rem, 5vw, 3.6rem)', fontWeight: 900, color: '#10b981', fontFamily: 'monospace' }} formatter={(val) => Number(val).toLocaleString()} />
             </Col>
             <Col xs={24} md={8}>
-              <Statistic title={<span style={{ color: '#475569', fontWeight: 700, letterSpacing: '0.5px', fontSize: '13px' }}>CO2 EQUIVALENT PREVENTED (TONS)</span>} value={co2Count} valueStyle={{ fontSize: '3.6rem', fontWeight: 900, color: '#0284c7', fontFamily: 'monospace' }} formatter={(val) => Number(val).toLocaleString()} />
+              <Statistic title={<span style={{ color: '#475569', fontWeight: 700, letterSpacing: '0.5px', fontSize: '12px' }}>CO2 EQUIVALENT PREVENTED (TONS)</span>} value={co2Count} valueStyle={{ fontSize: 'clamp(2.5rem, 5vw, 3.6rem)', fontWeight: 900, color: '#0284c7', fontFamily: 'monospace' }} formatter={(val) => Number(val).toLocaleString()} />
             </Col>
             <Col xs={24} md={8}>
-              <Statistic title={<span style={{ color: '#475569', fontWeight: 700, letterSpacing: '0.5px', fontSize: '13px' }}>LIQUID CAPITAL RETURNED TO CLIENTS</span>} value={capitalCount / 10} valueStyle={{ fontSize: '3.6rem', fontWeight: 900, color: '#2563eb', fontFamily: 'monospace' }} precision={1} prefix="$" suffix="M" />
+              <Statistic title={<span style={{ color: '#475569', fontWeight: 700, letterSpacing: '0.5px', fontSize: '12px' }}>LIQUID CAPITAL RETURNED TO CLIENTS</span>} value={capitalCount / 10} valueStyle={{ fontSize: 'clamp(2.5rem, 5vw, 3.6rem)', fontWeight: 900, color: '#2563eb', fontFamily: 'monospace' }} precision={1} prefix="$" suffix="M" />
             </Col>
           </Row>
         </div>
       </div>
 
       {/* FOOTER CTA */}
-      <div ref={footerReveal.ref} className={footerReveal.isVisible ? 'visible' : ''} style={{ padding: '140px 24px', textAlign: 'center', background: '#ffffff' }}>
+      <div ref={footerReveal.ref} className={footerReveal.isVisible ? 'visible' : ''} style={{ padding: 'clamp(80px, 12vw, 140px) 16px', textAlign: 'center', background: '#ffffff' }}>
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
           <div className="stagger-text stagger-1">
-            <Title level={1} style={{ fontSize: 'clamp(2.4rem, 4.8vw, 4rem)', fontWeight: 900, color: '#0f172a', marginBottom: '24px', lineHeight: 1.15, letterSpacing: '-0.02em' }}>
+            <Title level={1} style={{ fontSize: 'clamp(2rem, 5vw, 4rem)', fontWeight: 900, color: '#0f172a', marginBottom: '20px', lineHeight: 1.15, letterSpacing: '-0.02em' }}>
               Begin Liquidating Idle Tech <span style={{ color: '#0284c7' }}>Safely.</span>
             </Title>
           </div>
           <div className="stagger-text stagger-2">
-            <Paragraph style={{ fontSize: '1.2rem', color: '#475569', marginBottom: '40px', lineHeight: '1.65' }}>
+            <Paragraph style={{ fontSize: 'clamp(1rem, 2vw, 1.2rem)', color: '#475569', marginBottom: '32px', lineHeight: '1.6' }}>
               Secure compliance audits, complete data wipe logs, and competitive returns are ready for your device lots.
             </Paragraph>
           </div>
           <div className="stagger-text stagger-3">
             <Button
               type="primary" size="large" icon={<ArrowRightOutlined />}
-              style={{ height: '64px', padding: '0 40px', fontSize: '16px', fontWeight: 800, borderRadius: '32px', background: 'linear-gradient(90deg, #0f172a, #1e293b)', border: 'none', boxShadow: '0 12px 28px rgba(15, 23, 42, 0.15)' }}
+              style={{ height: '58px', padding: '0 36px', fontSize: '15px', fontWeight: 800, borderRadius: '32px', background: 'linear-gradient(90deg, #0f172a, #1e293b)', border: 'none', boxShadow: '0 12px 28px rgba(15, 23, 42, 0.15)', width: 'auto', maxWidth: '100%' }}
             >
               Request Free Batch Estimate
             </Button>

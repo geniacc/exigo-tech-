@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, Html } from '@react-three/drei';
+import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { AlertOutlined, SyncOutlined, CheckCircleOutlined } from '@ant-design/icons';
 
@@ -15,7 +15,7 @@ const LaptopScene: React.FC<LaptopModel3DProps> = ({ stage, scanProgress, active
   const laptopGroupRef = useRef<THREE.Group>(null);
   const lidGroupRef = useRef<THREE.Group>(null);
 
-  useFrame((state) => {
+  useFrame(() => {
     if (!laptopGroupRef.current || !lidGroupRef.current) return;
 
     // Default rotation targets based on stage
@@ -36,15 +36,14 @@ const LaptopScene: React.FC<LaptopModel3DProps> = ({ stage, scanProgress, active
       if (!isNaN(rzDeg)) baseRz = rzDeg * (Math.PI / 180);
     }
 
-    // Smooth hover physics tracking pointer coordinates as offset
     laptopGroupRef.current.rotation.x = THREE.MathUtils.lerp(
       laptopGroupRef.current.rotation.x,
-      baseRx - state.pointer.y * 0.12,
+      baseRx,
       0.08
     );
     laptopGroupRef.current.rotation.y = THREE.MathUtils.lerp(
       laptopGroupRef.current.rotation.y,
-      baseRy + state.pointer.x * 0.22,
+      baseRy,
       0.08
     );
     laptopGroupRef.current.rotation.z = THREE.MathUtils.lerp(
@@ -363,8 +362,6 @@ export const LaptopModel3D: React.FC<LaptopModel3DProps> = ({ stage, scanProgres
         <pointLight position={[-6, -2, -4]} intensity={0.3} />
 
         <LaptopScene stage={stage} scanProgress={scanProgress} activeGrade={activeGrade} terminalLogs={terminalLogs} />
-
-        <OrbitControls enableZoom={false} maxPolarAngle={Math.PI / 2.2} minPolarAngle={0.15} />
       </Canvas>
     </div>
   );

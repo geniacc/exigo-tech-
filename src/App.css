@@ -1,229 +1,251 @@
 /* ==========================================================================
    1. ROOT LAYOUT & FOOTER GAP FIX
    ========================================================================== */
-html,
-body,
-#root {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    min-height: 100vh !important;
-    display: flex !important;
-    flex-direction: column !important;
-    background-color: #020617 !important;
-    /* Deep space void for footer area */
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-}
-
-.ant-layout {
-    flex: 1 1 auto !important;
-    width: 100% !important;
-    background-color: #f8fafc !important;
-}
-
-/* ==========================================================================
-   2. TYPOGRAPHY & BASE STYLES
-   ========================================================================== */
-body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    -webkit-font-smoothing: antialiased;
-}
-
-/* ==========================================================================
-   3. CREATIVE HOVER & ANIMATION SYSTEM
-   ========================================================================== */
-
-/* The "Magic" Premium Card Container */
-.premium-corporate-card {
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    background: rgba(255, 255, 255, 0.95) !important;
-    border: 1px solid rgba(226, 232, 240, 1) !important;
-    overflow: hidden;
-}
-
-/* QwikSELL Card Hover: Shifts to soft Icy Purple */
-.premium-corporate-card:hover {
-    transform: translateY(-8px) scale(1.01);
-    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%) !important;
-    border-color: rgba(107, 33, 168, 0.3) !important;
-    box-shadow: 0 30px 60px -15px rgba(107, 33, 168, 0.15), 0 4px 20px rgba(0, 0, 0, 0.02) !important;
-}
-
-/* Urja Card Hover: Shifts to soft Icy Blue */
-.premium-corporate-card.secondary:hover {
-    background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%) !important;
-    border-color: rgba(30, 58, 138, 0.3) !important;
-    box-shadow: 0 30px 60px -15px rgba(30, 58, 138, 0.15), 0 4px 20px rgba(0, 0, 0, 0.02) !important;
-}
-
-/* Sub-card interior color shift on parent hover */
-.tech-ecosystem-subcard,
-.val-prop-subcard {
-    transition: all 0.4s ease !important;
-    background: #f8fafc !important;
-}
-
-.premium-corporate-card:hover .tech-ecosystem-subcard {
-    background: #f3e8ff !important;
-    border-color: #d8b4fe !important;
-}
-
-.premium-corporate-card.secondary:hover .val-prop-subcard {
-    background: #dbeafe !important;
-    border-color: #93c5fd !important;
-}
-
-/* Team Card hover interaction */
-.reveal-team-card .ant-card {
-    transition: all 0.4s ease !important;
-}
-
-.reveal-team-card .ant-card:hover {
-    transform: translateY(-8px);
-    background: linear-gradient(to bottom, #ffffff 0%, #faf5ff 100%) !important;
-    border-color: #d8b4fe !important;
-    box-shadow: 0 20px 40px rgba(107, 33, 168, 0.1) !important;
-}
-
-/* Icon Feature Showcase (About Section) */
-.icon-wrapper {
-    width: 84px;
-    height: 84px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.premium-feature-showcase-card:hover .icon-wrapper {
-    transform: scale(1.15) rotate(8deg);
-    background: #6b21a8 !important;
-}
-
-.premium-feature-showcase-card:hover .icon-wrapper svg {
-    color: #ffffff !important;
-}
-
-/* ==========================================================================
-   4. UTILITIES & RESPONSIVE
-   ========================================================================== */
-.back-to-top-floating {
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    z-index: 99;
-    opacity: 0;
-    transform: scale(0.8) translateY(20px);
-    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    pointer-events: none;
-}
-
-.back-to-top-floating.visible {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-    pointer-events: auto;
-}
-
-.bounce-slow {
-    animation: bounce-slow 3s infinite ease-in-out;
-}
-
-@keyframes bounce-slow {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-8px);
-    }
-}
-
-.desktop-only {
-    display: flex !important;
-}
-
-.mobile-only {
-    display: none !important;
-}
-
-@media (max-width: 768px) {
-    .desktop-only {
-        display: none !important;
-    }
-
-    .mobile-only {
-        display: flex !important;
-    }
-}
-
-/* Fixes for Ant Design components */
-.premium-card .ant-card-body {
-    padding: 40px !important;
-}
-
-.hero-main-title {
-    font-size: clamp(3rem, 8vw, 6.5rem) !important;
-}
-
-.vibrant-gradient-text {
-    background: linear-gradient(135deg, #6b21a8 0%, #1e3a8a 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
-
-@media (max-width: 576px) {
-    .hero-main-title {
-        font-size: clamp(1.8rem, 7vw, 2.8rem) !important;
-    }
-}
-
-/* ==========================================================================
-   SMART DIRECTIONAL SCROLL NAVBAR STYLES
-   ========================================================================== */
-.smart-animated-navbar {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
-    height: 80px;
-    z-index: 1000;
-
-    /* Frosted glass space aesthetic */
-    background: rgba(15, 23, 42, 0.75) !important;
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-
-    /* Extreme high performance ease transitions */
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease !important;
-    will-change: transform;
-}
-
-/* Slide into view completely */
-.nav-visible {
-    transform: translateY(0);
-}
-
-/* Hide cleanly off viewport when scrolling down */
-.nav-hidden {
-    transform: translateY(-100%);
-}
-
-/* Text coloring overrides for dark layout context visibility */
-.smart-animated-navbar .ant-btn-text {
-    color: #f8fafc !important;
-    transition: all 0.25s ease;
-}
-
-.smart-animated-navbar .ant-btn-text:hover {
-    color: #38bdf8 !important;
-    background-color: rgba(255, 255, 255, 0.06) !important;
-}
+   html,
+   body,
+   #root {
+       margin: 0 !important;
+       padding: 0 !important;
+       width: 100% !important;
+       min-height: 100vh !important;
+       display: flex !important;
+       flex-direction: column !important;
+       background-color: #020617 !important;
+       /* Deep space void for footer area */
+       scroll-behavior: smooth;
+       overflow-x: hidden;
+   }
+   
+   .ant-layout {
+       flex: 1 1 auto !important;
+       width: 100% !important;
+       background-color: #f8fafc !important;
+   }
+   
+   /* ==========================================================================
+      2. TYPOGRAPHY & BASE STYLES
+      ========================================================================== */
+   body {
+       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+       -webkit-font-smoothing: antialiased;
+   }
+   
+   /* ==========================================================================
+      3. CREATIVE HOVER & ANIMATION SYSTEM (EXIGO BLUE THEME)
+      ========================================================================== */
+   
+   /* The "Magic" Premium Card Container */
+   .premium-corporate-card {
+       transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+       background: rgba(255, 255, 255, 0.95) !important;
+       border: 1px solid rgba(226, 232, 240, 1) !important;
+       overflow: hidden;
+   }
+   
+   /* QwikSELL Card Hover: Shifts to soft Icy Blue */
+   .premium-corporate-card:hover {
+       transform: translateY(-8px) scale(1.01);
+       background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%) !important;
+       border-color: rgba(37, 99, 235, 0.3) !important;
+       box-shadow: 0 30px 60px -15px rgba(37, 99, 235, 0.15), 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+   }
+   
+   /* Urja Card Hover: Shifts to deep Cobalt Blue */
+   .premium-corporate-card.secondary:hover {
+       background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%) !important;
+       border-color: rgba(30, 58, 138, 0.3) !important;
+       box-shadow: 0 30px 60px -15px rgba(30, 58, 138, 0.15), 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+   }
+   
+   /* Sub-card interior color shift on parent hover */
+   .tech-ecosystem-subcard,
+   .val-prop-subcard {
+       transition: all 0.4s ease !important;
+       background: #f8fafc !important;
+   }
+   
+   .premium-corporate-card:hover .tech-ecosystem-subcard {
+       background: #e0f2fe !important;
+       border-color: #7dd3fc !important;
+   }
+   
+   .premium-corporate-card.secondary:hover .val-prop-subcard {
+       background: #dbeafe !important;
+       border-color: #93c5fd !important;
+   }
+   
+   /* Team Card hover interaction */
+   .reveal-team-card .ant-card {
+       transition: all 0.4s ease !important;
+   }
+   
+   .reveal-team-card .ant-card:hover {
+       transform: translateY(-8px);
+       background: linear-gradient(to bottom, #ffffff 0%, #f0f9ff 100%) !important;
+       border-color: #93c5fd !important;
+       box-shadow: 0 20px 40px rgba(37, 99, 235, 0.12) !important;
+   }
+   
+   /* Icon Feature Showcase (About Section) */
+   .icon-wrapper {
+       width: 84px;
+       height: 84px;
+       border-radius: 50%;
+       display: inline-flex;
+       align-items: center;
+       justify-content: center;
+       margin-bottom: 12px;
+       transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s ease;
+   }
+   
+   .premium-feature-showcase-card:hover .icon-wrapper {
+       transform: scale(1.15) rotate(8deg);
+       background: #2563eb !important;
+   }
+   
+   .premium-feature-showcase-card:hover .icon-wrapper svg {
+       color: #ffffff !important;
+   }
+   
+   /* ==========================================================================
+      4. DYNAMIC HERO TYPOGRAPHY & GRADIENTS
+      ========================================================================== */
+   
+   /* Shimmering Ribbon Gradient matching the Exigo Mark */
+   .exigo-dark-blue-text {
+       background: linear-gradient(
+           120deg,
+           #0f172a 0%,    /* Deep Slate / Dark Navy base */
+           #1e3a8a 25%,   /* Deep Royal Blue */
+           #2563eb 50%,   /* Vibrant Cobalt Blue */
+           #38bdf8 75%,   /* Ice-blue highlight */
+           #1e3a8a 100%   /* Deep Royal Blue loop */
+       );
+       background-size: 250% auto;
+       -webkit-background-clip: text;
+       -webkit-text-fill-color: transparent;
+       animation: exigoShimmer 5s ease-in-out infinite alternate;
+       filter: drop-shadow(0 4px 14px rgba(30, 58, 138, 0.22));
+   }
+   
+   @keyframes exigoShimmer {
+       0% {
+           background-position: 0% center;
+       }
+       100% {
+           background-position: 100% center;
+       }
+   }
+   
+   .hero-main-title {
+       font-size: clamp(3rem, 8vw, 6.5rem) !important;
+   }
+   
+   @media (max-width: 576px) {
+       .hero-main-title {
+           font-size: clamp(1.8rem, 7vw, 2.8rem) !important;
+       }
+   }
+   
+   /* ==========================================================================
+      5. UTILITIES & RESPONSIVE
+      ========================================================================== */
+   .back-to-top-floating {
+       position: fixed;
+       bottom: 40px;
+       right: 40px;
+       z-index: 99;
+       opacity: 0;
+       transform: scale(0.8) translateY(20px);
+       transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+       pointer-events: none;
+   }
+   
+   .back-to-top-floating.visible {
+       opacity: 1;
+       transform: scale(1) translateY(0);
+       pointer-events: auto;
+   }
+   
+   .bounce-slow {
+       animation: bounce-slow 3s infinite ease-in-out;
+   }
+   
+   @keyframes bounce-slow {
+       0%,
+       100% {
+           transform: translateY(0);
+       }
+       50% {
+           transform: translateY(-8px);
+       }
+   }
+   
+   .desktop-only {
+       display: flex !important;
+   }
+   
+   .mobile-only {
+       display: none !important;
+   }
+   
+   @media (max-width: 768px) {
+       .desktop-only {
+           display: none !important;
+       }
+   
+       .mobile-only {
+           display: flex !important;
+       }
+   }
+   
+   /* Fixes for Ant Design components */
+   .premium-card .ant-card-body {
+       padding: 40px !important;
+   }
+   
+   /* ==========================================================================
+      6. SMART DIRECTIONAL SCROLL NAVBAR STYLES
+      ========================================================================== */
+   .smart-animated-navbar {
+       position: fixed !important;
+       top: 0;
+       left: 0;
+       width: 100%;
+       display: flex;
+       align-items: center;
+       justify-content: space-between;
+       padding: 0 40px;
+       height: 80px;
+       z-index: 1000;
+   
+       /* Frosted glass space aesthetic */
+       background: rgba(15, 23, 42, 0.85) !important;
+       backdrop-filter: blur(20px);
+       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+   
+       /* High performance ease transitions */
+       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease !important;
+       will-change: transform;
+   }
+   
+   /* Slide into view completely */
+   .nav-visible {
+       transform: translateY(0);
+   }
+   
+   /* Hide cleanly off viewport when scrolling down */
+   .nav-hidden {
+       transform: translateY(-100%);
+   }
+   
+   /* Text coloring overrides for dark layout context visibility */
+   .smart-animated-navbar .ant-btn-text {
+       color: #f8fafc !important;
+       transition: all 0.25s ease;
+   }
+   
+   .smart-animated-navbar .ant-btn-text:hover {
+       color: #38bdf8 !important;
+       background-color: rgba(255, 255, 255, 0.06) !important;
+   }

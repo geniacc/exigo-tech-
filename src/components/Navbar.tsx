@@ -79,12 +79,12 @@ export default function Navbar() {
                         src={exigoLogo}
                         alt="Exigo Cleantech"
                         style={{
-                            maxHeight: '44px',
+                            maxHeight: '60px', // <-- Increased from 44px
                             width: 'auto',
                             objectFit: 'contain',
-                            backgroundColor: '#ffffff', // Forces a white background
-                            padding: '4px 12px',        // Gives the logo breathing room inside the white box
-                            borderRadius: '8px'         // Smooth, rounded corners
+                            backgroundColor: '#ffffff',
+                            padding: '6px 14px',        // <-- Slightly increased padding
+                            borderRadius: '8px'
                         }}
                     />
                 </div>
@@ -95,9 +95,7 @@ export default function Navbar() {
                     <Button type="text" onClick={() => handleNavClick('/about')} style={{ fontWeight: 600 }}>About Us</Button>
                     <Button type="text" onClick={() => handleNavClick('/qwiksell')} style={{ fontWeight: 600 }}>QwikSELL</Button>
                     <Button type="text" onClick={() => handleNavClick('/urja')} style={{ fontWeight: 600 }}>Urja Mobility</Button>
-                    <Button type="text" onClick={() => handleNavClick('/about', 'team')} style={{ fontWeight: 600 }}>Our Team</Button>
                     <Button type="text" onClick={() => handleNavClick('/careers')} style={{ fontWeight: 600 }}>Careers</Button>
-                    <Button type="text" onClick={() => handleNavClick('/', 'investors')} style={{ fontWeight: 600 }}>Investors</Button>
 
                     <Button
                         type="primary"
@@ -134,11 +132,11 @@ export default function Navbar() {
                             src={exigoLogo}
                             alt="Exigo Logo"
                             style={{
-                                height: '36px',
+                                height: '48px', // <-- Increased from 36px for drawer header
                                 width: 'auto',
                                 objectFit: 'contain',
-                                backgroundColor: '#ffffff', // Forces a white background in drawer too
-                                padding: '4px 8px',
+                                backgroundColor: '#ffffff',
+                                padding: '4px 10px',
                                 borderRadius: '6px'
                             }}
                         />
@@ -154,9 +152,7 @@ export default function Navbar() {
                     <Button type="text" onClick={() => handleNavClick('/about')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>About Us</Button>
                     <Button type="text" onClick={() => handleNavClick('/qwiksell')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>QwikSELL</Button>
                     <Button type="text" onClick={() => handleNavClick('/urja')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>URJA Mobility</Button>
-                    <Button type="text" onClick={() => handleNavClick('/about', 'team')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Our Team</Button>
                     <Button type="text" onClick={() => handleNavClick('/careers')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Careers</Button>
-                    <Button type="text" onClick={() => handleNavClick('/', 'investors')} style={{ textAlign: 'left', padding: '12px 24px', fontSize: '15px', fontWeight: 600 }}>Investors</Button>
 
                     <div style={{ padding: '16px 24px 0 24px' }}>
                         <Button

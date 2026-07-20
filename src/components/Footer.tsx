@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react'
-import { Layout, Row, Col, Typography, Divider, Space, Button } from 'antd'
+import { Layout, Row, Col, Typography, Divider, Space, Button, message } from 'antd'
 import {
     EnvironmentOutlined,
     MailOutlined,
@@ -15,6 +15,10 @@ export default function Footer() {
     const navigate = useNavigate()
     const footerRef = useRef<HTMLDivElement>(null)
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+    
+    // State to handle newsletter form submission
+    const [emailInput, setEmailInput] = useState('')
+    const [loading, setLoading] = useState(false)
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
         if (!footerRef.current) return
@@ -34,6 +38,39 @@ export default function Footer() {
             }, 150)
         } else {
             window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+    }
+
+    // Handles submitting the newsletter form via Web3Forms
+    const handleSubscribe = async () => {
+        if (!emailInput) return
+        setLoading(true)
+
+        try {
+            const response = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    access_key: "b8862d69-1033-4237-9b34-09549bcc1163",
+                    email: emailInput,
+                    subject: "🚀 New Corporate Newsletter Subscriber",
+                    from_name: "Exigo Website Form"
+                })
+            })
+
+            const result = await response.json()
+            
+            if (result.success) {
+                message.success('Thank you for subscribing!')
+                setEmailInput('')
+            } else {
+                message.error('Submission failed. Please try again.')
+            }
+        } catch (error) {
+            console.error(error)
+            message.error('Could not connect to the form service.')
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -213,8 +250,18 @@ export default function Footer() {
                                     type="email" 
                                     placeholder="Corporate email..." 
                                     className="newsletter-input" 
+                                    value={emailInput}
+                                    onChange={(e) => setEmailInput(e.target.value)}
+                                    disabled={loading}
                                 />
-                                <Button type="primary" className="newsletter-submit">Join</Button>
+                                <Button 
+                                    type="primary" 
+                                    className="newsletter-submit" 
+                                    onClick={handleSubscribe}
+                                    loading={loading}
+                                >
+                                    Join
+                                </Button>
                             </div>
                         </div>
                     </Col>
@@ -241,17 +288,50 @@ export default function Footer() {
                     <Col xs={24} md={5}>
                         <Title level={5} style={{ color: '#fff', marginBottom: '24px', fontWeight: 800, fontSize: '15px', letterSpacing: '0.02em' }}>Contact Info</Title>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', color: '#94a3b8' }}>
-                            <div className="contact-item">
+                            <a
+                                href="https://maps.app.goo.gl/RdECEkczHghMegqB6"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="contact-item"
+                                style={{ color: 'inherit', textDecoration: 'none' }}
+                            >
                                 <EnvironmentOutlined style={{ color: '#6b21a8', fontSize: '19px', marginTop: '3px', transition: 'all 0.3s ease' }} />
-                                <span style={{ lineHeight: '1.5' }}>Exigo Cleantech Corporate HQ<br />Gurugram, Haryana, India</span>
-                            </div>
-                            <div className="contact-item" onClick={() => window.location.href = 'mailto:info@exigocleantech.com'}>
+                                <span style={{ lineHeight: '1.5' }}>Synq.Work - GSC Towers<br />Gurugram, Haryana, India</span>
+                            </a>
+                            <div
+                                className="contact-item"
+                                onClick={async () => {
+                                    const email = 'info@exigocleantech.com'
+                                    const subject = 'Business Inquiry'
+                                    const isApple = /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)
+
+                                    if (isApple) {
+                                        window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}`
+                                        return
+                                    }
+
+                                    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(subject)}`
+                                    const newTab = window.open(gmailUrl, '_blank')
+
+                                    if (!newTab || newTab.closed || typeof newTab.closed === 'undefined') {
+                                        try {
+                                            if (!navigator.clipboard?.writeText) {
+                                                throw new Error('Clipboard API unavailable')
+                                            }
+                                            await navigator.clipboard.writeText(email)
+                                            message.info('Email copied to clipboard! You can paste it into your mail app.')
+                                        } catch {
+                                            message.error('Could not open email or copy the address. Please copy it manually.')
+                                        }
+                                    }
+                                }}
+                            >
                                 <MailOutlined style={{ color: '#6b21a8', fontSize: '16px', transition: 'all 0.3s ease' }} />
                                 <span style={{ textDecoration: 'underline' }}>info@exigocleantech.com</span>
                             </div>
                             <div className="contact-item">
                                 <PhoneOutlined style={{ color: '#6b21a8', fontSize: '16px', transition: 'all 0.3s ease' }} />
-                                <span>+91 124 400 5000</span>
+                                <span>+918277343434</span>
                             </div>
                         </div>
                     </Col>

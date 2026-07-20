@@ -12,7 +12,8 @@ import {
     HistoryOutlined,
     AuditOutlined,
     CheckCircleOutlined,
-    SearchOutlined
+    SearchOutlined,
+    FieldTimeOutlined
 } from '@ant-design/icons';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -31,12 +32,10 @@ import imgSumit from '../assets/Sumit- Sr. Accounts Excutive.jpeg';
 import imgAnurag from '../assets/Anurag Sharma-Assistant Manager Operations.jpg';
 import imgAbhishek from '../assets/Abhishek Prasad (Collection Executive).jpeg';
 import imgAnkit from '../assets/Ankit Singh.jpeg';
-import imgAnjali from '../assets/Anjali - Accounts Executive.jpeg';
 import imgBharti from '../assets/Bharti Mishra- Customer Support Executive.jpeg';
 import imgSourav from '../assets/Sourav Dey- Sales & Marketing Executive.jpg';
 import imgSujal from '../assets/Sujal-Junior HR Executive.jpeg';
 import imgAmit from '../assets/Amit Bhadouriya - collection Executive.png';
-import imgShivam from '../assets/Shivam Singh.jpeg';
 import imgDipam from '../assets/Dipam Kar (Sales & Collection Executive).jpeg';
 import imgRahul from '../assets/Rahul Singh- Sales & Collection Executive.jpeg';
 import imgRaushan from '../assets/RAUSHAN KUMAR (DGM-SCM).jpeg';
@@ -210,13 +209,12 @@ export default function AboutPage() {
         { id: 12, name: "ANURAG SHARMA",        department: "OPERATIONS",       role: "ASST MANAGER OPERATIONS",                            image: imgAnurag },
         { id: 13, name: "ABHISHEK PRASAD",      department: "COLLECTION",       role: "COLLECTION EXECUTIVE",                               image: imgAbhishek },
         { id: 14, name: "ANKIT SINGH",          department: "SALES & COLLECTION",role: "DRIVER ON-BOARDING & COLLECTION EXECUTIVE",         image: imgAnkit },
-        { id: 15, name: "ANJALI",               department: "ACCOUNTS",         role: "ACCOUNTS EXECUTIVE",                                 image: imgAnjali },
         { id: 16, name: "TAPAS BARMAN",         department: "SALES & MARKETING", role: "SALES & MARKETING EXECUTIVE",                       image: "" },
         { id: 17, name: "BHARTI KUMARI",        department: "CUSTOMER SUPPORT", role: "CUSTOMER SUPPORT EXECUTIVE",                         image: imgBharti },
         { id: 18, name: "SOURAV DEY",           department: "SALES & MARKETING", role: "SALES AND MARKETING EXECUTIVE",                     image: imgSourav },
         { id: 19, name: "SUJAL RATHORE",        department: "HUMAN RESOURCE",   role: "JUNIOR HR EXECUTIVE",                                image: imgSujal },
         { id: 20, name: "AMIT BHADOURIYA",      department: "COLLECTION",       role: "COLLECTION EXECUTIVE",                               image: imgAmit },
-        { id: 21, name: "SHIVAM SINGH",         department: "SALES & COLLECTION",role: "SALES & COLLECTION EXECUTIVE",                      image: imgShivam },
+        
         { id: 22, name: "DIPAM KAR",            department: "SALES & COLLECTION",role: "SALES & COLLECTION EXECUTIVE",                      image: imgDipam },
         { id: 23, name: "RAHUL SINGH",          department: "SALES & COLLECTION",role: "SALES & COLLECTION EXECUTIVE",                      image: imgRahul },
         { id: 24, name: "RAUSHAN KUMAR",        department: "SUPPLY CHAIN",     role: "DGM-SCM",                                            image: imgRaushan },
@@ -233,7 +231,7 @@ export default function AboutPage() {
         { id: 35, name: "ASHISH KUMAR",         department: "CREDIT",           role: "CREDIT EXECUTIVE",                                   image: imgAshish },
         { id: 36, name: "PINKI",                department: "CREDIT",           role: "CREDIT EXECUTIVE",                                   image: imgPinki },
         { id: 37, name: "BHAWANA",              department: "OPERATIONS",       role: "OPERATION EXECUTIVE",                                image: imgBhawana },
-        { id: 38, name: "SNEHA KHANDELWAL",     department: "CREDIT",           role: "CREDIT EXECUTIVE",                                   image: "" },
+       
         { id: 39, name: "JATIN SADANA",         department: "CREDIT",           role: "CREDIT MANAGER",                                     image: "" },
         { id: 40, name: "KRISHNA",              department: "ACCOUNTS",         role: "SENIOR ACCOUNTS EXECUTIVE",                          image: imgKrishna },
         { id: 41, name: "TWINKLE",              department: "MANAGEMENT",       role: "FOUNDER'S OFFICE",                                   image: imgTwinkle },
@@ -384,6 +382,22 @@ export default function AboutPage() {
             }
         );
 
+        // Reveal the roadmap container (was stuck at opacity-0 with no animation)
+        gsap.fromTo(".gsap-timeline-box",
+            { opacity: 0, y: 30 },
+            {
+                opacity: 1,
+                y: 0,
+                duration: 0.9,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".gsap-timeline-section",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            }
+        );
+
         // Timeline line drawing ScrollTrigger
         gsap.fromTo(".timeline-active-line",
             { scaleY: 0 },
@@ -392,8 +406,8 @@ export default function AboutPage() {
                 ease: "none",
                 scrollTrigger: {
                     trigger: ".timeline-container",
-                    start: "top 20%",
-                    end: "bottom 70%",
+                    start: "top 75%",
+                    end: "bottom 40%",
                     scrub: 0.5
                 }
             }
@@ -437,6 +451,24 @@ export default function AboutPage() {
                 }
             );
         });
+
+        // Governance advisory cards reveal
+        gsap.fromTo(".gsap-governance-card",
+            { opacity: 0, y: 40, scale: 0.96 },
+            {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                duration: 0.9,
+                stagger: 0.15,
+                ease: "power3.out",
+                scrollTrigger: {
+                    trigger: ".gsap-governance-section",
+                    start: "top 80%",
+                    toggleActions: "play none none none"
+                }
+            }
+        );
 
         // Team stagger reveal & slight rotate trigger
         gsap.fromTo(".gsap-team-card",
@@ -993,9 +1025,9 @@ export default function AboutPage() {
                         border-radius: 14px !important;
                     }
                     .dir-avatar {
-                        width: 56px !important;
-                        height: 56px !important;
-                        border-width: 1.5px !important;
+                        width: 64px !important;
+                        height: 64px !important;
+                        border-width: 2px !important;
                         margin-bottom: 8px !important;
                     }
                     .dir-name-text {
@@ -1344,7 +1376,7 @@ export default function AboutPage() {
                         </Title>
                     </div>
 
-                    <div className="timeline-container gsap-timeline-box opacity-0">
+                    <div className="timeline-container gsap-timeline-box">
                         {/* Vertical Path Lines */}
                         <div className="timeline-line" />
                         <div className="timeline-active-line" />
@@ -1425,6 +1457,192 @@ export default function AboutPage() {
                     </div>
                 </div>
             </section>
+
+         {/* --- PREMIUM GLOW-GRID ADVISORY & GOVERNANCE BOARD (gsap-governance-section) --- */}
+<section className="gsap-governance-section" style={{ padding: '140px 24px', backgroundColor: '#060813', position: 'relative', overflow: 'hidden' }}>
+    
+    {/* Component-Isolated Advanced Stylesheets for Micro-Interactions */}
+    <style>
+        {`
+        @keyframes cyberPulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.55; transform: scale(1.08); }
+        }
+
+        @keyframes subtleGridMove {
+            0% { background-position: 0px 0px; }
+            100% { background-position: 40px 40px; }
+        }
+
+        .cyber-grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center;
+            mask-image: radial-gradient(circle at 50% 50%, black 40%, transparent 85%);
+            animation: subtleGridMove 24s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .governance-interactive-card {
+            height: 100%;
+            border-radius: 28px !important;
+            background: rgba(10, 15, 30, 0.65) !important;
+            backdrop-filter: blur(20px) !important;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+            position: relative;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        /* Ambient Dynamic Border Shifting */
+        .card-posh { border: 1px solid rgba(168, 85, 247, 0.2) !important; }
+        .card-credit { border: 1px solid rgba(14, 165, 233, 0.2) !important; }
+        .card-equipment { border: 1px solid rgba(16, 185, 129, 0.2) !important; }
+
+        .governance-interactive-card:hover {
+            transform: translateY(-8px) scale(1.015) !important;
+            background: rgba(13, 20, 38, 0.85) !important;
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        .governance-interactive-card:hover::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            border-radius: 28px;
+            padding: 1px;
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask-composite: xor;
+            mask-composite: exclude;
+        }
+
+        .card-posh:hover { 
+            border-color: rgba(168, 85, 247, 0.6) !important;
+            box-shadow: 0 0 30px -5px rgba(168, 85, 247, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.6) !important;
+        }
+        .card-credit:hover { 
+            border-color: rgba(14, 165, 233, 0.6) !important;
+            box-shadow: 0 0 30px -5px rgba(14, 165, 233, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.6) !important;
+        }
+        .card-equipment:hover { 
+            border-color: rgba(16, 185, 129, 0.6) !important;
+            box-shadow: 0 0 30px -5px rgba(16, 185, 129, 0.2), 0 20px 40px -10px rgba(0, 0, 0, 0.6) !important;
+        }
+
+        .icon-container-box {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .governance-interactive-card:hover .icon-container-box {
+            transform: scale(1.1) rotate(4deg);
+            background-color: rgba(255, 255, 255, 0.03) !important;
+        }
+        `}
+    </style>
+
+    {/* Dynamic Background Structural Elements */}
+    <div className="cyber-grid-overlay" />
+    <div style={{ position: 'absolute', top: '15%', left: '50%', transform: 'translate(-50%, -50%)', width: '900px', height: '450px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(124, 58, 237, 0.09) 0%, rgba(2, 132, 199, 0.04) 50%, transparent 80%)', filter: 'blur(70px)', pointerEvents: 'none', animation: 'cyberPulse 10s ease-in-out infinite', zIndex: 1 }} />
+    <div style={{ position: 'absolute', bottom: '-10%', right: '-5%', width: '400px', height: '400px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(16, 185, 129, 0.04) 0%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none', zIndex: 1 }} />
+
+    <div style={{ maxWidth: '1240px', margin: '0 auto', position: 'relative', zIndex: 5 }}>
+        
+        {/* Section Header Element */}
+        <div style={{ textAlign: 'center', marginBottom: '80px' }}>
+            <Tag style={{ padding: '6px 18px', borderRadius: '24px', fontWeight: 800, fontSize: '10px', letterSpacing: '0.12em', background: 'linear-gradient(90deg, rgba(124,58,237,0.18), rgba(2,132,199,0.18))', color: '#e9d5ff', border: '1px solid rgba(168,85,247,0.35)', backdropFilter: 'blur(4px)' }}>
+                CRITICAL SYSTEM DIRECTIVE // ADMINISTRATIVE OVERSIGHT
+            </Tag>
+            <Title level={2} style={{ fontSize: 'clamp(2.4rem, 5vw, 3.2rem)', fontWeight: 900, color: '#f8fafc', marginTop: '24px', letterSpacing: '-0.03em', textShadow: '0 0 40px rgba(255,255,255,0.05)' }}>
+                Specialized Advisory Councils
+            </Title>
+            <Paragraph style={{ color: '#94a3b8', fontSize: '16.5px', maxWidth: '700px', margin: '16px auto 0 auto', lineHeight: '1.7' }}>
+                Independent governance boards and expert panels enforcing absolute regulatory compliance, financial underwriting benchmarks, and asset lifecycle integrity.
+            </Paragraph>
+            <div style={{ width: '100px', height: '3px', borderRadius: '2px', background: 'linear-gradient(90deg, #7c3aed, #0284c7)', margin: '28px auto 0 auto', boxShadow: '0 0 12px rgba(124,58,237,0.5)' }} />
+        </div>
+
+        <Row gutter={[32, 32]}>
+            {/* Panel 1: POSH */}
+            <Col xs={24} lg={8} className="gsap-governance-card">
+                <Card 
+                    hoverable
+                    className="governance-interactive-card card-posh"
+                    styles={{ body: { padding: '44px 36px', display: 'flex', flexDirection: 'column', height: '100%' } }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
+                        <div className="icon-container-box" style={{ width: '52px', height: '48px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(124, 58, 237, 0.12)', border: '1px solid rgba(124, 58, 237, 0.4)', fontSize: '24px', boxShadow: '0 0 15px rgba(124, 58, 237, 0.2)' }}>
+                            <SafetyCertificateOutlined style={{ color: '#c084fc' }} />
+                        </div>
+                        <span style={{ fontSize: '10px', fontWeight: 800, color: '#a78bfa', letterSpacing: '0.06em', fontFamily: 'monospace', opacity: 0.8 }}>[ CODE // POSH-01 ]</span>
+                    </div>
+                    
+                    <Title level={4} style={{ fontWeight: 800, color: '#f8fafc', margin: '0 0 16px 0', fontSize: '1.4rem', letterSpacing: '-0.01em' }}>
+                        POSH Advisory Panel
+                    </Title>
+                    
+                    <Paragraph style={{ fontSize: '14.5px', color: '#94a3b8', lineHeight: '1.7', margin: 0 }}>
+                        Guarantees a safe, progressive corporate culture and statutory compliance under India's POSH Act parameters. Manages internal complaint audits and mandates proactive awareness training modules across our engineering setups and local logistic fleet centers.
+                    </Paragraph>
+                </Card>
+            </Col>
+
+            {/* Panel 2: Credit */}
+            <Col xs={24} lg={8} className="gsap-governance-card">
+                <Card 
+                    hoverable
+                    className="governance-interactive-card card-credit"
+                    styles={{ body: { padding: '44px 36px', display: 'flex', flexDirection: 'column', height: '100%' } }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
+                        <div className="icon-container-box" style={{ width: '52px', height: '48px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(14, 165, 233, 0.12)', border: '1px solid rgba(14, 165, 233, 0.4)', fontSize: '24px', boxShadow: '0 0 15px rgba(14, 165, 233, 0.2)' }}>
+                            <AuditOutlined style={{ color: '#38bdf8' }} />
+                        </div>
+                        <span style={{ fontSize: '10px', fontWeight: 800, color: '#38bdf8', letterSpacing: '0.06em', fontFamily: 'monospace', opacity: 0.8 }}>[ RISK // CRD-02 ]</span>
+                    </div>
+                    
+                    <Title level={4} style={{ fontWeight: 800, color: '#f8fafc', margin: '0 0 16px 0', fontSize: '1.4rem', letterSpacing: '-0.01em' }}>
+                        Credit Advisory Council
+                    </Title>
+                    
+                    <Paragraph style={{ fontSize: '14.5px', color: '#94a3b8', lineHeight: '1.7', margin: 0 }}>
+                        Architects complex risk metrics and algorithmic underwriting limits for enterprise B2B accounts. Evaluates capital exposure, funding balances, and transaction health during massive liquidation buybacks managed under the QwikSELL division framework.
+                    </Paragraph>
+                </Card>
+            </Col>
+
+            {/* Panel 3: Equipment */}
+            <Col xs={24} lg={8} className="gsap-governance-card">
+                <Card 
+                    hoverable
+                    className="governance-interactive-card card-equipment"
+                    styles={{ body: { padding: '44px 36px', display: 'flex', flexDirection: 'column', height: '100%' } }}
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '32px' }}>
+                        <div className="icon-container-box" style={{ width: '52px', height: '48px', borderRadius: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(16, 185, 129, 0.12)', border: '1px solid rgba(16, 185, 129, 0.4)', fontSize: '24px', boxShadow: '0 0 15px rgba(16, 185, 129, 0.2)' }}>
+                            <FieldTimeOutlined style={{ color: '#34d399' }} />
+                        </div>
+                        <span style={{ fontSize: '10px', fontWeight: 800, color: '#34d399', letterSpacing: '0.06em', fontFamily: 'monospace', opacity: 0.8 }}>[ ASSET // EQP-03 ]</span>
+                    </div>
+                    
+                    <Title level={4} style={{ fontWeight: 800, color: '#f8fafc', margin: '0 0 16px 0', fontSize: '1.4rem', letterSpacing: '-0.01em' }}>
+                        Equipment Committee
+                    </Title>
+                    
+                    <Paragraph style={{ fontSize: '14.5px', color: '#94a3b8', lineHeight: '1.7', margin: 0 }}>
+                        Monitors critical asset life indices, hardware deterioration data, and thermal safety telemetry logs. Dictates engineering standards for lithium battery pack leases under Urja Mobility and sets protocols for second-life cell scaling setups.
+                    </Paragraph>
+                </Card>
+            </Col>
+        </Row>
+
+    </div>
+</section>
 
             {/* --- LEADERSHIP TEAM SECTION (gsap-team-section) --- */}
             {/* --- CORPORATE DIRECTORY SECTION (gsap-directory-section) --- */}
@@ -1534,12 +1752,12 @@ export default function AboutPage() {
                                             transition: 'opacity 0.3s ease'
                                         }} />
 
-                                        {/* Avatar */}
+                                        {/* Avatar Container with Fixed Circular Masking */}
                                         <div
                                             className="dir-avatar"
                                             style={{
-                                                width: '72px',
-                                                height: '72px',
+                                                width: '80px',
+                                                height: '80px',
                                                 borderRadius: '50%',
                                                 overflow: 'hidden',
                                                 border: `2.5px solid ${isHovered ? dStyle.color : '#e2e8f0'}`,
@@ -1548,17 +1766,29 @@ export default function AboutPage() {
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                position: 'relative',
                                                 flexShrink: 0,
-                                                transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+                                                transition: 'all 0.3s ease',
                                                 marginBottom: '12px',
                                             }}
                                         >
-                                            <img
-                                                alt={emp.name}
-                                                src={emp.image || ''}
-                                                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover', display: emp.image ? 'block' : 'none' }}
-                                            />
+                                            {emp.image ? (
+                                                <img
+                                                    alt={emp.name}
+                                                    src={emp.image}
+                                                    style={{
+                                                        width: '100%',
+                                                        height: '100%',
+                                                        borderRadius: '50%',
+                                                        objectFit: 'cover',
+                                                        objectPosition: 'center 15%',
+                                                        display: 'block',
+                                                    }}
+                                                />
+                                            ) : (
+                                                <span style={{ fontSize: '20px', fontWeight: 800, color: dStyle.color }}>
+                                                    {emp.name.charAt(0)}
+                                                </span>
+                                            )}
                                         </div>
 
                                         {/* Name */}
