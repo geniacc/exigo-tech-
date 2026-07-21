@@ -111,30 +111,11 @@
       4. DYNAMIC HERO TYPOGRAPHY & GRADIENTS
       ========================================================================== */
    
-   /* Shimmering Ribbon Gradient matching the Exigo Mark */
    .exigo-dark-blue-text {
-       background: linear-gradient(
-           120deg,
-           #0f172a 0%,    /* Deep Slate / Dark Navy base */
-           #1e3a8a 25%,   /* Deep Royal Blue */
-           #2563eb 50%,   /* Vibrant Cobalt Blue */
-           #38bdf8 75%,   /* Ice-blue highlight */
-           #1e3a8a 100%   /* Deep Royal Blue loop */
-       );
-       background-size: 250% auto;
-       -webkit-background-clip: text;
-       -webkit-text-fill-color: transparent;
-       animation: exigoShimmer 5s ease-in-out infinite alternate;
+       color: #1e3a8a;
+       -webkit-text-fill-color: #1e3a8a;
+       background: none;
        filter: drop-shadow(0 4px 14px rgba(30, 58, 138, 0.22));
-   }
-   
-   @keyframes exigoShimmer {
-       0% {
-           background-position: 0% center;
-       }
-       100% {
-           background-position: 100% center;
-       }
    }
    
    .hero-main-title {

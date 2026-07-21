@@ -122,44 +122,17 @@ export function HeroOverlay() {
     gap: '10px'
   }
 
-  const clayPrimaryBtnStyle: React.CSSProperties = {
+  const clayLogoBtnStyle: React.CSSProperties = {
     height: isMobile ? '56px' : '62px',
     width: isMobile ? '100%' : 'auto',
-    padding: isMobile ? '0 28px' : '0 36px',
-    fontSize: isMobile ? '15px' : '16px',
-    fontWeight: 800,
+    minWidth: isMobile ? undefined : '140px',
+    padding: isMobile ? '0 24px' : '0 32px',
     borderRadius: '35px',
-    background: 'linear-gradient(145deg, #1e293b, #0f172a)',
-    border: 'none',
-    color: '#ffffff',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: '14px',
-    boxShadow: `
-      0 12px 24px -6px rgba(15, 23, 42, 0.35),
-      8px 8px 16px rgba(166, 180, 200, 0.3),
-      -6px -6px 14px rgba(255, 255, 255, 0.8),
-      inset 1px 1px 2px rgba(255, 255, 255, 0.2)
-    `,
-    touchAction: 'manipulation',
-    transition: 'all 0.25 ease'
-  }
-
-  const claySecondaryBtnStyle: React.CSSProperties = {
-    height: isMobile ? '56px' : '62px',
-    width: isMobile ? '100%' : 'auto',
-    padding: isMobile ? '0 28px' : '0 36px',
-    fontSize: isMobile ? '15px' : '16px',
-    fontWeight: 800,
-    borderRadius: '35px',
-    background: 'linear-gradient(145deg, #ffffff, #f1f5f9)',
+    background: '#ffffff',
     border: '1px solid rgba(255,255,255,0.8)',
-    color: '#0f172a',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: '14px',
     boxShadow: `
       0 12px 24px -6px rgba(148, 163, 184, 0.2),
       8px 8px 16px rgba(166, 180, 200, 0.35),
@@ -182,9 +155,10 @@ export function HeroOverlay() {
   }
 
   const logoStyle: React.CSSProperties = {
-    height: isMobile ? '24px' : '28px',
+    height: isMobile ? '28px' : '34px',
     width: 'auto',
-    objectFit: 'contain'
+    objectFit: 'contain',
+    display: 'block'
   }
 
   return (
@@ -261,7 +235,7 @@ export function HeroOverlay() {
               perspective: '1000px',
               fontSize: 'clamp(2.3rem, 6.5vw, 5.2rem)',
               cursor: 'default',
-              color: '#1e293b'
+              color: '#1e3a8a'
             }}
           >
             {titleString.split(" ").map((word, wordIndex) => (
@@ -300,7 +274,6 @@ export function HeroOverlay() {
         {/* Clean, Premium Subtitle Container */}
         <div ref={subtitleRef} style={{ pointerEvents: 'auto', textAlign: 'center', marginBottom: isMobile ? '28px' : '36px', maxWidth: '100%' }}>
           <div style={claySubtitleCardStyle}>
-            {/* Header */}
             <Typography.Text
               style={{
                 fontSize: 'clamp(0.85rem, 1.8vw, 1.15rem)',
@@ -313,28 +286,6 @@ export function HeroOverlay() {
             >
               End-to-End Product Lifecycle Management
             </Typography.Text>
-
-            {/* Seamless Bullet-Separated Capabilities Row */}
-            <div 
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: isMobile ? '6px 10px' : '12px',
-                fontSize: isMobile ? '0.72rem' : '0.82rem',
-                fontWeight: 700,
-                color: '#2563eb',
-                letterSpacing: '0.06em',
-                textTransform: 'uppercase'
-              }}
-            >
-              <span>Batteries & Energy Storage</span>
-              <span style={{ color: '#94a3b8', fontSize: '10px' }}>•</span>
-              <span>Refurbishment & Recycling</span>
-              <span style={{ color: '#94a3b8', fontSize: '10px' }}>•</span>
-              <span>Circular Tech Platforms</span>
-            </div>
           </div>
         </div>
 
@@ -353,27 +304,27 @@ export function HeroOverlay() {
           }}
         >
           <Button
-            type="primary"
+            type="default"
             size="large"
-            icon={<img src={urjaLogo} alt="" style={logoStyle} />}
             href="https://urjamobility.in/"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="URJA Mobility"
             className="magnetic-btn-primary"
-            style={clayPrimaryBtnStyle}
+            style={clayLogoBtnStyle}
           >
-            URJA Mobility
+            <img src={urjaLogo} alt="URJA Mobility" style={logoStyle} />
           </Button>
 
           <Button
             type="default"
             size="large"
-            icon={<img src={quikLogo} alt="" style={logoStyle} />}
             onClick={handleNavToQwik}
+            aria-label="QwikSELL"
             className="magnetic-btn-glass"
-            style={claySecondaryBtnStyle}
+            style={clayLogoBtnStyle}
           >
-            QwikSELL
+            <img src={quikLogo} alt="QwikSELL" style={logoStyle} />
           </Button>
         </div>
       </div>
